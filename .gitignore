@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+release/
+
+# logs & OS cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Your own source list. Copy sources.json to sources.private.json and add to it.
+# It is gitignored, so your curated feeds, boards and personal feeds stay private.
+electron/sources.private.json
+
+# Local environment / secrets (never commit)
+.env
+.env.*
