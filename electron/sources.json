@@ -1,0 +1,7 @@
+[
+  { "name": "Remotive", "type": "remotive", "category": "software-dev" },
+  { "name": "RemoteOK", "type": "remoteok" },
+  { "name": "Company boards", "type": "ats", "boards": ["greenhouse:gitlab", "greenhouse:cloudflare", "lever:palantir"] },
+  { "name": "We Work Remotely", "type": "rss", "url": "https://weworkremotely.com/remote-jobs.rss" },
+  { "name": "Hacker News Jobs", "type": "rss", "url": "https://hnrss.org/jobs" }
+]
