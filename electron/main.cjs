@@ -71,6 +71,7 @@ function showWin() {
 
 app.whenReady().then(() => {
   if (process.platform === "win32") app.setAppUserModelId("dev.local.yggdrasil");
+  Menu.setApplicationMenu(null);
   store = createStore(dir("jobs.json"));
   win = new BrowserWindow({ width: 1100, height: 800, backgroundColor: "#F5F5F7", icon: nativeImage.createFromPath(ICON),
     webPreferences: { preload: path.join(__dirname, "preload.cjs"), contextIsolation: true, nodeIntegration: false } });
