@@ -1,0 +1,1020 @@
+{
+  "checkedAt": "2026-10-05T07:57:33.613Z",
+  "configuredSourceUnits": 167,
+  "healthySourceUnits": 167,
+  "failures": [],
+  "missing": [],
+  "indexed": 14046,
+  "worldwide": 4439,
+  "nigeria": 342,
+  "grants": 332,
+  "kinds": {
+    "grant": 186,
+    "hackathon": 135,
+    "fellowship": 11
+  },
+  "health": {
+    "greenhouse:canonical": {
+      "ok": true,
+      "count": 310,
+      "error": "",
+      "ts": 1791186920781
+    },
+    "lever:offchainlabs": {
+      "ok": true,
+      "count": 11,
+      "error": "",
+      "ts": 1791186922315
+    },
+    "ashby:provable": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186922745
+    },
+    "ashby:matter-labs": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186923023
+    },
+    "ashby:alpenlabs": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186923296
+    },
+    "ashby:whetstoneresearch": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186923455
+    },
+    "ashby:trust-wallet": {
+      "ok": true,
+      "count": 14,
+      "error": "",
+      "ts": 1791186923720
+    },
+    "ashby:lightning": {
+      "ok": true,
+      "count": 14,
+      "error": "",
+      "ts": 1791186923915
+    },
+    "ashby:projecteleven": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186924260
+    },
+    "greenhouse:gensyn": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186924554
+    },
+    "greenhouse:ritual": {
+      "ok": true,
+      "count": 15,
+      "error": "",
+      "ts": 1791186924824
+    },
+    "greenhouse:consensys": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186925111
+    },
+    "lever:certik": {
+      "ok": true,
+      "count": 29,
+      "error": "",
+      "ts": 1791186925753
+    },
+    "greenhouse:ondofinance": {
+      "ok": true,
+      "count": 22,
+      "error": "",
+      "ts": 1791186926020
+    },
+    "greenhouse:alpaca": {
+      "ok": true,
+      "count": 71,
+      "error": "",
+      "ts": 1791186926585
+    },
+    "ashby:Keyrock": {
+      "ok": true,
+      "count": 10,
+      "error": "",
+      "ts": 1791186926890
+    },
+    "ashby:luxor": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791186927173
+    },
+    "greenhouse:eqvilentjobs": {
+      "ok": true,
+      "count": 24,
+      "error": "",
+      "ts": 1791186927430
+    },
+    "ashby:supabase": {
+      "ok": true,
+      "count": 48,
+      "error": "",
+      "ts": 1791186927643
+    },
+    "greenhouse:grafanalabs": {
+      "ok": true,
+      "count": 121,
+      "error": "",
+      "ts": 1791186928088
+    },
+    "greenhouse:enchargeai36": {
+      "ok": true,
+      "count": 26,
+      "error": "",
+      "ts": 1791186928390
+    },
+    "greenhouse:lemurianlabs": {
+      "ok": true,
+      "count": 6,
+      "error": "",
+      "ts": 1791186928677
+    },
+    "greenhouse:jetbrains": {
+      "ok": true,
+      "count": 67,
+      "error": "",
+      "ts": 1791186929280
+    },
+    "greenhouse:stackblitz": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186929527
+    },
+    "greenhouse:honeycomb": {
+      "ok": true,
+      "count": 20,
+      "error": "",
+      "ts": 1791186929880
+    },
+    "greenhouse:moniepoint": {
+      "ok": true,
+      "count": 148,
+      "error": "",
+      "ts": 1791186930344
+    },
+    "greenhouse:sandtechholdingslimited": {
+      "ok": true,
+      "count": 46,
+      "error": "",
+      "ts": 1791186930666
+    },
+    "ashby:m-kopa": {
+      "ok": true,
+      "count": 37,
+      "error": "",
+      "ts": 1791186930897
+    },
+    "greenhouse:defuselabs": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791186931305
+    },
+    "ashby:lucidlink": {
+      "ok": true,
+      "count": 6,
+      "error": "",
+      "ts": 1791186931615
+    },
+    "greenhouse:intelluminc": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791186931943
+    },
+    "greenhouse:scaleops": {
+      "ok": true,
+      "count": 57,
+      "error": "",
+      "ts": 1791186932491
+    },
+    "greenhouse:dataiku": {
+      "ok": true,
+      "count": 21,
+      "error": "",
+      "ts": 1791186932942
+    },
+    "greenhouse:superserve": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791186933230
+    },
+    "ashby:yotta": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791186933525
+    },
+    "greenhouse:turnkeycareers": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186934040
+    },
+    "greenhouse:engine": {
+      "ok": true,
+      "count": 80,
+      "error": "",
+      "ts": 1791186934553
+    },
+    "greenhouse:pulumicorporation": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186934847
+    },
+    "lever:parallelwireless": {
+      "ok": true,
+      "count": 47,
+      "error": "",
+      "ts": 1791186936363
+    },
+    "greenhouse:zencoder": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791186936624
+    },
+    "greenhouse:keepersecurity": {
+      "ok": true,
+      "count": 89,
+      "error": "",
+      "ts": 1791186937357
+    },
+    "greenhouse:youcom": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186937625
+    },
+    "lever:airslate": {
+      "ok": true,
+      "count": 10,
+      "error": "",
+      "ts": 1791186938048
+    },
+    "ashby:Gradient": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186938514
+    },
+    "ashby:sentient": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791186938692
+    },
+    "ashby:unto-labs": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791186939018
+    },
+    "ashby:lucidcomputing": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791186939288
+    },
+    "greenhouse:teravision": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791186939535
+    },
+    "greenhouse:automox": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791186939780
+    },
+    "lever:sysdig": {
+      "ok": true,
+      "count": 29,
+      "error": "",
+      "ts": 1791186940120
+    },
+    "lever:binance": {
+      "ok": true,
+      "count": 314,
+      "error": "",
+      "ts": 1791186942861
+    },
+    "lever:voltus": {
+      "ok": true,
+      "count": 17,
+      "error": "",
+      "ts": 1791186943214
+    },
+    "greenhouse:mariadbplc": {
+      "ok": true,
+      "count": 23,
+      "error": "",
+      "ts": 1791186943509
+    },
+    "greenhouse:rxsense": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186943781
+    },
+    "greenhouse:penninteractive": {
+      "ok": true,
+      "count": 40,
+      "error": "",
+      "ts": 1791186944137
+    },
+    "greenhouse:upgrade": {
+      "ok": true,
+      "count": 35,
+      "error": "",
+      "ts": 1791186944477
+    },
+    "ashby:emergence": {
+      "ok": true,
+      "count": 15,
+      "error": "",
+      "ts": 1791186944788
+    },
+    "ashby:atticus": {
+      "ok": true,
+      "count": 16,
+      "error": "",
+      "ts": 1791186944990
+    },
+    "ashby:g2i": {
+      "ok": true,
+      "count": 23,
+      "error": "",
+      "ts": 1791186945295
+    },
+    "ashby:grai": {
+      "ok": true,
+      "count": 6,
+      "error": "",
+      "ts": 1791186945716
+    },
+    "ashby:space44": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791186945956
+    },
+    "lever:accesssoftek": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186946289
+    },
+    "lever:azul": {
+      "ok": true,
+      "count": 14,
+      "error": "",
+      "ts": 1791186946648
+    },
+    "ashby:prelude": {
+      "ok": true,
+      "count": 15,
+      "error": "",
+      "ts": 1791186946915
+    },
+    "ashby:langdock": {
+      "ok": true,
+      "count": 27,
+      "error": "",
+      "ts": 1791186947161
+    },
+    "lever:anchorage": {
+      "ok": true,
+      "count": 21,
+      "error": "",
+      "ts": 1791186947921
+    },
+    "ashby:Linear": {
+      "ok": true,
+      "count": 30,
+      "error": "",
+      "ts": 1791186948096
+    },
+    "greenhouse:focused": {
+      "ok": true,
+      "count": 25,
+      "error": "",
+      "ts": 1791186948378
+    },
+    "greenhouse:colabsoftware": {
+      "ok": true,
+      "count": 28,
+      "error": "",
+      "ts": 1791186948715
+    },
+    "greenhouse:endorlabs": {
+      "ok": true,
+      "count": 29,
+      "error": "",
+      "ts": 1791186949044
+    },
+    "lever:coinmarketcap": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186949422
+    },
+    "greenhouse:tobogganlabs": {
+      "ok": true,
+      "count": 11,
+      "error": "",
+      "ts": 1791186949757
+    },
+    "ashby:gc-ai": {
+      "ok": true,
+      "count": 26,
+      "error": "",
+      "ts": 1791186950087
+    },
+    "ashby:ema": {
+      "ok": true,
+      "count": 41,
+      "error": "",
+      "ts": 1791186950307
+    },
+    "ashby:vanta": {
+      "ok": true,
+      "count": 83,
+      "error": "",
+      "ts": 1791186950664
+    },
+    "ashby:neon": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791186950934
+    },
+    "greenhouse:applytoaktos": {
+      "ok": true,
+      "count": 10,
+      "error": "",
+      "ts": 1791186951190
+    },
+    "ashby:share": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791186951500
+    },
+    "ashby:brainbaselabs": {
+      "ok": true,
+      "count": 6,
+      "error": "",
+      "ts": 1791186951844
+    },
+    "greenhouse:kernelize": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186952116
+    },
+    "lever:appen-2": {
+      "ok": true,
+      "count": 15,
+      "error": "",
+      "ts": 1791186952681
+    },
+    "greenhouse:modernhealth": {
+      "ok": true,
+      "count": 11,
+      "error": "",
+      "ts": 1791186952989
+    },
+    "ashby:kindred": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791186953255
+    },
+    "greenhouse:circleci": {
+      "ok": true,
+      "count": 12,
+      "error": "",
+      "ts": 1791186953608
+    },
+    "greenhouse:xai": {
+      "ok": true,
+      "count": 301,
+      "error": "",
+      "ts": 1791186954678
+    },
+    "greenhouse:tenstorrent": {
+      "ok": true,
+      "count": 129,
+      "error": "",
+      "ts": 1791186955336
+    },
+    "greenhouse:anthropic": {
+      "ok": true,
+      "count": 639,
+      "error": "",
+      "ts": 1791186956970
+    },
+    "greenhouse:sambanovasystems": {
+      "ok": true,
+      "count": 63,
+      "error": "",
+      "ts": 1791186957485
+    },
+    "greenhouse:databricks": {
+      "ok": true,
+      "count": 888,
+      "error": "",
+      "ts": 1791186959219
+    },
+    "greenhouse:lightningai": {
+      "ok": true,
+      "count": 54,
+      "error": "",
+      "ts": 1791186959596
+    },
+    "greenhouse:togetherai": {
+      "ok": true,
+      "count": 77,
+      "error": "",
+      "ts": 1791186959934
+    },
+    "greenhouse:coreweave": {
+      "ok": true,
+      "count": 315,
+      "error": "",
+      "ts": 1791186961835
+    },
+    "ashby:cursor": {
+      "ok": true,
+      "count": 132,
+      "error": "",
+      "ts": 1791186963346
+    },
+    "greenhouse:nebius": {
+      "ok": true,
+      "count": 365,
+      "error": "",
+      "ts": 1791186964737
+    },
+    "ashby:anyscale": {
+      "ok": true,
+      "count": 20,
+      "error": "",
+      "ts": 1791186965004
+    },
+    "ashby:baseten": {
+      "ok": true,
+      "count": 105,
+      "error": "",
+      "ts": 1791186965360
+    },
+    "ashby:character": {
+      "ok": true,
+      "count": 13,
+      "error": "",
+      "ts": 1791186965580
+    },
+    "ashby:lambda": {
+      "ok": true,
+      "count": 90,
+      "error": "",
+      "ts": 1791186966008
+    },
+    "ashby:primeintellect": {
+      "ok": true,
+      "count": 30,
+      "error": "",
+      "ts": 1791186966323
+    },
+    "ashby:cartesia": {
+      "ok": true,
+      "count": 31,
+      "error": "",
+      "ts": 1791186966539
+    },
+    "ashby:etched": {
+      "ok": true,
+      "count": 108,
+      "error": "",
+      "ts": 1791186966996
+    },
+    "ashby:sfcompute": {
+      "ok": true,
+      "count": 8,
+      "error": "",
+      "ts": 1791186967323
+    },
+    "ashby:perplexity": {
+      "ok": true,
+      "count": 127,
+      "error": "",
+      "ts": 1791186967662
+    },
+    "ashby:fluidstack": {
+      "ok": true,
+      "count": 254,
+      "error": "",
+      "ts": 1791186968328
+    },
+    "ashby:cohere": {
+      "ok": true,
+      "count": 137,
+      "error": "",
+      "ts": 1791186968738
+    },
+    "ashby:Liquid-AI": {
+      "ok": true,
+      "count": 20,
+      "error": "",
+      "ts": 1791186969064
+    },
+    "ashby:d-matrix": {
+      "ok": true,
+      "count": 33,
+      "error": "",
+      "ts": 1791186969407
+    },
+    "ashby:friendliai": {
+      "ok": true,
+      "count": 19,
+      "error": "",
+      "ts": 1791186969732
+    },
+    "ashby:cognition": {
+      "ok": true,
+      "count": 101,
+      "error": "",
+      "ts": 1791186970103
+    },
+    "ashby:featherlessai": {
+      "ok": true,
+      "count": 17,
+      "error": "",
+      "ts": 1791186970478
+    },
+    "ashby:openai": {
+      "ok": true,
+      "count": 828,
+      "error": "",
+      "ts": 1791186971681
+    },
+    "ashby:inworld-ai": {
+      "ok": true,
+      "count": 20,
+      "error": "",
+      "ts": 1791186972063
+    },
+    "ashby:poolside": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791186972326
+    },
+    "ashby:tensorwave": {
+      "ok": true,
+      "count": 38,
+      "error": "",
+      "ts": 1791186972697
+    },
+    "ashby:runway-ml": {
+      "ok": true,
+      "count": 46,
+      "error": "",
+      "ts": 1791186973210
+    },
+    "ashby:reka": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791186973513
+    },
+    "ashby:crusoe": {
+      "ok": true,
+      "count": 351,
+      "error": "",
+      "ts": 1791186974135
+    },
+    "ClojureJobboard.com": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791185932532
+    },
+    "Authentic Jobs": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791185932691
+    },
+    "Findjobit": {
+      "ok": true,
+      "count": 18,
+      "error": "",
+      "ts": 1791185933955
+    },
+    "Golang / Go Jobs": {
+      "ok": true,
+      "count": 15,
+      "error": "",
+      "ts": 1791185934202
+    },
+    "FOSS Jobs": {
+      "ok": true,
+      "count": 7,
+      "error": "",
+      "ts": 1791185935057
+    },
+    "I ❤ remote.io": {
+      "ok": true,
+      "count": 13,
+      "error": "",
+      "ts": 1791185935603
+    },
+    "HasJob": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791185936628
+    },
+    "Landing.jobs": {
+      "ok": true,
+      "count": 8,
+      "error": "",
+      "ts": 1791185937006
+    },
+    "NODESK": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791185937219
+    },
+    "Lara Jobs": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791185937574
+    },
+    "Python Jobs": {
+      "ok": true,
+      "count": 20,
+      "error": "",
+      "ts": 1791185937812
+    },
+    "WordPress Jobs": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791185938579
+    },
+    "Himalayas": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791185938880
+    },
+    "Jobicy": {
+      "ok": true,
+      "count": 73,
+      "error": "",
+      "ts": 1791185939514
+    },
+    "Real Work From Anywhere": {
+      "ok": true,
+      "count": 60,
+      "error": "",
+      "ts": 1791185940756
+    },
+    "elixirjobs": {
+      "ok": true,
+      "count": 10,
+      "error": "",
+      "ts": 1791185941046
+    },
+    "cryptocurrencyjobs": {
+      "ok": true,
+      "count": 24,
+      "error": "",
+      "ts": 1791185941387
+    },
+    "cryptojobslist": {
+      "ok": true,
+      "count": 34,
+      "error": "",
+      "ts": 1791185941920
+    },
+    "germantechjobs": {
+      "ok": true,
+      "count": 227,
+      "error": "",
+      "ts": 1791185943810
+    },
+    "swissdevjobs": {
+      "ok": true,
+      "count": 164,
+      "error": "",
+      "ts": 1791185944661
+    },
+    "remotefirstjobs": {
+      "ok": true,
+      "count": 18,
+      "error": "",
+      "ts": 1791185945424
+    },
+    "pyjobs": {
+      "ok": true,
+      "count": 97,
+      "error": "",
+      "ts": 1791185947553
+    },
+    "Hot Nigerian Jobs": {
+      "ok": true,
+      "count": 44,
+      "error": "",
+      "ts": 1791185947917
+    },
+    "MyJobMag Kenya": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791185948907
+    },
+    "MyJobMag Nigeria": {
+      "ok": true,
+      "count": 9,
+      "error": "",
+      "ts": 1791185949401
+    },
+    "Joblist Nigeria": {
+      "ok": true,
+      "count": 0,
+      "error": "",
+      "ts": 1791185955155
+    },
+    "Career Point Kenya": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791185956132
+    },
+    "devopsjobs": {
+      "ok": true,
+      "count": 977,
+      "error": "",
+      "ts": 1791185957810
+    },
+    "Jobweb Kenya 2": {
+      "ok": true,
+      "count": 0,
+      "error": "",
+      "ts": 1791185959054
+    },
+    "Warp Jobs": {
+      "ok": true,
+      "count": 73,
+      "error": "",
+      "ts": 1791185959336
+    },
+    "RecruitHub Africa": {
+      "ok": true,
+      "count": 223,
+      "error": "",
+      "ts": 1791185959839
+    },
+    "MyJobMag South Africa": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791185960990
+    },
+    "Jobweb Ethiopia 2": {
+      "ok": true,
+      "count": 2,
+      "error": "",
+      "ts": 1791185962521
+    },
+    "Jobweb Uganda 2": {
+      "ok": true,
+      "count": 0,
+      "error": "",
+      "ts": 1791185963552
+    },
+    "Jobs in Kenya": {
+      "ok": true,
+      "count": 0,
+      "error": "",
+      "ts": 1791185964188
+    },
+    "iYouth South Africa": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791185965413
+    },
+    "Top Job Seeker South Africa": {
+      "ok": true,
+      "count": 0,
+      "error": "",
+      "ts": 1791185967136
+    },
+    "Jobscanner": {
+      "ok": true,
+      "count": 44,
+      "error": "",
+      "ts": 1791185967462
+    },
+    "Hello Uganda": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791185968317
+    },
+    "YubHub Rust": {
+      "ok": true,
+      "count": 98,
+      "error": "",
+      "ts": 1791185968694
+    },
+    "JobsCollider": {
+      "ok": true,
+      "count": 18,
+      "error": "",
+      "ts": 1791185969218
+    },
+    "Alouadifa Morocco": {
+      "ok": true,
+      "count": 3,
+      "error": "",
+      "ts": 1791185969644
+    },
+    "NLnet": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791185972602
+    },
+    "Ethereum Foundation": {
+      "ok": true,
+      "count": 1,
+      "error": "",
+      "ts": 1791185972915
+    },
+    "Opportunities for Africans 1": {
+      "ok": true,
+      "count": 4,
+      "error": "",
+      "ts": 1791185973321
+    },
+    "Opportunity Desk": {
+      "ok": true,
+      "count": 5,
+      "error": "",
+      "ts": 1791185974598
+    },
+    "Arbeitnow": {
+      "ok": true,
+      "count": 92,
+      "error": "",
+      "ts": 1791185975214
+    },
+    "TensorHack AI jobs": {
+      "ok": true,
+      "count": 2445,
+      "error": "",
+      "ts": 1791186984463
+    },
+    "TensorHack grants and bounties": {
+      "ok": true,
+      "count": 186,
+      "error": "",
+      "ts": 1791186985232
+    },
+    "TensorHack hackathons": {
+      "ok": true,
+      "count": 136,
+      "error": "",
+      "ts": 1791186987010
+    }
+  }
+}

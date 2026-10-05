@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Jobs in Kenya",
+    "url": "https://www.jobsinkenya.co.ke/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.jobsinkenya.co.ke/feed/",
+      "https://www.jobsinkenya.co.ke/wpjobboard/xml/rss/?filter=active"
+    ]
+  },
+  {
+    "name": "Kazi Pamoja",
+    "url": "https://kazipamoja.online/kenya/jobs/?location=kenya",
+    "region": "Africa",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "Top Job Seeker South Africa",
+    "url": "https://topjobseeker.com/south-africa-jobs-rss-feeds/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://topjobseeker.com/feed/",
+      "https://topjobseeker.com/web-stories/feed/",
+      "https://topjobseeker.com/?feed=job_feed&job_types=contract%2Cfreelance%2Cfull-time%2Cinternship%2Cpart-time%2Cremote%2Ctemporary%2Cvolunteer&search_location=South+Africa&job_categories&search_keywords",
+      "https://topjobseeker.com/?feed=job_feed&job_types=contract%2Cfreelance%2Cfull-time%2Cinternship%2Cpart-time%2Cremote%2Ctemporary%2Cvolunteer&search_location=Johannesburg&job_categories&search_keywords"
+    ]
+  },
+  {
+    "name": "iYouth South Africa",
+    "url": "https://iyouth.co.za/rss-feeds",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://iyouth.co.za/rss/latest-posts",
+      "https://iyouth.co.za/rss/category/online-jobs",
+      "https://iyouth.co.za/rss/category/private-jobs",
+      "https://iyouth.co.za/rss/category/government-jobs",
+      "https://iyouth.co.za/rss/category/general-worker-jobs",
+      "https://iyouth.co.za/rss/category/internships",
+      "https://iyouth.co.za/rss/category/learnerships",
+      "https://iyouth.co.za/rss/category/career-advice-job-search-tips",
+      "https://iyouth.co.za/rss/category/universities",
+      "https://iyouth.co.za/rss/category/studying",
+      "https://iyouth.co.za/rss/category/courses",
+      "https://iyouth.co.za/rss/category/online-courses",
+      "https://iyouth.co.za/rss/category/colleges",
+      "https://iyouth.co.za/rss/category/bursaries"
+    ]
+  },
+  {
+    "name": "African Development Bank",
+    "url": "https://www.afdb.org/en/vacancies",
+    "region": "Africa",
+    "error": "HTTP Error 403: Forbidden",
+    "discoveredFeeds": []
+  }
+]

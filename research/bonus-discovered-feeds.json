@@ -1,0 +1,12 @@
+[
+  {
+    "name": "TensorHack",
+    "url": "https://tensorhack.com/data",
+    "region": "worldwide",
+    "discoveredFeeds": [
+      "https://tensorhack.com/data/hackathons.rss",
+      "https://tensorhack.com/data/jobs.rss",
+      "https://tensorhack.com/data/opportunities.rss"
+    ]
+  }
+]

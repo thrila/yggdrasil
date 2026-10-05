@@ -1,0 +1,13 @@
+[
+ {"name":"MyJobMag South Africa","url":"https://www.myjobmag.co.za/feeds/","region":"Africa"},
+ {"name":"MyJobMag Ghana","url":"https://www.myjobmagghana.com/feeds/","region":"Africa"},
+ {"name":"Jobweb Uganda","url":"https://jobwebuganda.com/","region":"Africa"},
+ {"name":"Jobweb Ethiopia","url":"https://jobwebethiopia.com/","region":"Africa"},
+ {"name":"NLnet","url":"https://nlnet.nl/officehour/","region":"worldwide","bucket":"bonus"},
+ {"name":"Ethereum Foundation","url":"https://blog.ethereum.org/","region":"worldwide","bucket":"bonus"},
+ {"name":"Prototype Fund","url":"https://prototypefund.de/","region":"worldwide","bucket":"bonus"},
+ {"name":"Opportunities for Africans","url":"https://www.opportunitiesforafricans.com/","region":"Africa","bucket":"bonus"},
+ {"name":"Opportunity Desk","url":"https://opportunitydesk.org/","region":"worldwide","bucket":"bonus"},
+ {"name":"isecjobs","url":"https://isecjobs.com/","region":"worldwide"},
+ {"name":"aijobs","url":"https://aijobs.net/","region":"worldwide"}
+]

@@ -1,0 +1,1965 @@
+[
+  {
+    "name": "hamsa",
+    "type": "ats",
+    "board": "ashby:hamsa",
+    "url": "https://jobs.ashbyhq.com/hamsa",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:46.625Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/hamsa",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/hamsa",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "03e836a65ca1e7ce4ab6bd534fd3b8d6c359fa5ceae781af2ce1c0e113ca1b9a",
+        "bodyFile": ".cache/source-verification/d3f51e6179bba9fe482b35f3e48ae7121c60c8d10a406831ed082bfedcf61907.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/hamsa",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "cdpjobs",
+    "type": "ats",
+    "board": "greenhouse:cdpjobs",
+    "url": "https://job-boards.greenhouse.io/cdpjobs",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:51.173Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/cdpjobs/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/cdpjobs/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/ffbf82860c288e640dd62c023005e06386efdcefe2aa2e35ac4895b74ced01a8.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/cdpjobs/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "nexus",
+    "type": "ats",
+    "board": "ashby:nexus",
+    "url": "https://jobs.ashbyhq.com/nexus",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:54.113Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/nexus",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/nexus",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/6728a9869525ca5c45982c961fe3249f02f4338ded5b557777b479ab862891b0.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/nexus",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "material",
+    "type": "ats",
+    "board": "ashby:material",
+    "url": "https://jobs.ashbyhq.com/material",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:54.208Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/material",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/material",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/256196318e41cf41b3d50addc6d396ad0c99cce50dab1fc572fd522bb8d806f2.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/material",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "aztec",
+    "type": "ats",
+    "board": "greenhouse:aztec",
+    "url": "https://job-boards.greenhouse.io/aztec",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:54.393Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/aztec/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/aztec/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/062e1395b92f2406ca4d1e4f193927e31b222a8fc03da2acdc3868218cc28055.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/aztec/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "alpenlabs",
+    "type": "ats",
+    "board": "greenhouse:alpenlabs",
+    "url": "https://job-boards.greenhouse.io/alpenlabs",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:54.514Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/alpenlabs/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/alpenlabs/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/3a859ce31369f6b388d6bf210fd703b9e61c97c13ccce0d5a5e07e45a8414408.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/alpenlabs/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "teleport",
+    "type": "ats",
+    "board": "lever:teleport",
+    "url": "https://jobs.lever.co/teleport",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:57.284Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/teleport?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/teleport?mode=json",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "bodyFile": ".cache/source-verification/a8ea1b939e30fc6d6e2f22d8789cbfa07d64cd983964b08f11ef6f4f1045dc04.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/teleport?mode=json",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "groq",
+    "type": "ats",
+    "board": "greenhouse:groq",
+    "url": "https://job-boards.greenhouse.io/groq",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:54:58.265Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/groq/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/groq/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/96a672385aad4c8887134d38f5ce1c05b7fe78611b718bd3ebfd790fc0234ab9.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/groq/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "mythic-ai",
+    "type": "ats",
+    "board": "lever:mythic-ai",
+    "url": "https://jobs.lever.co/mythic-ai",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:55:03.121Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/mythic-ai?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/mythic-ai?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/ebd3ba1dd92d1cbf5060f1b07097809dea40e7244da7c1672ad534d18f688186.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/mythic-ai?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "roebling",
+    "type": "ats",
+    "board": "ashby:roebling",
+    "url": "https://jobs.ashbyhq.com/roebling",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:55:05.728Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/roebling",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/roebling",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/455c2dc96d420c42e6876ad50b51a77e6d0c8d77fe4b7b2bb60010c268359d34.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/roebling",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "iconicshift",
+    "type": "ats",
+    "board": "ashby:iconicshift",
+    "url": "https://jobs.ashbyhq.com/iconicshift",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:55:06.279Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/iconicshift",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/iconicshift",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "03e836a65ca1e7ce4ab6bd534fd3b8d6c359fa5ceae781af2ce1c0e113ca1b9a",
+        "bodyFile": ".cache/source-verification/3f71d9707eac5bdd620343a6e65cd84010a503e24d3823140c06ac7dcdfbb918.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/iconicshift",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "paystack",
+    "type": "ats",
+    "board": "greenhouse:paystack",
+    "url": "https://job-boards.greenhouse.io/paystack",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:23.290Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/paystack/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/paystack/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/25aa13edca76a177f4f633086d38bef644e5eae237b2689a35fd14eeeda61077.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/paystack/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "temporaltechnologies",
+    "type": "ats",
+    "board": "greenhouse:temporaltechnologies",
+    "url": "https://job-boards.greenhouse.io/temporaltechnologies",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:24.208Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/temporaltechnologies/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/temporaltechnologies/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/1907e1163e28facb910f9185526ce81d63c705f24ea1508c26a9969d145987da.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/temporaltechnologies/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "temporal",
+    "type": "ats",
+    "board": "greenhouse:temporal",
+    "url": "https://job-boards.greenhouse.io/temporal",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:24.269Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/temporal/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/temporal/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/f446055209109089569d4b00346a94e6196e4b6ee21e9748e78eeeca0c495ca1.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/temporal/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "embed",
+    "type": "ats",
+    "board": "greenhouse:embed",
+    "url": "https://job-boards.greenhouse.io/embed",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:24.321Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/embed/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/embed/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/0fb0d1000513fd3dddfdee4af08d0277d832b385232d9bead24f950a33571d7f.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/embed/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "buildwithfern",
+    "type": "ats",
+    "board": "ashby:buildwithfern",
+    "url": "https://jobs.ashbyhq.com/buildwithfern",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:25.424Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/buildwithfern",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/buildwithfern",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/0c9216cae9627d9d13b9c84f45b4f229d7082b7e62260e155589229b694c1c2b.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/buildwithfern",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Resolve",
+    "type": "ats",
+    "board": "ashby:Resolve",
+    "url": "https://jobs.ashbyhq.com/Resolve",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:25.890Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/Resolve",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/Resolve",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/c780261412e31b528cda4e8d65940a3677d138124706b56ac6c4c2edd2f0ffc8.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/Resolve",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "happyrobot",
+    "type": "ats",
+    "board": "ashby:happyrobot",
+    "url": "https://jobs.ashbyhq.com/happyrobot",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:26.022Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/happyrobot",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/happyrobot",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/7873748a883ef61ae5a39ba23741bb31c4592bb7f066bad98596e28849ad8f61.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/happyrobot",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "wahed",
+    "type": "ats",
+    "board": "lever:wahed",
+    "url": "https://jobs.lever.co/wahed",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:27.475Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/wahed?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/wahed?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/f6f3a7d5a592ee64fe23f49363e4d8e858a019d5d9442ce058654042e523d541.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/wahed?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Scale",
+    "type": "ats",
+    "board": "ashby:Scale",
+    "url": "https://jobs.ashbyhq.com/Scale",
+    "discoveredFrom": "Live web search; exact published board URL",
+    "checkedAt": "2026-10-05T06:58:27.921Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/Scale",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/Scale",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/17653693eb77da323166a1affb207ffe966f488a6bab2a4adaaccb76a07400d5.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/Scale",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "truelogic",
+    "type": "ats",
+    "board": "greenhouse:truelogic",
+    "url": "https://job-boards.greenhouse.io/truelogic",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/truelogic.md",
+    "checkedAt": "2026-10-05T06:58:28.378Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/truelogic/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/truelogic/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/6848d707329a8a950162e4a14b5757da665f343f42d1523ca84372e033f0706a.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/truelogic/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "airbyte",
+    "type": "ats",
+    "board": "greenhouse:airbyte",
+    "url": "https://job-boards.greenhouse.io/airbyte",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/airbyte.md",
+    "checkedAt": "2026-10-05T06:58:28.406Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/airbyte/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/airbyte/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/831d20d98a3e76e4e6d03a967c69a4a1fe07d1b7a049439b50103751d1775dc3.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/airbyte/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Deel",
+    "type": "ats",
+    "board": "ashby:Deel",
+    "url": "https://jobs.ashbyhq.com/Deel",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/deel.md",
+    "checkedAt": "2026-10-05T06:58:28.545Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/Deel",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/Deel",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "03e836a65ca1e7ce4ab6bd534fd3b8d6c359fa5ceae781af2ce1c0e113ca1b9a",
+        "bodyFile": ".cache/source-verification/7c74b14dbf286ae118b58a8e82df5d962055f39b5e1c8ca55af7dc93911758bd.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/Deel",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "recharge",
+    "type": "ats",
+    "board": "greenhouse:recharge",
+    "url": "https://job-boards.greenhouse.io/recharge",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/recharge.md",
+    "checkedAt": "2026-10-05T06:58:28.788Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/recharge/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/recharge/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/8e0281f908fbdbefa519e7562ff67a8e4eca0f87647b769228fe520a6ad4ec54.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/recharge/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "lifen",
+    "type": "ats",
+    "board": "lever:lifen",
+    "url": "https://jobs.lever.co/lifen",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/lifen.md",
+    "checkedAt": "2026-10-05T06:58:29.071Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/lifen?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/lifen?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/f8921403ba8971c80f4ebde3ed5284c707456f77911e4d83ae09a9e251d1f02c.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/lifen?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "taplytics",
+    "type": "ats",
+    "board": "lever:taplytics",
+    "url": "https://jobs.lever.co/taplytics",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/taplytics.md",
+    "checkedAt": "2026-10-05T06:58:28.689Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/taplytics?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/taplytics?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/e86bc830d30fb2cde46392be476a668539562e0ffcf7058d16b8ecbc7959e38b.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/taplytics?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "circonus",
+    "type": "ats",
+    "board": "lever:circonus",
+    "url": "https://jobs.lever.co/circonus",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/circonus.md",
+    "checkedAt": "2026-10-05T06:58:29.451Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/circonus?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/circonus?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/ee1fda23521837aaf15eeadc1a68c157ed4cf8bc4500ce6fad666fe5e203785b.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/circonus?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "skillshare",
+    "type": "ats",
+    "board": "lever:skillshare",
+    "url": "https://jobs.lever.co/skillshare",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/skillshare.md",
+    "checkedAt": "2026-10-05T06:58:29.675Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/skillshare?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/skillshare?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/d9e91894b609e65d10d6746fdc67d55c7328e3d9d8ceca151af65f2f791bc2b0.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/skillshare?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "alan",
+    "type": "ats",
+    "board": "lever:alan",
+    "url": "https://jobs.lever.co/alan",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/alan.md",
+    "checkedAt": "2026-10-05T06:58:29.252Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/alan?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/alan?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/b365b5f955208dc3b4909535c90b4df6a0e7130cf13a0400b2e468eed0cf8d84.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/alan?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "influxdb",
+    "type": "ats",
+    "board": "greenhouse:influxdb",
+    "url": "https://job-boards.greenhouse.io/influxdb",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/influxdata.md",
+    "checkedAt": "2026-10-05T06:58:30.306Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/influxdb/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/influxdb/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/97132cd2c920fbad964500f30e9e5cdadf4b7d9b75a6af6cd13077033ab9ba75.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/influxdb/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "iterative",
+    "type": "ats",
+    "board": "lever:iterative",
+    "url": "https://jobs.lever.co/iterative",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/iterative.md",
+    "checkedAt": "2026-10-05T06:58:30.498Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/iterative?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/iterative?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/9a711fad5bdc92abe81b06624daa5b0e53e9a6fe0a23c5362873fa3a423d749f.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/iterative?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Mycelium",
+    "type": "ats",
+    "board": "lever:Mycelium",
+    "url": "https://jobs.lever.co/Mycelium",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/mycelium.md",
+    "checkedAt": "2026-10-05T06:58:30.566Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/Mycelium?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/Mycelium?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/d624f7b2bedd104869cbe1159f153acff5a7f7ba814064650d413ba039df9192.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/Mycelium?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "impala",
+    "type": "ats",
+    "board": "greenhouse:impala",
+    "url": "https://job-boards.greenhouse.io/impala",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/impala.md",
+    "checkedAt": "2026-10-05T06:58:30.763Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/impala/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/impala/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/13b235093fb0cd91eb870b37943cd9cbdda7f9eadd9cf9e579ef167771b8ff8c.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/impala/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "kraken",
+    "type": "ats",
+    "board": "lever:kraken",
+    "url": "https://jobs.lever.co/kraken",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/kraken.md",
+    "checkedAt": "2026-10-05T06:58:30.878Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/kraken?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/kraken?mode=json",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "bodyFile": ".cache/source-verification/fe9b377d3b12af47bb3d5b0b259ca7a33739140440f490dbb8e5d19580c2b4b0.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/kraken?mode=json",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "medium",
+    "type": "ats",
+    "board": "lever:medium",
+    "url": "https://jobs.lever.co/medium",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/medium.md",
+    "checkedAt": "2026-10-05T06:58:31.021Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/medium?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/medium?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/5796f2b11c653318c740d62d82ffc98d45483c99c872ce9a33f2bfc12f23dbe2.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/medium?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "theoremonellc",
+    "type": "ats",
+    "board": "lever:theoremonellc",
+    "url": "https://jobs.lever.co/theoremonellc",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/theoremone.md",
+    "checkedAt": "2026-10-05T06:58:31.081Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/theoremonellc?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/theoremonellc?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/655b28cd748da9fc1aa197653106863f1ca7a2498a230b88fddf118c8cb55005.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/theoremonellc?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "sketch",
+    "type": "ats",
+    "board": "ashby:sketch",
+    "url": "https://jobs.ashbyhq.com/sketch",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/sketch.md",
+    "checkedAt": "2026-10-05T06:58:31.491Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/sketch",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/sketch",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/7499edace1101693205a81ee2fa940b7beb92d8e7fa9a31b444aabdacb9ae433.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/sketch",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "voxy",
+    "type": "ats",
+    "board": "lever:voxy",
+    "url": "https://jobs.lever.co/voxy",
+    "discoveredFrom": "https://github.com/remoteintech/remote-jobs/blob/main/src/companies/voxy.md",
+    "checkedAt": "2026-10-05T06:58:31.622Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/voxy?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/voxy?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/0f34cfc01610ce9888aed939ee7ce0bef1e3d0689350651a46cf36dbb4904bb0.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/voxy?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Crypto Jobs List",
+    "type": "rss",
+    "url": "https://cryptojobslist.com/jobs.rss?jobLocation=Remote",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:32.701Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://cryptojobslist.com/jobs.rss?jobLocation=Remote",
+        "finalUrl": "https://cryptojobslist.com/jobs.rss?jobLocation=Remote",
+        "status": 403,
+        "contentType": "text/html; charset=UTF-8",
+        "sha256": "e6347c0eed52e3d23d6b5974e328d7d75cffb68cadd68d56950367277a025634",
+        "bodyFile": ".cache/source-verification/11fb9eade0dc916b11d0df5f77bbf3f30a3386538e3d3cc94462490a73dc05cf.txt"
+      }
+    ],
+    "endpoint": "https://cryptojobslist.com/jobs.rss?jobLocation=Remote",
+    "error": "HTTP 403"
+  },
+  {
+    "name": "Crunchboard Job Board",
+    "type": "rss",
+    "url": "https://www.crunchboard.com/jobs.rss",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:32.424Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.crunchboard.com/jobs.rss",
+        "finalUrl": "https://www.jobboard.io/",
+        "status": 403,
+        "contentType": "text/html; charset=UTF-8",
+        "sha256": "2c5abbf8870408dfab99d232ff153e6f3d57547e61d1959ca5f635ab4b77df47",
+        "bodyFile": ".cache/source-verification/d1821f624db081145598404843c6aa238186bd1581d0a248d5fcb8ba6a85a8ff.txt"
+      }
+    ],
+    "endpoint": "https://www.crunchboard.com/jobs.rss",
+    "error": "HTTP 403"
+  },
+  {
+    "name": "Find Bacon",
+    "type": "rss",
+    "url": "https://findbacon.com/rss/main",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:33.194Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://findbacon.com/rss/main",
+        "finalUrl": "https://findbacon.com/rss/main",
+        "status": 404,
+        "contentType": "text/html",
+        "sha256": "230d91b44ffd4de6a3cfe521b2560e5ed59763df51a5de76fc01513787fb1682",
+        "bodyFile": ".cache/source-verification/8e2733813d7b02356bf4e260809536dda9f0b6f98392136c42829d9428537b28.txt"
+      }
+    ],
+    "endpoint": "https://findbacon.com/rss/main",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Drupal Jobs",
+    "type": "rss",
+    "url": "https://jobs.drupal.org/filtered-jobs/%25/%25/%25/%25/%25/feed",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:33.023Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://jobs.drupal.org/filtered-jobs/%25/%25/%25/%25/%25/feed",
+        "finalUrl": "https://new.drupal.org/association/jobs.drupal.org",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "44434bc5b40c772b50aa28764b47d3dec67db38aaa71f820e3115a32fbdc7dba",
+        "bodyFile": ".cache/source-verification/3bec7d7088e5b9f2ee16f02a6a215d79d545c96b84ceedea5de64ae1e8fc921b.txt"
+      }
+    ],
+    "endpoint": "https://jobs.drupal.org/filtered-jobs/%25/%25/%25/%25/%25/feed",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "FreshRemote.work",
+    "type": "rss",
+    "url": "https://freshremote.work/feed/",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:34.871Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://freshremote.work/feed/",
+    "error": "fetch failed"
+  },
+  {
+    "name": "Functional Jobs",
+    "type": "rss",
+    "url": "https://functionaljobs.com/jobs/?format=rss",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:34.917Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://functionaljobs.com/jobs/?format=rss",
+    "error": "fetch failed"
+  },
+  {
+    "name": "Golang Remote Jobs",
+    "type": "rss",
+    "url": "https://golangjob.xyz/remote/jobs",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:35.075Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://golangjob.xyz/remote/jobs",
+        "finalUrl": "https://golangjob.xyz/remote/jobs",
+        "status": 502,
+        "contentType": "text/html",
+        "sha256": "bf4d0c2fe5252a3e32908499c90a4da5f961c7a7d989c5ef37b406d145929f1b",
+        "bodyFile": ".cache/source-verification/fd443000db90831dac84c1ecdf76e0663a43b5702b6a6ef6f519fad32c864f7b.txt"
+      }
+    ],
+    "endpoint": "https://golangjob.xyz/remote/jobs",
+    "error": "HTTP 502"
+  },
+  {
+    "name": "Jobhunt.ai",
+    "type": "rss",
+    "url": "https://jobhunt.ai/rss.xml",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:35.357Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://jobhunt.ai/rss.xml",
+    "error": "fetch failed"
+  },
+  {
+    "name": "Jobspresso",
+    "type": "rss",
+    "url": "https://jobspresso.co/feed/?post_type=job_listing",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:35.411Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://jobspresso.co/feed/?post_type=job_listing",
+        "finalUrl": "https://jobspresso.co/feed/?post_type=job_listing",
+        "status": 403,
+        "contentType": "text/html; charset=UTF-8",
+        "sha256": "9679ff09f34d78b379c7a3efc109b2ae9ee04af6ab0d7949e63cd51675211d77",
+        "bodyFile": ".cache/source-verification/20f42caedb43915fa53b3c436d661002a7d70db0825d8e819e60f21bac78b26b.txt"
+      }
+    ],
+    "endpoint": "https://jobspresso.co/feed/?post_type=job_listing",
+    "error": "HTTP 403"
+  },
+  {
+    "name": "Krop",
+    "type": "rss",
+    "url": "http://www.krop.com/services/feeds/rss/latest/",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:35.617Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "http://www.krop.com/services/feeds/rss/latest/",
+        "finalUrl": "https://www.krop.com/services/feeds/rss/latest/",
+        "status": 404,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "2c5793cfbdbb2038773882d3f7f80dc5fb50f9b548632e167517d1191c4cc7e2",
+        "bodyFile": ".cache/source-verification/02e5375ba55eb39fb61c28e58cfda3fb51c004d381db1dc3a9078b9cc4095fa7.txt"
+      }
+    ],
+    "endpoint": "http://www.krop.com/services/feeds/rss/latest/",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Public Interest Tech",
+    "type": "rss",
+    "url": "https://jobs.codeforamerica.org/job-postings.rss",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:36.585Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://jobs.codeforamerica.org/job-postings.rss",
+    "error": "fetch failed"
+  },
+  {
+    "name": "Remote.co",
+    "type": "rss",
+    "url": "https://remote.co/feed/?post_type=job_listing",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:37.063Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://remote.co/feed/?post_type=job_listing",
+        "finalUrl": "https://remote.co/feed?post_type=job_listing",
+        "status": 404,
+        "contentType": "text/html",
+        "sha256": "a4c391a8a38d4424c83e447ae01783e0bdf809de9b9a5f4cb3ee779a3ce8e08d",
+        "bodyFile": ".cache/source-verification/2fbebbcbc80736394425d004acd38c3cfe2fe38e5294ad8b8700e2aa648dba5e.txt"
+      }
+    ],
+    "endpoint": "https://remote.co/feed/?post_type=job_listing",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Remotesome",
+    "type": "rss",
+    "url": "https://www.remotesome.com/talent-signup",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:37.920Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.remotesome.com/talent-signup",
+        "finalUrl": "https://www.remotesome.com/talent-signup",
+        "status": 404,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "e56718ac5bc0e0b40bce8e464272c9871e123a010f774d778a1fe9e816f7773a",
+        "bodyFile": ".cache/source-verification/4cafde3b2a693285ff350505edf3c4a9ecb5dfced6595a1ed6e85cf000731721.txt"
+      }
+    ],
+    "endpoint": "https://www.remotesome.com/talent-signup",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Virtual Vocations",
+    "type": "rss",
+    "url": "https://www.virtualvocations.com/jobs/rss",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:38.216Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.virtualvocations.com/jobs/rss",
+        "finalUrl": "https://www.virtualvocations.com/jobs/rss",
+        "status": 429,
+        "contentType": "text/html",
+        "sha256": "62cafe28deb1c1498b99f0109dba9be3168a2ef8d06a110555be3a55792f3d8e",
+        "bodyFile": ".cache/source-verification/08ff722a40106c7e7f68a8a56accba553b4363896cb8e583c16c2a7505b4edc5.txt"
+      }
+    ],
+    "endpoint": "https://www.virtualvocations.com/jobs/rss",
+    "error": "HTTP 429"
+  },
+  {
+    "name": "Smashing Jobs (Freelance)",
+    "type": "rss",
+    "url": "https://www.smashingmagazine.com/jobs/feed/",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:38.110Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.smashingmagazine.com/jobs/feed/",
+        "finalUrl": "https://www.smashingmagazine.com/jobs/feed/",
+        "status": 200,
+        "contentType": "application/xml",
+        "sha256": "168eee1fb3a074f3c938acd93fb92dd9c63c91d58242137b1994e6dcda558037",
+        "bodyFile": ".cache/source-verification/3f49ec4e8c8a16907d76d054027e60c9701110d0e67fafc8dc131acda91e428f.txt"
+      }
+    ],
+    "endpoint": "https://www.smashingmagazine.com/jobs/feed/",
+    "error": "No feed items"
+  },
+  {
+    "name": "Vue Jobs",
+    "type": "rss",
+    "url": "https://vuejobs.com/feed",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T07:46:03.711Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://vuejobs.com/feed",
+        "finalUrl": "https://vuejobs.com/feed",
+        "status": 403,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "2524600cdc7b73d3c3e4e0fb0face9f021e6e8655c7b499d16cbd048b0fe4217",
+        "bodyFile": ".cache/source-verification/51b8e8ed7b1223fda08aa3e987e71f3a1ae740f29ae324493296f21f297b3fcd.txt"
+      }
+    ],
+    "endpoint": "https://vuejobs.com/feed",
+    "error": "HTTP 403",
+    "previousSuccess": {
+      "checkedAt": "2026-10-05T06:58:38.419Z",
+      "count": 1058,
+      "requests": [
+        {
+          "url": "https://vuejobs.com/feed",
+          "finalUrl": "https://app.vuejobs.com/feed/posts",
+          "status": 200,
+          "contentType": "application/xml;charset=UTF-8",
+          "sha256": "629a5eaf197c0f91d052e0a1c8b1889046df4479ffdfb3dbbb75d8aebca718af",
+          "bodyFile": ".cache/source-verification/51b8e8ed7b1223fda08aa3e987e71f3a1ae740f29ae324493296f21f297b3fcd.txt"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Privacy-First Jobs",
+    "type": "rss",
+    "url": "https://privacyfirstjobs.com/jobs/feed",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:36.484Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://privacyfirstjobs.com/jobs/feed",
+    "error": "fetch failed"
+  },
+  {
+    "name": "WP Hired",
+    "type": "rss",
+    "url": "http://www.wphired.com/jobs/feed/",
+    "region": "worldwide",
+    "discoveredFrom": "https://raw.githubusercontent.com/georgemandis/remote-working-list/master/remote-working-resources.csv",
+    "checkedAt": "2026-10-05T06:58:39.122Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "http://www.wphired.com/jobs/feed/",
+        "finalUrl": "https://www.wphired.com/jobs/feed/",
+        "status": 522,
+        "contentType": "text/html; charset=UTF-8",
+        "sha256": "bebc3ab7526409896429e5ab6c8ed500a89e7ca4c1ae60c7caca58462f3b13a8",
+        "bodyFile": ".cache/source-verification/b56f1b0b029be041ef49fdaf82fb89a94eba126cc4c12f3b7d6aaf82407b94a7.txt"
+      }
+    ],
+    "endpoint": "http://www.wphired.com/jobs/feed/",
+    "error": "HTTP 522"
+  },
+  {
+    "name": "RunPod",
+    "type": "ats",
+    "board": "greenhouse:runpod",
+    "url": "https://job-boards.greenhouse.io/runpod",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:01.455Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/runpod/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/runpod/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/18cf19809638da2e4cbe484dfd9833b909c98c9d78c43f34b3e2e7296acaa6af.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/runpod/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Fireworks AI",
+    "type": "ats",
+    "board": "greenhouse:fireworksai",
+    "url": "https://job-boards.greenhouse.io/fireworksai",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:08.198Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/fireworksai/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/fireworksai/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/ed5878228520e189f232a0903faed3daf1e00fc0ca13dec5fceb178a4ca3ea18.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/fireworksai/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Applied Intuition",
+    "type": "ats",
+    "board": "greenhouse:appliedintuition",
+    "url": "https://job-boards.greenhouse.io/appliedintuition",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:08.353Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/appliedintuition/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/appliedintuition/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/18b9e31f1cd8d43717b57d8e09ed8b44e461783405650d4d6fc7bfe6ca2d6bbb.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/appliedintuition/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Vast.ai",
+    "type": "ats",
+    "board": "greenhouse:vastai",
+    "url": "https://job-boards.greenhouse.io/vastai",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:08.545Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/vastai/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/vastai/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/863fca0e175cb8a9b2d90e0f13955c252340c0f36b02a5eae0428b53d7ff5d22.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/vastai/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Cerebras Systems",
+    "type": "ats",
+    "board": "greenhouse:cerebrassystems",
+    "url": "https://job-boards.greenhouse.io/cerebrassystems",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.002Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/cerebrassystems/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/cerebrassystems/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/304dbb556effa93998b2efc4f3972ef56bd2059502527561c9f55ebaba25d1ca.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/cerebrassystems/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Fal",
+    "type": "ats",
+    "board": "greenhouse:fal",
+    "url": "https://job-boards.greenhouse.io/fal",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.119Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/fal/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/fal/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/82e8fe8cce4ecd2858be5c45537a4310ea3f82bd049d9115aa9fa20de4f8c0f6.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/fal/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Thinking Machines",
+    "type": "ats",
+    "board": "greenhouse:thinkingmachines",
+    "url": "https://job-boards.greenhouse.io/thinkingmachines",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.250Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/thinkingmachines/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/thinkingmachines/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/52a5e3d9fe1038a93177d92ac61a4b05f1a38c3a2a0d65a67ad6664544ce0f54.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/thinkingmachines/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Black Forest Labs",
+    "type": "ats",
+    "board": "greenhouse:blackforestlabs",
+    "url": "https://job-boards.greenhouse.io/blackforestlabs",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.506Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/blackforestlabs/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/blackforestlabs/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/9ddf680e9b67afba66d5c6aded2ff52015c0daf723b7e4ba58bd655845b68ba1.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/blackforestlabs/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "World Labs",
+    "type": "ats",
+    "board": "greenhouse:worldlabs",
+    "url": "https://job-boards.greenhouse.io/worldlabs",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.521Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/worldlabs/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/worldlabs/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/92cebb997e7f2e984f986df501af77dd4b262c84a474abf21c24684381622011.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/worldlabs/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "MatX",
+    "type": "ats",
+    "board": "greenhouse:matx",
+    "url": "https://job-boards.greenhouse.io/matx",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.645Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/matx/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/matx/jobs",
+        "status": 404,
+        "contentType": "application/json",
+        "sha256": "76fe0d64c21edde1aa258ae01c07a04323d95ab31b21822348d9e3f1f400dffe",
+        "bodyFile": ".cache/source-verification/e3f390d6e1e8935605a5bb61fd65bfcc04e9589df2803e527209d10661560aa7.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/matx/jobs",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "Parasail",
+    "type": "ats",
+    "board": "greenhouse:parasail",
+    "url": "https://job-boards.greenhouse.io/parasail",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:09.648Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/parasail/jobs",
+        "finalUrl": "https://boards-api.greenhouse.io/v1/boards/parasail/jobs",
+        "status": 200,
+        "contentType": "application/json",
+        "sha256": "09aefc0c2d96e9c065aab057f04eaa352d63f19114f01783cfa12c890427f7f8",
+        "bodyFile": ".cache/source-verification/2e2483b354d97f0edb46e7f2d1b192982858f82583eca936526badc3a220fc43.txt"
+      }
+    ],
+    "endpoint": "https://boards-api.greenhouse.io/v1/boards/parasail/jobs",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "Mistral AI",
+    "type": "ats",
+    "board": "lever:mistral",
+    "url": "https://jobs.lever.co/mistral",
+    "discoveredFrom": "https://raw.githubusercontent.com/ququyixiaozei/aijobs/master/ingest/companies.mjs",
+    "checkedAt": "2026-10-05T07:01:15.401Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/mistral?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/mistral?mode=json",
+        "status": 200,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "bodyFile": ".cache/source-verification/462256c160423c738802278881aa487a2b4a25e98ec08e6ce8ca9148c341d089.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/mistral?mode=json",
+    "error": "No jobs in expected response array"
+  },
+  {
+    "name": "Grants.gov 2",
+    "type": "rss",
+    "url": "https://www.grants.gov/rss/GG_OppModByCategory.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "https://grants.gov/connect/rss-feeds",
+    "checkedAt": "2026-10-05T07:01:19.371Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.grants.gov/rss/GG_OppModByCategory.xml",
+        "finalUrl": "https://www.grants.gov/rss/GG_OppModByCategory.xml",
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "sha256": "550d9da9a2b043e9bd2c0346f01e9a02ae088f40d1360fcbf839944c2fe4e6a6",
+        "bodyFile": ".cache/source-verification/1008f39e219d5f14027f4d32973b4b1178ffe8dbcb3f802396182fe91489a83b.txt"
+      }
+    ],
+    "endpoint": "https://www.grants.gov/rss/GG_OppModByCategory.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "Grants.gov 4",
+    "type": "rss",
+    "url": "https://www.grants.gov/rss/GG_NewOppByCategory.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "https://grants.gov/connect/rss-feeds",
+    "checkedAt": "2026-10-05T07:01:19.586Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.grants.gov/rss/GG_NewOppByCategory.xml",
+        "finalUrl": "https://www.grants.gov/rss/GG_NewOppByCategory.xml",
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "sha256": "f4a951c895d991e1ee11bad2bc1fa9bc03ac4f48c238e2092a7c4f4f5bf42d2f",
+        "bodyFile": ".cache/source-verification/c38f24cbdc15a0016c4d5feaba32c62d4a22d440c5b3b2475cf6ead09dbe2198.txt"
+      }
+    ],
+    "endpoint": "https://www.grants.gov/rss/GG_NewOppByCategory.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "Grants.gov 3",
+    "type": "rss",
+    "url": "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "https://grants.gov/connect/rss-feeds",
+    "checkedAt": "2026-10-05T07:01:19.555Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+        "finalUrl": "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "sha256": "b77063cb0f26b7ddbdf352596dcaf4c19efa3ce759f295c8b61e3d2948cca986",
+        "bodyFile": ".cache/source-verification/8f4db4acb86c57a6b5d41a92879f8f0ce3746d7f892fc7eab30e55ab6e6a5292.txt"
+      }
+    ],
+    "endpoint": "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "Grants.gov 1",
+    "type": "rss",
+    "url": "https://www.grants.gov/custom/spoExit.jsp?p=rss/GG_OppModByAgency.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "https://grants.gov/connect/rss-feeds",
+    "checkedAt": "2026-10-05T07:01:19.301Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.grants.gov/custom/spoExit.jsp?p=rss/GG_OppModByAgency.xml",
+        "finalUrl": "https://www.grants.gov/custom/spoExit.jsp?p=rss/GG_OppModByAgency.xml",
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "sha256": "3b455fe9441fd8d7c038b4d9f997bba296f5e8c35965751cc2b1ec7ac81ac848",
+        "bodyFile": ".cache/source-verification/d01ee494e794205c2f58e78adf2490c7b49be9f592e3cfccc4aed1098752caf0.txt"
+      }
+    ],
+    "endpoint": "https://www.grants.gov/custom/spoExit.jsp?p=rss/GG_OppModByAgency.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "Grants.gov 5",
+    "type": "rss",
+    "url": "https://www.grants.gov/rss/GG_OppModByAgency.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "https://grants.gov/connect/rss-feeds",
+    "checkedAt": "2026-10-05T07:01:19.643Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.grants.gov/rss/GG_OppModByAgency.xml",
+        "finalUrl": "https://www.grants.gov/rss/GG_OppModByAgency.xml",
+        "status": 200,
+        "contentType": "text/html;charset=utf-8",
+        "sha256": "2ab9bc865cb13c0fc0cd19b6aed20b7cc5d0df7af746b556a4c8ab8708373082",
+        "bodyFile": ".cache/source-verification/dc5bac271b62f81a6ed8dc6c84b1e3b06b44602512743df8ce8f6767c36abe59.txt"
+      }
+    ],
+    "endpoint": "https://www.grants.gov/rss/GG_OppModByAgency.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "WorkAnywhere",
+    "type": "rss",
+    "url": "https://workanywhere.pro/rss.xml",
+    "region": "worldwide",
+    "bucket": "jobs",
+    "discoveredFrom": "Publisher documentation opened in live browsing",
+    "checkedAt": "2026-10-05T07:01:19.812Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://workanywhere.pro/rss.xml",
+        "finalUrl": "https://workanywhere.pro/rss.xml",
+        "status": 429,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "766cc7ae413f0b017cc7a0594fdfa13f31d87c855c36464c206b19ae2c67ffca",
+        "bodyFile": ".cache/source-verification/2e49da9e0fc718763f7a19aa9e54e4dfe00cb709b604ad796105b0a57b70f633.txt"
+      }
+    ],
+    "endpoint": "https://workanywhere.pro/rss.xml",
+    "error": "HTTP 429"
+  },
+  {
+    "name": "Brabble hackathons",
+    "type": "rss",
+    "url": "https://brabble.ai/rss/hackathons.xml",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFrom": "Publisher documentation opened in live browsing",
+    "checkedAt": "2026-10-05T07:01:19.959Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://brabble.ai/rss/hackathons.xml",
+        "finalUrl": "https://brabble.ai/rss/hackathons.xml",
+        "status": 200,
+        "contentType": "application/rss+xml; charset=utf-8",
+        "sha256": "4ff1fee395d4a6c8d0fee1d1d6f52839a8bcf50cfbc2bf38a83c930496a150df",
+        "bodyFile": ".cache/source-verification/8983abf6186a86f213f881d505c769fdbffdb1d444016352d7952ee88f4817ac.txt"
+      }
+    ],
+    "endpoint": "https://brabble.ai/rss/hackathons.xml",
+    "samples": [
+      {
+        "title": "Rethink 26",
+        "url": "https://brabble.ai/s/unstop-1764069",
+        "posted": "Mon, 05 Oct 2026 12:00:00 GMT"
+      },
+      {
+        "title": "Hackdays 2.0",
+        "url": "https://brabble.ai/s/unstop-1756226",
+        "posted": "Mon, 05 Oct 2026 12:30:23 GMT"
+      },
+      {
+        "title": "Soci-O-Thon",
+        "url": "https://brabble.ai/s/unstop-1739363",
+        "posted": "Mon, 05 Oct 2026 12:59:57 GMT"
+      },
+      {
+        "title": "Kriyova - 24-Hours Hackathon 2026",
+        "url": "https://brabble.ai/s/unstop-1759184",
+        "posted": "Mon, 05 Oct 2026 13:00:00 GMT"
+      },
+      {
+        "title": "CRSU Hackathon 2026",
+        "url": "https://brabble.ai/s/unstop-1751879",
+        "posted": "Mon, 05 Oct 2026 18:29:00 GMT"
+      }
+    ],
+    "copyright": "",
+    "jobItems": 1,
+    "opportunityItems": 40,
+    "collectorError": "HTTP 403 in end-to-end run; intermittent access, omitted from imports",
+    "previousSuccess": {
+      "checkedAt": "2026-10-05T07:01:19.959Z",
+      "count": 100,
+      "requests": [
+        {
+          "url": "https://brabble.ai/rss/hackathons.xml",
+          "finalUrl": "https://brabble.ai/rss/hackathons.xml",
+          "status": 200,
+          "contentType": "application/rss+xml; charset=utf-8",
+          "sha256": "4ff1fee395d4a6c8d0fee1d1d6f52839a8bcf50cfbc2bf38a83c930496a150df",
+          "bodyFile": ".cache/source-verification/8983abf6186a86f213f881d505c769fdbffdb1d444016352d7952ee88f4817ac.txt"
+        }
+      ]
+    },
+    "error": "HTTP 403 in end-to-end run; intermittent access, omitted from imports"
+  },
+  {
+    "name": "Jobgurus Nigeria",
+    "type": "rss",
+    "url": "https://www.jobgurus.com.ng/jobs/feed",
+    "region": "Nigeria",
+    "discoveredFrom": "Published RSS link from founder profile found in live search",
+    "checkedAt": "2026-10-05T07:14:31.796Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.jobgurus.com.ng/jobs/feed",
+        "finalUrl": "https://www.jobgurus.com.ng/jobs/feed",
+        "status": 403,
+        "contentType": "text/html; charset=UTF-8",
+        "sha256": "b98bac5b6728a394173586605bef83807638e0ddc286618ebd442fc78cc9924f",
+        "bodyFile": ".cache/source-verification/c49c6b603438256b2a9de65f2fab8c658b87ab5cf59ace21f2ec63c8cf86cb6a.txt"
+      }
+    ],
+    "endpoint": "https://www.jobgurus.com.ng/jobs/feed",
+    "error": "HTTP 403"
+  },
+  {
+    "name": "Job Instantly Nigeria",
+    "type": "rss",
+    "url": "https://jobs.instantsdata.com.ng/rss/latest-posts",
+    "region": "Nigeria",
+    "discoveredFrom": "https://jobs.instantsdata.com.ng/rss-feeds",
+    "checkedAt": "2026-10-05T07:14:31.921Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [],
+    "endpoint": "https://jobs.instantsdata.com.ng/rss/latest-posts",
+    "error": "fetch failed"
+  },
+  {
+    "name": "RiscZero",
+    "type": "ats",
+    "board": "ashby:RiscZero",
+    "url": "https://jobs.ashbyhq.com/RiscZero",
+    "discoveredFrom": "Opened company board or primary careers link during live research",
+    "checkedAt": "2026-10-05T07:22:52.057Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/RiscZero",
+        "finalUrl": "https://api.ashbyhq.com/posting-api/job-board/RiscZero",
+        "status": 404,
+        "contentType": "text/plain; charset=utf-8",
+        "sha256": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "bodyFile": ".cache/source-verification/88a7a0a4973e0e29a36e13fa9f91cf672ab51403987fd497f7752efe78ef7d34.txt"
+      }
+    ],
+    "endpoint": "https://api.ashbyhq.com/posting-api/job-board/RiscZero",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "chainlink",
+    "type": "ats",
+    "board": "lever:chainlink",
+    "url": "https://jobs.lever.co/chainlink",
+    "discoveredFrom": "Opened company board or primary careers link during live research",
+    "checkedAt": "2026-10-05T07:22:52.065Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://api.lever.co/v0/postings/chainlink?mode=json",
+        "finalUrl": "https://api.lever.co/v0/postings/chainlink?mode=json",
+        "status": 404,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "66f6c1fa69105316e3220df0561d630283dadaec8478dab1994692912daefb53",
+        "bodyFile": ".cache/source-verification/e347ec32807623a51ad71470a49b7b46a50a31daaba9a3f5ba7952a166e47939.txt"
+      }
+    ],
+    "endpoint": "https://api.lever.co/v0/postings/chainlink?mode=json",
+    "error": "HTTP 404"
+  },
+  {
+    "name": "RemoteYeah Rust",
+    "type": "rss",
+    "url": "https://remoteyeah.com/remote-rust-jobs.xml",
+    "region": "worldwide",
+    "bucket": "jobs",
+    "discoveredFrom": "https://remoteyeah.com/remote-rust-jobs",
+    "checkedAt": "2026-10-05T07:27:25.242Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://remoteyeah.com/remote-rust-jobs.xml",
+        "finalUrl": "https://remoteyeah.com/remote-rust-jobs.xml",
+        "status": 200,
+        "contentType": "application/rss+xml; charset=utf-8",
+        "sha256": "9ce0a6f0217a7f4774e65259d7bff952a7af3dbcef2f85dd267680df9be8431f",
+        "bodyFile": ".cache/source-verification/17bad445e5b0ed1940fdee783df00b441bee1135b4b214df18f213d23a3101f0.txt"
+      }
+    ],
+    "endpoint": "https://remoteyeah.com/remote-rust-jobs.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "Career Nest",
+    "type": "rss",
+    "url": "https://careernest.cloud/api/feed.xml",
+    "region": "worldwide",
+    "bucket": "jobs",
+    "discoveredFrom": "https://careernest.cloud/api-docs",
+    "checkedAt": "2026-10-05T07:27:25.511Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://careernest.cloud/api/feed.xml",
+        "finalUrl": "https://careernest.cloud/api/feed.xml",
+        "status": 200,
+        "contentType": "text/html",
+        "sha256": "b3036a68ba717a3a1f9b27f8cadca8788c5eec85d0372330284cd7370afc6b73",
+        "bodyFile": ".cache/source-verification/2a03de0e71c7fa63e789966058d56933d7a0daf03ad9fc1a278b5673a0d28d0a.txt"
+      }
+    ],
+    "endpoint": "https://careernest.cloud/api/feed.xml",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "ProGigFinder Africa",
+    "type": "rss",
+    "url": "https://www.progigfinder.com/api/feed/jobs?category=technology",
+    "region": "Africa",
+    "bucket": "jobs",
+    "discoveredFrom": "https://www.progigfinder.com/partners/embed",
+    "checkedAt": "2026-10-05T07:27:25.734Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://www.progigfinder.com/api/feed/jobs?category=technology",
+        "finalUrl": "https://www.progigfinder.com/api/feed/jobs?category=technology",
+        "status": 200,
+        "contentType": "application/xml; charset=utf-8",
+        "sha256": "1e170eb61cc72e6332bfd3bbf921969340ffd63215490cf305e51f4b098dda93",
+        "bodyFile": ".cache/source-verification/3a71a0245cff2578576b4e9659d7d502d15cbebeb72d4cac675678e2bed7066e.txt"
+      }
+    ],
+    "endpoint": "https://www.progigfinder.com/api/feed/jobs?category=technology",
+    "error": "No feed items"
+  },
+  {
+    "name": "Midi Madagascar recruitment",
+    "type": "rss",
+    "url": "https://midi-madagasikara.mg/category/appel-doffres-avis-de-recrutement/feed/",
+    "region": "Africa",
+    "bucket": "jobs",
+    "discoveredFrom": "https://atlasflux.saynete.com/atlas_des_flux_rss_fra_emploi.htm",
+    "checkedAt": "2026-10-05T07:31:49.317Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://midi-madagasikara.mg/category/appel-doffres-avis-de-recrutement/feed/",
+        "finalUrl": "https://midi-madagasikara.mg/category/appel-doffres-avis-de-recrutement/feed/",
+        "status": 200,
+        "contentType": "application/rss+xml; charset=UTF-8",
+        "sha256": "d688add67a336fa2e8d4ca44121689c2592151c5a9e4d61c8e66e52c1efc17e6",
+        "bodyFile": ".cache/source-verification/9341c60008c3d58feacfae48b6a67a47cf7518c3aa02851110cbdaa65f2d2afa.txt"
+      }
+    ],
+    "endpoint": "https://midi-madagasikara.mg/category/appel-doffres-avis-de-recrutement/feed/",
+    "error": "Invalid XML"
+  },
+  {
+    "name": "HireWeb3",
+    "type": "rss",
+    "url": "https://hireweb3.io/job/rss",
+    "region": "worldwide",
+    "bucket": "jobs",
+    "discoveredFrom": "https://www.hireweb3.io/rss",
+    "checkedAt": "2026-10-05T07:46:03.801Z",
+    "verified": false,
+    "count": 0,
+    "keyNeeded": "no",
+    "requests": [
+      {
+        "url": "https://hireweb3.io/job/rss",
+        "finalUrl": "https://hireweb3.io/job/rss",
+        "status": 403,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "c41fb8bf496b68e85ce5f9f704d5f00a6fe9a7a97b69b365ae38b260457e36dc",
+        "bodyFile": ".cache/source-verification/d708c7968e766ff6734cddc3fc28a3c2493e7fd7db32928a58b264d26597fc28.txt"
+      }
+    ],
+    "endpoint": "https://hireweb3.io/job/rss",
+    "error": "HTTP 403",
+    "previousSuccess": {
+      "checkedAt": "2026-10-05T07:31:49.234Z",
+      "count": 100,
+      "requests": [
+        {
+          "url": "https://hireweb3.io/job/rss",
+          "finalUrl": "https://www.hireweb3.io/job/rss",
+          "status": 200,
+          "contentType": "text/html; charset=utf-8",
+          "sha256": "6b1de9bb924af2f67bb7a52bd195674571e7cebaf113e7efdecff7db424d5cfb",
+          "bodyFile": ".cache/source-verification/d708c7968e766ff6734cddc3fc28a3c2493e7fd7db32928a58b264d26597fc28.txt"
+        }
+      ]
+    }
+  }
+]

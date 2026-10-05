@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Arbeitnow",
+    "type": "arbeitnow",
+    "include": [
+      "engineer",
+      "developer",
+      "software",
+      "backend",
+      "fullstack",
+      "full stack",
+      "research",
+      "scientist",
+      "technical staff",
+      "devops",
+      "rust",
+      "python",
+      "typescript",
+      "ingénieur",
+      "informatique",
+      "développeur"
+    ]
+  },
+  {
+    "name": "Himalayas API",
+    "type": "himalayas",
+    "url": "https://himalayas.app/jobs/api?limit=20&offset=0",
+    "include": [
+      "engineer",
+      "developer",
+      "software",
+      "backend",
+      "fullstack",
+      "full stack",
+      "research",
+      "scientist",
+      "technical staff",
+      "devops",
+      "rust",
+      "python",
+      "typescript",
+      "ingénieur",
+      "informatique",
+      "développeur"
+    ]
+  },
+  {
+    "name": "Jobicy API",
+    "type": "jobicy",
+    "url": "https://jobicy.com/api/v2/remote-jobs?count=20",
+    "include": [
+      "engineer",
+      "developer",
+      "software",
+      "backend",
+      "fullstack",
+      "full stack",
+      "research",
+      "scientist",
+      "technical staff",
+      "devops",
+      "rust",
+      "python",
+      "typescript",
+      "ingénieur",
+      "informatique",
+      "développeur"
+    ]
+  }
+]

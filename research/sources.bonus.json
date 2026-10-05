@@ -1,0 +1,73 @@
+[
+  {
+    "name": "NLnet",
+    "type": "rss",
+    "url": "https://nlnet.nl/feed.atom",
+    "force_tags": [
+      "grant"
+    ],
+    "include": [
+      "funding",
+      "call for",
+      "grant"
+    ]
+  },
+  {
+    "name": "Ethereum Foundation",
+    "type": "rss",
+    "url": "https://blog.ethereum.org/en/feed.xml",
+    "force_tags": [
+      "grant"
+    ],
+    "include": [
+      "grant",
+      "funding"
+    ]
+  },
+  {
+    "name": "Opportunities for Africans 1",
+    "type": "rss",
+    "url": "https://www.opportunitiesforafricans.com/feed/",
+    "include": [
+      "hackathon",
+      "grant",
+      "computer",
+      "engineering",
+      "digital",
+      "technology",
+      "fellowship",
+      "scholarship"
+    ]
+  },
+  {
+    "name": "Opportunity Desk",
+    "type": "rss",
+    "url": "https://opportunitydesk.org/feed/",
+    "include": [
+      "hackathon",
+      "grant",
+      "computer",
+      "engineering",
+      "digital",
+      "technology",
+      "fellowship",
+      "scholarship"
+    ]
+  },
+  {
+    "name": "TensorHack grants and bounties",
+    "type": "rss",
+    "url": "https://tensorhack.com/data/opportunities.rss",
+    "force_tags": [
+      "grant"
+    ]
+  },
+  {
+    "name": "TensorHack hackathons",
+    "type": "rss",
+    "url": "https://tensorhack.com/data/hackathons.rss",
+    "force_tags": [
+      "hackathon"
+    ]
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "name": "MyJobMag South Africa",
+    "url": "https://www.myjobmag.co.za/feeds/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.myjobmag.co.za/jobsxml.xml",
+      "https://www.myjobmag.co.za/jobsxml_by_categories.xml",
+      "https://www.myjobmag.co.za/aggregate_feed.xml",
+      "https://www.myjobmag.co.za/aggregate_feed2.xml",
+      "https://www.myjobmag.co.za/blogfeed.xml",
+      "https://www.myjobmag.co.za/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "MyJobMag Ghana",
+    "url": "https://www.myjobmagghana.com/feeds/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.myjobmagghana.com/jobsxml.xml",
+      "https://www.myjobmagghana.com/jobsxml_by_categories.xml",
+      "https://www.myjobmagghana.com/aggregate_feed.xml",
+      "https://www.myjobmagghana.com/aggregate_feed2.xml",
+      "https://www.myjobmagghana.com/blogfeed.xml",
+      "https://www.myjobmagghana.com/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "Jobweb Uganda",
+    "url": "https://jobwebuganda.com/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://jobwebuganda.com/feed/",
+      "https://jobwebuganda.com/wp-includes/wlwmanifest.xml",
+      "https://jobwebuganda.com/feed/?post_type=job_listing"
+    ]
+  },
+  {
+    "name": "Jobweb Ethiopia",
+    "url": "https://jobwebethiopia.com/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://jobwebethiopia.com/feed/",
+      "https://jobwebethiopia.com/wp-includes/wlwmanifest.xml",
+      "https://jobwebethiopia.com/feed/?post_type=job_listing"
+    ]
+  },
+  {
+    "name": "NLnet",
+    "url": "https://nlnet.nl/officehour/",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://nlnet.nl/feed.atom",
+      "https://lists.ngi-0.eu/rss/latest_arc/ngizero-newsletter?count=20"
+    ]
+  },
+  {
+    "name": "Ethereum Foundation",
+    "url": "https://blog.ethereum.org/",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://blog.ethereum.org/en/feed.xml"
+    ]
+  },
+  {
+    "name": "Prototype Fund",
+    "url": "https://prototypefund.de/",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "error": "HTTP Error 403: Forbidden",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "Opportunities for Africans",
+    "url": "https://www.opportunitiesforafricans.com/",
+    "region": "Africa",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://www.opportunitiesforafricans.com/feed/",
+      "https://www.opportunitiesforafricans.com/feed/atom/"
+    ]
+  },
+  {
+    "name": "Opportunity Desk",
+    "url": "https://opportunitydesk.org/",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://opportunitydesk.org/feed/"
+    ]
+  },
+  {
+    "name": "isecjobs",
+    "url": "https://isecjobs.com/",
+    "region": "worldwide",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "aijobs",
+    "url": "https://aijobs.net/",
+    "region": "worldwide",
+    "discoveredFeeds": []
+  }
+]
