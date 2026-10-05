@@ -122,12 +122,41 @@ export type Unit = Source & { board?: string };
 
 export interface Settings {
   interests: string[];
+  /** Deprecated: superseded by refreshMinutes. Read once for migration, then ignored. */
   refreshHours: number;
+  /** How often to poll for new listings. This is the user-settable search timer. */
+  refreshMinutes: number;
+  /** Opt-in desktop notification when a refresh finds new listings. Off unless enabled. */
+  notifications: boolean;
+  /** Minutes of the day from which to stay quiet, as local hours. */
+  quietFrom: number;
+  /** Minutes of the day until which to stay quiet, as local hours. */
+  quietTo: number;
   xaiKey: string;
   xModel: string;
   xCallsPerDay: number;
   xHandles: string[];
   xQueries: string[];
+}
+
+/** The interval bounds the UI offers, in minutes. The floor keeps polling polite. */
+export const REFRESH_MINUTE_CHOICES = [15, 30, 60, 180, 360, 720, 1440] as const;
+export const REFRESH_MINUTE_FLOOR = 15;
+export const REFRESH_MINUTE_CEILING = 1440;
+/** Three hours. Polite to job boards by default, and what the old refreshHours defaulted to. */
+export const REFRESH_MINUTE_DEFAULT = 180;
+
+/** Clamps a user-entered interval into a sane range. */
+export function clampRefreshMinutes(value: unknown): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return REFRESH_MINUTE_DEFAULT;
+  return Math.min(REFRESH_MINUTE_CEILING, Math.max(REFRESH_MINUTE_FLOOR, Math.round(n)));
+}
+
+/** How often to poll, in ms. Falls back to the legacy hourly setting if unset. */
+export function refreshIntervalMs(s: { refreshMinutes?: number; refreshHours?: number }): number {
+  const minutes = s.refreshMinutes ?? (s.refreshHours ? s.refreshHours * 60 : REFRESH_MINUTE_DEFAULT);
+  return clampRefreshMinutes(minutes) * 60e3;
 }
 
 /** Settings as the renderer sees them: never the key itself, only whether one is set. */
@@ -145,10 +174,16 @@ export interface JobStore {
 /** The surface `preload` exposes on `window.api`. */
 export interface YggdrasilApi {
   jobs(tab: Tab): Promise<Job[]>;
+  /** Whether the OS will show a notification at all, so Settings can explain itself. */
+  notifyState(): Promise<{ supported: boolean; reason: string }>;
+  /** When the next automatic search is due. Absent where no scheduler runs. */
+  nextPoll?(): Promise<{ at: number; minutes: number }>;
   getSettings(): Promise<PublicSettings>;
   setSettings(body: Partial<Settings> & { xaiKey?: string }): Promise<boolean>;
   addSource(url: string): Promise<Source>;
   health(): Promise<Run[]>;
+  /** Fires a test notification so the user can confirm it works before waiting for one. */
+  testNotification(): Promise<boolean>;
   refresh(): Promise<boolean>;
   onUpdated(cb: () => void): () => void;
 }

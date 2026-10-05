@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    // DOM is here only so src/browser-api.ts can name Notification and window.isSecureContext.
+    // That file also compiles for the renderer, which already supplies these types.
+    "lib": ["ES2022", "DOM"],
     "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
