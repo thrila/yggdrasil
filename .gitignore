@@ -4,7 +4,9 @@ node_modules/
 
 # build output
 dist/
+dist-electron/
 release/
+*.tsbuildinfo
 
 # logs & OS cruft
 *.log
