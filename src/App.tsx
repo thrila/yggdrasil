@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { ComponentType, ReactNode, SVGProps } from "react";
-import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon } from "react-feather";
+import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Bell } from "react-feather";
 import { api, isDesktop } from "./api";
 import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
+import { REFRESH_MINUTE_CHOICES } from "../shared/types";
 import type { Job, PublicSettings, Run, Tab } from "../shared/types";
 
 type IconNode = ComponentType<SVGProps<SVGSVGElement>>;
@@ -26,6 +27,14 @@ const ago = (iso: string): string => {
   const hrs = Math.round(mins / 60);
   if (Math.abs(hrs) < 24) return rtf.format(hrs, "hour");
   return rtf.format(Math.round(hrs / 24), "day");
+};
+
+/** "2h 55m", for the countdown to the next automatic search. */
+const countdown = (at: number): string => {
+  let mins = Math.max(0, Math.round((at - Date.now()) / 60e3));
+  const h = Math.floor(mins / 60);
+  mins -= h * 60;
+  return h ? `${h}h ${mins}m` : `${mins}m`;
 };
 
 const lastVisit = Number(localStorage.getItem("lastVisit")) || 0;
@@ -130,8 +139,17 @@ function Settings() {
   const [key, setKey] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
+  const [notify, setNotify] = useState({ supported: false, reason: "" });
+  const [nextPoll, setNextPoll] = useState("");
+  const nounLower = "opportunities";
 
-  const load = () => { api.getSettings().then(setS); api.health().then(setHealth); };
+  const load = () => {
+    api.getSettings().then(setS);
+    api.health().then(setHealth);
+    api.notifyState().then(setNotify);
+    // Preview has no scheduler, so this only resolves in the desktop app.
+    api.nextPoll?.().then((n) => setNextPoll(`is in ${countdown(n.at)}`)).catch(() => setNextPoll(""));
+  };
   useEffect(load, []);
   if (!s) return <p className="empty" aria-live="polite">Loading settings…</p>;
 
@@ -142,12 +160,21 @@ function Settings() {
     try {
       await api.setSettings({
         interests: list(s.interestsText ?? s.interests.join(", ")).map((x) => x.toLowerCase()),
+        refreshMinutes: s.refreshMinutes,
+        notifications: s.notifications,
+        quietFrom: s.quietFrom,
+        quietTo: s.quietTo,
         xQueries: list(s.queriesText ?? s.xQueries.join("\n")),
         xHandles: list(s.handlesText ?? s.xHandles.join(", ")).map((h) => h.replace(/^@/, "")),
         ...(key ? { xaiKey: key } : {}),
       });
       setKey(""); setMsg("Saved"); load();
     } catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
+  };
+  const testNotify = async () => {
+    setBusy("test"); setMsg("");
+    try { await api.testNotification(); setMsg("Notification sent."); }
+    catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
   };
   const addSource = async () => {
     if (!url.trim()) return;
@@ -167,6 +194,31 @@ function Settings() {
 
   return <div className="panels">
     <div className="col">
+      <section className="panel"><h2>Search Schedule</h2>
+        <p className="bar">How often to check every source for new {nounLower}. Short intervals mean more requests to job boards, so 3 hours is a polite default.</p>
+        <Field label="Search every"><select name="refreshMinutes" value={s.refreshMinutes}
+          onChange={(e) => setS({ ...s, refreshMinutes: Number(e.target.value) })}>
+          {REFRESH_MINUTE_CHOICES.map((m) => <option key={m} value={m}>{m < 60 ? `${m} minutes` : m % 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m / 60} hour${m > 60 ? "s" : ""}`}</option>)}
+        </select></Field>
+        <p className="bar">{nextPoll ? `Next automatic search ${nextPoll}.` : "The next search starts when the app opens."}</p>
+      </section>
+
+      <section className="panel"><h2>Notifications</h2>
+        <p className="bar">Optional. Off unless you turn it on. A single alert summarises whatever a search found, rather than one per listing.</p>
+        <label className="check"><input type="checkbox" checked={s.notifications}
+          onChange={(e) => setS({ ...s, notifications: e.target.checked })} />Notify me when a search finds new {nounLower}</label>
+        {s.notifications && <>
+          <Field label="Quiet from" hint="Hour, 24-hour clock."><input type="number" min={0} max={23} name="quietFrom"
+            value={s.quietFrom} onChange={(e) => setS({ ...s, quietFrom: Number(e.target.value) })} /></Field>
+          <Field label="Quiet until" hint="Wraps past midnight when the earlier hour is larger."><input type="number" min={0} max={23} name="quietTo"
+            value={s.quietTo} onChange={(e) => setS({ ...s, quietTo: Number(e.target.value) })} /></Field>
+          <p className="bar">Nothing is sent between those hours, or while this window has focus.</p>
+        </>}
+        <p className="bar">{notify.reason}</p>
+        <button type="button" className="btn quiet" onClick={testNotify} disabled={busy === "test"}>
+          <Icon node={Bell} size={16} />{busy === "test" ? "Sending…" : "Test notification"}</button>
+      </section>
+
       <section className="panel"><h2>Interests</h2>
         <p className="bar">Tags or title words, comma-separated. Matching roles rank first.</p>
         <Field label="Interest Keywords"><input name="interests" autoComplete="off" spellCheck={false}

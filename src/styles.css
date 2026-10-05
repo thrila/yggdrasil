@@ -111,13 +111,15 @@ mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em
 .field{display:block;margin-top:.9rem}
 .field .lbl{display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:.1rem}
 .field .hint{display:block;font-size:.8rem;color:var(--mut)}
-input:not([type=checkbox]),textarea{width:100%;padding:.55rem .8rem;border:1px solid var(--line);border-radius:10px;
+input:not([type=checkbox]),textarea,select{width:100%;padding:.55rem .8rem;border:1px solid var(--line);border-radius:10px;
   background:var(--fill);color:var(--ink);font:inherit;font-size:.95rem}
 textarea{resize:vertical;min-height:4.5rem}
 input::placeholder,textarea::placeholder{color:var(--mut)}
-input:hover,textarea:hover{border-color:var(--mut)}
-input:focus,textarea:focus{outline:none;background:var(--card);border-color:var(--acc);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--acc) 22%,transparent)}
+input:hover,textarea:hover,select:hover{border-color:var(--mut)}
+input:focus,textarea:focus,select:focus{outline:none;background:var(--card);border-color:var(--acc);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--acc) 22%,transparent)}
 input[type=password]{letter-spacing:.08em}
+/* Quiet hours are a pair of hour pickers; a fixed narrow column keeps them side by side. */
+input[type=number]{max-width:6rem}
 
 .btn{display:inline-flex;gap:.4rem;align-items:center;border:0;border-radius:999px;background:var(--acc);color:var(--on-acc);
   padding:.55rem 1.1rem;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;margin-top:.9rem;min-height:2.2rem}

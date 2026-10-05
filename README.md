@@ -56,7 +56,11 @@ The browser preview uses clearly labelled synthetic jobs, grants and hackathons.
 - **Worldwide** — remote or relocation roles.
 - **Nigeria** — Nigeria-based roles, plus remote roles explicitly worldwide or open to Africa. EMEA/timezone labels alone do not establish eligibility.
 - **Grants** — grants, hackathons and fellowships. Funding-feed announcements older than 180 days are skipped; check deadlines on the original page.
-- **Settings** — interests, X search, sources, and per-source health.
+- **Settings** — search schedule, notifications, interests, X search, sources, and per-source health.
+
+Search runs on a timer you set (15 minutes to 24 hours, 3 hours by default). The tray icon and the Settings panel both show when the next automatic search is due.
+
+Notifications are off unless you turn them on. When a search finds new listings you get one alert summarising them, rather than one per listing. Nothing is sent while the window has focus or during your quiet hours. Grants always qualify; jobs must be remote or relocation-friendly.
 
 Job list is sorted newest first and searchable (`/` or `Cmd/Ctrl+K` focuses the search box).
 
@@ -79,6 +83,6 @@ Electron needs a graphical session and a usable Chromium sandbox. This workspace
 
 ## Status
 
-Built and wired against live sources. Not built yet: push notifications, saved searches.
+Built and wired against live sources. Scheduled searching and opt-in desktop notifications are in. Not built yet: saved searches, and notifications from the static browser preview, which serves sample data and runs no collector.
 
 The existing lockfile's dependency audit reports 17 findings, including a critical finding in the transitive build dependency `tar`. Review the build-tool dependency updates before producing installers.
