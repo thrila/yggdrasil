@@ -6,6 +6,11 @@
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "sources:verify": "node scripts/verify-sources.cjs",
+    "sources:catalog": "node scripts/build-source-catalog.cjs",
+    "sources:install": "node scripts/install-sources.cjs",
+    "collect": "node scripts/index-opportunities.cjs",
     "dev": "vite",
     "build": "vite build",
     "electron:dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron . --dev\"",
