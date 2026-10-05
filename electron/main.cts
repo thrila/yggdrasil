@@ -1,9 +1,11 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, shell, safeStorage } from "electron";
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, shell, safeStorage, Notification } from "electron";
 import path from "node:path";
 import fs from "node:fs";
 import { createStore, runAll } from "./collect.cjs";
 import { inTab } from "./opportunities.cjs";
 import { sourceFromUrl, units } from "./source-config.cjs";
+import { canNotify, newSince, notificationBody, type NotifyRules } from "./notify.cjs";
+import { REFRESH_MINUTE_DEFAULT, clampRefreshMinutes, refreshIntervalMs } from "../shared/types.js";
 import type { Job, JobStore, PublicSettings, Settings, Source } from "../shared/types";
 
 // Electron has no close-to-tray flag, so we keep our own.
@@ -11,7 +13,10 @@ let quitting = false;
 
 const DEFAULTS: Settings = {
   interests: ["rust", "python", "typescript", "backend", "fullstack", "systems", "zk", "cryptography", "compilers", "low-latency", "ml-infra", "blockchain"],
-  refreshHours: 3, xaiKey: "", xModel: "grok-4-1-fast-non-reasoning", xCallsPerDay: 20, xHandles: [],
+  // Notifications are opt-in. Nothing is shown until the user turns them on in Settings.
+  notifications: false,
+  refreshHours: 3, refreshMinutes: REFRESH_MINUTE_DEFAULT, quietFrom: 22, quietTo: 8,
+  xaiKey: "", xModel: "grok-4-1-fast-non-reasoning", xCallsPerDay: 20, xHandles: [],
   xQueries: ["hiring Rust engineer remote", "hiring zero-knowledge engineer", "tech jobs Nigeria hiring"],
 };
 
@@ -19,6 +24,8 @@ let win: BrowserWindow | null = null;
 let store: JobStore;
 let running = false;
 let tray: Tray | null = null;
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+let nextPollAt = 0;
 
 // Resolved next to the compiled main process, so the asset copy step must land it there.
 const ICON = path.join(__dirname, "icon.png");
@@ -26,7 +33,13 @@ const dir = (f: string) => path.join(app.getPath("userData"), f);
 
 const readJ = <T,>(f: string, d: T): T => { try { return JSON.parse(fs.readFileSync(f, "utf8")) as T; } catch { return d; } };
 
-const settings = (): Settings => ({ ...DEFAULTS, ...readJ<Partial<Settings>>(dir("settings.json"), {}) });
+const settings = (): Settings => {
+  const saved = readJ<Partial<Settings>>(dir("settings.json"), {});
+  // A settings file written before the interval became minute-based carries refreshHours only.
+  const merged: Settings = { ...DEFAULTS, ...saved, refreshMinutes: saved.refreshMinutes ?? DEFAULTS.refreshMinutes };
+  if (!saved.refreshMinutes && saved.refreshHours) merged.refreshMinutes = clampRefreshMinutes(saved.refreshHours * 60);
+  return merged;
+};
 
 // sources.json ships with the repo (small demo list). sources.private.json is gitignored and merged on top.
 // Anything added in Settings lands in user_sources.json in userData, which is outside the repo.
@@ -41,11 +54,39 @@ const xKey = (): string => {
   return k.startsWith("enc:") ? safeStorage.decryptString(Buffer.from(k.slice(4), "base64")) : k.replace(/^raw:/, "");
 };
 
+/** Why the OS would refuse a notification, so Settings can say something useful. */
+const notifyUnavailable = (): string => {
+  if (!Notification.isSupported()) return "This system does not support notifications.";
+  if (process.platform === "linux") return "On Linux the notification server must be running for alerts to appear.";
+  return "";
+};
+
+const notifyRules = (): NotifyRules => ({
+  enabled: settings().notifications,
+  quietFrom: settings().quietFrom,
+  quietTo: settings().quietTo,
+  minNew: 1,
+  windowFocused: Boolean(win?.isFocused()),
+  unsupported: !!notifyUnavailable(),
+});
+
+function notify(items: Job[]): void {
+  if (!canNotify(notifyRules(), new Date()) || !items.length) return;
+  const { title, body } = notificationBody(items);
+  const n = new Notification({ title, body, icon: ICON, silent: false });
+  n.on("click", () => showWin());
+  n.show();
+}
+
 async function refresh(): Promise<void> {
   if (running) return;
   running = true;
-  try { await runAll(store, { ...settings(), xaiKey: xKey() }, sources()); }
-  finally { running = false; win?.webContents.send("updated"); }
+  try {
+    const before = Date.now();
+    await runAll(store, { ...settings(), xaiKey: xKey() }, sources());
+    // Only listings first seen during this run are news. Anything older has been offered before.
+    notify(newSince(Object.values(store.d.jobs), before));
+  } finally { running = false; win?.webContents.send("updated"); }
 }
 
 function jobs(tab: string): Job[] {
@@ -81,12 +122,74 @@ ipcMain.handle("settings:set", (_e, body: Partial<Settings> & { xaiKey?: string 
   const next: Settings = { ...settings(), ...rest };
   if (xaiKey) next.xaiKey = safeStorage.isEncryptionAvailable()
     ? "enc:" + safeStorage.encryptString(xaiKey).toString("base64") : "raw:" + xaiKey;
+  if (rest.refreshMinutes !== undefined) next.refreshMinutes = clampRefreshMinutes(rest.refreshMinutes);
+  // Quiet hours wrap past midnight when quietFrom is later than quietTo.
+  const hour = (v: unknown, fallback: number) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? Math.min(23, Math.max(0, Math.round(n))) : fallback;
+  };
+  next.quietFrom = hour(rest.quietFrom, settings().quietFrom);
+  next.quietTo = hour(rest.quietTo, settings().quietTo);
+  next.notifications = rest.notifications !== undefined ? !!rest.notifications : settings().notifications;
   fs.writeFileSync(dir("settings.json"), JSON.stringify(next));
+  // The search interval is user-settable, so apply a change immediately rather than at restart.
+  if (rest.refreshMinutes !== undefined) scheduleRefresh();
   return true;
 });
+
+/** "Next search in 2h 55m", for the tray menu and the Settings panel. */
+function nextPollLabel(now = Date.now()): string {
+  if (!nextPollAt) return "Next search: starting…";
+  let mins = Math.max(0, Math.round((nextPollAt - now) / 60e3));
+  const h = Math.floor(mins / 60);
+  mins -= h * 60;
+  const left = h ? `${h}h ${mins}m` : `${mins}m`;
+  return `Next search in ${left}`;
+}
+
+/**
+ * Restarts the poll timer. Cleared and recreated so a new interval takes effect at once.
+ * setInterval keeps a fixed period rather than counting from the end of a slow run, so
+ * nextPollAt advances by exactly one period per tick to keep the countdown honest.
+ */
+function scheduleRefresh(): void {
+  if (pollTimer) clearInterval(pollTimer);
+  const every = refreshIntervalMs(settings());
+  pollTimer = setInterval(() => {
+    nextPollAt += every;
+    // A long run can push past this; jump to the next future tick instead of showing a past time.
+    if (nextPollAt <= Date.now()) nextPollAt = Date.now() + every;
+    refresh();
+    tray?.setContextMenu(Menu.buildFromTemplate(buildTrayMenu()));
+    tray?.setToolTip(`Yggdrasil · ${nextPollLabel()}`);
+  }, every);
+  nextPollAt = Date.now() + every;
+  tray?.setContextMenu(Menu.buildFromTemplate(buildTrayMenu()));
+  tray?.setToolTip(`Yggdrasil · ${nextPollLabel()}`);
+}
+
+function buildTrayMenu(): Electron.MenuItemConstructorOptions[] {
+  return [
+    { label: "Open Yggdrasil", click: showWin },
+    { label: "Refresh Now", click: () => { refresh(); } },
+    { label: nextPollLabel(), enabled: false },
+    { type: "separator" },
+    { label: "Quit", click: () => app.quit() },
+  ];
+}
+
+ipcMain.handle("nextPoll", () => ({ at: nextPollAt, minutes: settings().refreshMinutes }));
 ipcMain.handle("sources:add", (_e, url: string) => addSource(url));
 ipcMain.handle("health", () => Object.values(store.d.runs).sort((a, b) => Number(a.ok) - Number(b.ok)));
 ipcMain.handle("refresh", () => { refresh(); return true; });
+ipcMain.handle("notify:state", () => ({ supported: !notifyUnavailable(), reason: notifyUnavailable() }));
+ipcMain.handle("notify:test", () => {
+  if (!Notification.isSupported()) throw new Error(notifyUnavailable() || "Notifications are unavailable.");
+  const n = new Notification({ title: "Yggdrasil", body: "Notifications are working.", icon: ICON });
+  n.on("click", () => showWin());
+  n.show();
+  return true;
+});
 
 function showWin(): void {
   if (!win) return;
@@ -103,13 +206,7 @@ app.whenReady().then(() => {
     webPreferences: { preload: path.join(__dirname, "preload.cjs"), contextIsolation: true, nodeIntegration: false } });
 
   tray = new Tray(nativeImage.createFromPath(ICON).resize({ width: 16, height: 16, quality: "best" }));
-  tray.setToolTip("Yggdrasil");
-  tray.setContextMenu(Menu.buildFromTemplate([
-    { label: "Open Yggdrasil", click: showWin },
-    { label: "Refresh Now", click: () => { refresh(); } },
-    { type: "separator" },
-    { label: "Quit", click: () => app.quit() },
-  ]));
+  tray.setContextMenu(Menu.buildFromTemplate(buildTrayMenu()));
   tray.on("click", () => (win!.isVisible() && !win!.isMinimized() ? win!.hide() : showWin()));
 
   win.on("close", (e) => { if (!quitting) { e.preventDefault(); win!.hide(); } });
@@ -119,7 +216,7 @@ app.whenReady().then(() => {
   if (process.argv.includes("--dev")) win.loadURL("http://localhost:5173");
   else win.loadFile(path.join(__dirname, "..", "..", "dist", "index.html"));
   refresh();
-  setInterval(() => { refresh(); }, Math.max(1, settings().refreshHours) * 3600e3);
+  scheduleRefresh();
 });
 app.on("before-quit", () => { quitting = true; });
 app.on("window-all-closed", () => app.quit());

@@ -10,6 +10,9 @@ const api: YggdrasilApi = {
   addSource: call("sources:add"),
   health: call("health"),
   refresh: call("refresh"),
+  notifyState: call("notify:state"),
+  testNotification: call("notify:test"),
+  nextPoll: call("nextPoll"),
   onUpdated: (cb) => {
     const h = () => cb();
     ipcRenderer.on("updated", h);
