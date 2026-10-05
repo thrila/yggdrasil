@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "rootDir": ".",
+    "outDir": "dist-electron",
+    "types": ["node"]
+  },
+  "include": [
+    "electron/**/*.cts",
+    "shared/**/*.ts",
+    "src/browser-api.ts",
+    "scripts/**/*.cts",
+    "test/**/*.cts"
+  ]
+}
