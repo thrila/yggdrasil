@@ -42,6 +42,8 @@ test("only listings discovered during the last run are news", () => {
   // Nor is a role that requires being somewhere the Worldwide tab does not cover.
   assert.equal(newSince([job({ first_seen: 2000, location: "Lagos, Nigeria", tags: ["nigeria"] })], 1500).length, 0);
   assert.equal(newSince([job({ first_seen: 2000, tags: ["remote"] })], 1500).length, 1, "remote still counts");
+  // A listing the user already read is not news again, even if a source relists it.
+  assert.equal(newSince([job({ first_seen: 2000, seen: true })], 1500).length, 0);
   // Grants have no location constraint, so they notify wherever they are listed.
   const grant = job({ id: "g", kind: "grant", tags: ["grant", "africa-ok"], first_seen: 2000 });
   assert.deepEqual(newSince([grant], 1500).map((j) => j.id), ["g"]);

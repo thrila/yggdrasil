@@ -54,6 +54,33 @@ test("preview reports notification support without claiming the desktop app is r
   await assert.rejects(api.testNotification(), /.+/);
 });
 
+test("preview seen state round-trips through storage", async () => {
+  const store: Record<string, string> = {};
+  const api = createBrowserApi({
+    getItem: (k) => store[k] ?? null,
+    setItem: (k, v) => { store[k] = v; },
+  });
+  const before = await api.jobs("worldwide");
+  assert.ok(before.length > 0);
+  assert.ok(before.every((j) => !j.seen));
+
+  await api.markSeen([before[0]!.id], { seen: true, seen_ts: 1750000000000 });
+  const after = await api.jobs("worldwide");
+  assert.equal(after.find((j) => j.id === before[0]!.id)!.seen, true);
+  assert.equal(after.filter((j) => j.seen).length, 1);
+
+  // A fresh instance reads the persisted state back, as a page reload would.
+  const reloaded = createBrowserApi({ getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; } });
+  assert.equal((await reloaded.jobs("worldwide")).find((j) => j.id === before[0]!.id)!.seen, true);
+
+  await api.markSeen([before[0]!.id], { seen: false });
+  assert.ok((await api.jobs("worldwide")).every((j) => !j.seen));
+
+  await api.markSeen([before[0]!.id], { seen: true });
+  await api.clearSeen();
+  assert.ok((await api.jobs("worldwide")).every((j) => !j.seen));
+});
+
 test("desktop operations fail explicitly and malformed storage preserves defaults", async () => {
   const api = createBrowserApi({ getItem: () => "{broken", setItem() { /* storage that only throws */ } });
   assert.ok((await api.getSettings()).interests.includes("rust"));
