@@ -4,21 +4,50 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "electron/main.cjs",
+  "main": "dist-electron/electron/main.cjs",
   "scripts": {
-    "test": "node --test test/*.test.cjs",
-    "sources:verify": "node scripts/verify-sources.cjs",
-    "sources:catalog": "node scripts/build-source-catalog.cjs",
-    "sources:install": "node scripts/install-sources.cjs",
-    "collect": "node scripts/index-opportunities.cjs",
+    "test": "npm run build:electron && node --test dist-electron/test/*.test.cjs",
+    "sources:verify": "node dist-electron/scripts/verify-sources.cjs",
+    "sources:catalog": "node dist-electron/scripts/build-source-catalog.cjs",
+    "sources:install": "npm run build:electron && node dist-electron/scripts/install-sources.cjs",
+    "collect": "npm run build:electron && node dist-electron/scripts/index-opportunities.cjs",
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty && tsc -p tsconfig.electron.json --noEmit",
     "build:web": "vite build",
     "preview:web": "vite preview",
-    "electron:dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron . --dev\"",
-    "dist": "vite build && electron-builder"
+    "build:electron": "tsc -p tsconfig.electron.json && node scripts/copy-electron-assets.mjs",
+    "electron:dev": "npm run build:electron && concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron . --dev\"",
+    "dist": "npm run build && npm run build:electron && electron-builder"
   },
-  "dependencies": { "fast-xml-parser": "^4.5.0", "react": "^18.3.1", "react-dom": "^18.3.1", "react-feather": "^2.0.10" },
-  "devDependencies": { "@vitejs/plugin-react": "^4.3.1", "concurrently": "^9.0.0", "electron": "^33.0.0", "electron-builder": "^25.0.0", "vite": "^5.4.0", "wait-on": "^8.0.0" },
-  "build": { "appId": "dev.local.yggdrasil", "icon": "build/icon.png", "directories": { "output": "release" }, "files": ["dist/**", "electron/**", "package.json"] }
+  "dependencies": {
+    "fast-xml-parser": "^4.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-feather": "^2.0.10"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.0.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.0",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "dev.local.yggdrasil",
+    "icon": "build/icon.png",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json"
+    ]
+  }
 }
