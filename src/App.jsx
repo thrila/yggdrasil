@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon } from "react-feather";
-import { api } from "./api.js";
+import { api, isDesktop } from "./api.js";
 import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
 
@@ -19,6 +19,9 @@ const ago = (iso) => {
 };
 const Chip = ({ t, cls = "", ...p }) => <button type="button" className={`chip ${cls}`} {...p}>{t}</button>;
 const Icon = ({ node: Node, ...p }) => <Node aria-hidden="true" focusable="false" {...p} />;
+const JobLink = ({ job, children }) => job.sample
+  ? <div className="job-main">{children}</div>
+  : <a className="job-main" href={job.url} target="_blank" rel="noopener noreferrer">{children}</a>;
 const lastVisit = Number(localStorage.getItem("lastVisit")) || 0;
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -62,17 +65,21 @@ function Jobs({ tab, q, setQ, searchRef }) {
     </div>
     {top.length > 0 && <div className="tags gap">{top.map((t) => <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
     {shown.length ? <div className="list">{shown.map((j) => (
-      <a key={j.id} className="job" href={j.url} target="_blank" rel="noopener noreferrer">
+      <article key={j.id} className="job">
+        <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
         <div className="meta">
           {j.org && <span><Icon node={Briefcase} size={14} /><Highlight text={j.org} q={q} /></span>}
           {j.location && <span><Icon node={MapPin} size={14} /><Highlight text={j.location} q={q} /></span>}
           <span><Icon node={LinkIcon} size={14} />via {j.source}</span>
           <time dateTime={j.posted || undefined} title={when(j.posted) !== null ? dtf.format(when(j.posted)) : undefined}>{ago(j.posted)}</time>
+          {j.deadline_label && <span>Deadline: {j.deadline_label}</span>}
           {j.first_seen > lastVisit && <span className="chip new">new</span>}
         </div>
         <div className="tags">{j.tags.map((t) => <span key={t} className="chip"><Highlight text={t} q={q} /></span>)}</div>
-      </a>
+        </JobLink>
+        {j.attribution && <div className="meta"><a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a></div>}
+      </article>
     ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length ? `No ${noun}s match your search and filters.` : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p></div>}
   </>);
 }
@@ -96,16 +103,16 @@ function Settings() {
         xQueries: list(s.queriesText ?? s.xQueries.join("\n")), xHandles: list(s.handlesText ?? s.xHandles.join(", ")).map((h) => h.replace(/^@/, "")),
         ...(key ? { xaiKey: key } : {}) });
       setKey(""); setMsg("Saved"); load();
-    } finally { setBusy(""); }
+    } catch (error) { setMsg(error.message); } finally { setBusy(""); }
   };
   const addSource = async () => {
     if (!url.trim()) return;
     setBusy("add"); setMsg("");
-    try { await api.addSource(url); setUrl(""); load(); } finally { setBusy(""); }
+    try { await api.addSource(url); setUrl(""); load(); } catch (error) { setMsg(error.message); } finally { setBusy(""); }
   };
   const refresh = async () => {
     setBusy("refresh"); setMsg("");
-    try { await api.refresh(); setTimeout(load, 4000); } finally { setBusy(""); }
+    try { await api.refresh(); setTimeout(load, 4000); } catch (error) { setMsg(error.message); } finally { setBusy(""); }
   };
   return (<div className="panels">
     <div className="col">
@@ -115,7 +122,7 @@ function Settings() {
         value={s.interestsText ?? s.interests.join(", ")} onChange={(e) => setS({ ...s, interestsText: e.target.value })}
         placeholder="e.g. react, remote, nigeria…" /></Field></section>
 
-    <section className="panel"><h2>X Search</h2>
+    {isDesktop && <section className="panel"><h2>X Search</h2>
       <p className="bar">Uses Grok&rsquo;s X Search tool at about $0.005 per search. Results are leads, so open each link to verify. {s.xaiKeySet ? "An xAI key is saved." : "No key saved yet."}</p>
       <Field label="xAI API Key"><input type="password" name="xaiKey" autoComplete="off" spellCheck={false}
         value={key} onChange={(e) => setKey(e.target.value)} placeholder="Paste your key…" /></Field>
@@ -124,7 +131,7 @@ function Settings() {
         placeholder="e.g. (remote OR onsite) react role Lagos…" /></Field>
       <Field label="Limit to Accounts" hint="Optional, comma-separated."><input name="xHandles" autoComplete="off" spellCheck={false}
         value={s.handlesText ?? s.xHandles.join(", ")} onChange={(e) => setS({ ...s, handlesText: e.target.value })}
-        placeholder="e.g. handle1, handle2" /></Field></section>
+        placeholder="e.g. handle1, handle2" /></Field></section>}
 
     <div className="actions">
       <button type="button" className="btn" onClick={save} disabled={busy === "save"}>
@@ -134,19 +141,19 @@ function Settings() {
     </div>
 
     <div className="col">
-    <section className="panel"><h2>Add a Source</h2>
+    {isDesktop && <section className="panel"><h2>Add a Source</h2>
       <p className="bar">Paste a Greenhouse, Lever or Ashby board URL, or any RSS feed URL.</p>
       <Field label="Source URL"><input type="url" name="sourceUrl" autoComplete="off" spellCheck={false}
         value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://boards.greenhouse.io/acme" /></Field>
       <button type="button" className="btn quiet" onClick={addSource} disabled={busy === "add" || !url.trim()}>
-        <Icon node={Plus} size={16} />{busy === "add" ? "Adding…" : "Add Source"}</button></section>
+        <Icon node={Plus} size={16} />{busy === "add" ? "Adding…" : "Add Source"}</button></section>}
 
     <section className="panel"><h2>Source Health</h2>
       {health.map((r) => <div className="row" key={r.source}><span>{r.source}</span>
         <span className={r.ok ? "num" : "bad"}>{r.ok ? `${r.count} roles` : r.error}</span></div>)}
-      {!health.length && <p className="bar">No refresh has finished yet.</p>}
-      <button type="button" className="btn quiet" onClick={refresh} disabled={busy === "refresh"}>
-        <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : "Refresh Now"}</button></section>
+      {!health.length && <p className="bar">{isDesktop ? "No refresh has finished yet." : "Live source collection is available in the desktop app. Preview interests are saved in this browser."}</p>}
+      {isDesktop && <button type="button" className="btn quiet" onClick={refresh} disabled={busy === "refresh"}>
+        <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : "Refresh Now"}</button>}</section>
     </div>
   </div>);
 }
@@ -217,6 +224,7 @@ export default function App() {
           <Icon node={I} size={17} /><span>{label}</span></button>))}</nav>
     </div>
     <main id="main" tabIndex={-1}>
+      {!isDesktop && <p className="bar">Web preview · Sample opportunities. Live collection is available in the desktop app.</p>}
       {tab === "settings" ? <Settings /> : <Jobs tab={tab} q={q} setQ={setQ} searchRef={searchRef} />}
     </main>
   </div>);

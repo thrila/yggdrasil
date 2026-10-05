@@ -1,0 +1,18 @@
+[
+  {"name":"MyJobMag Nigeria","url":"https://www.myjobmag.com/feeds/","region":"Nigeria"},
+  {"name":"MyJobMag Kenya","url":"https://www.myjobmag.co.ke/feeds/","region":"Africa"},
+  {"name":"MyJobMag South Africa","url":"https://www.myjobmag.co.za/","region":"Africa"},
+  {"name":"MyJobMag Ghana","url":"https://www.myjobmagghana.com/","region":"Africa"},
+  {"name":"Hot Nigerian Jobs","url":"https://www.hotnigerianjobs.com/","region":"Nigeria"},
+  {"name":"Jobzilla","url":"https://www.jobzilla.ng/","region":"Nigeria"},
+  {"name":"Recruitment Trust","url":"https://recruitmenttrust.com/","region":"Nigeria"},
+  {"name":"Joblist Nigeria","url":"https://joblistnigeria.com/","region":"Nigeria"},
+  {"name":"Career Point Kenya","url":"https://www.careerpointkenya.co.ke/","region":"Africa"},
+  {"name":"Jobweb Kenya","url":"https://jobwebkenya.com/","region":"Africa"},
+  {"name":"NGO Jobs in Africa","url":"https://ngojobsinafrica.com/","region":"Africa"},
+  {"name":"RecruitHub Africa","url":"https://recruithub.recruitmentroom.net/partners","region":"Africa"},
+  {"name":"Remote First Jobs","url":"https://remotefirstjobs.com/rss/","region":"worldwide"},
+  {"name":"Warp Jobs","url":"https://warpjobs.com/","region":"worldwide"},
+  {"name":"Grants.gov","url":"https://grants.gov/connect/rss-feeds","region":"worldwide","bucket":"bonus"},
+  {"name":"Brabble hackathons","url":"https://brabble.ai/developers","region":"worldwide","bucket":"bonus"}
+]
