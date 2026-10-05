@@ -84,6 +84,15 @@ button.chip:hover{background:var(--line);color:var(--ink)}
 .chip.active:hover{background:var(--ink)}
 .chip.new{height:1.2rem;padding:0 .45rem;margin-left:.1rem;background:var(--acc);color:var(--on-acc);
   font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.chip.seenchip{height:1.2rem;padding:0 .45rem;margin-left:.1rem;background:transparent;
+  color:var(--mut);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.chip.quiet{background:transparent;border:1px solid var(--line);color:var(--mut)}
+.chip.quiet:hover{background:var(--fill)}
+
+/* Read listings stay legible but recede, so unread ones draw the eye. */
+.job.seen{opacity:.55}
+.job.seen h2{font-weight:500}
+.job .meta.actions{margin-top:.75rem;gap:.5rem .85rem}
 mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em}
 
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,23rem),1fr));gap:.75rem;align-items:start}
