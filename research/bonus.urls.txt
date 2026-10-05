@@ -1,0 +1,6 @@
+https://nlnet.nl/feed.atom
+https://blog.ethereum.org/en/feed.xml
+https://www.opportunitiesforafricans.com/feed/
+https://opportunitydesk.org/feed/
+https://tensorhack.com/data/opportunities.rss
+https://tensorhack.com/data/hackathons.rss
