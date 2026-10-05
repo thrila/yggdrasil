@@ -42,6 +42,10 @@ export interface Job {
   tags: string[];
   first_seen: number;
   last_seen: number;
+  /** Set by the reader, not the collector: true once the user has marked it seen. */
+  seen?: boolean;
+  /** When it was marked seen, for the "seen 3d ago" label. */
+  seen_ts?: number;
   /** False once the owning source stops returning it, or its deadline passes. */
   active: boolean;
   /** Ranking hint, added by the main process on read. */
@@ -49,6 +53,9 @@ export interface Job {
   /** True only for the synthetic rows the web preview renders. */
   sample?: boolean;
 }
+
+/** What to do with a seen flag. Bulk actions need a timestamp; a single toggle needs a boolean. */
+export type SeenPatch = { seen: boolean; seen_ts?: number };
 
 /** Per-source outcome of the last refresh, surfaced in Settings. */
 export interface Run {
@@ -150,5 +157,9 @@ export interface YggdrasilApi {
   addSource(url: string): Promise<Source>;
   health(): Promise<Run[]>;
   refresh(): Promise<boolean>;
+  /** Marks listings seen or unseen. Ids that no longer exist are ignored. */
+  markSeen(ids: string[], patch: SeenPatch): Promise<boolean>;
+  /** Clears the seen flag for every listing, so the next refresh is treated as new again. */
+  clearSeen(): Promise<boolean>;
   onUpdated(cb: () => void): () => void;
 }
