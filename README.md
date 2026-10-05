@@ -60,6 +60,8 @@ The browser preview uses clearly labelled synthetic jobs, grants and hackathons.
 
 Search runs on a timer you set (15 minutes to 24 hours, 3 hours by default). The tray icon and the Settings panel both show when the next automatic search is due.
 
+Your private source list (`electron/sources.private.json`) is deliberately excluded from packaged builds, so it never ships in an installer. An installed app reads it from `sources.private.json` in Electron's `userData` directory instead, alongside the `user_sources.json` that Settings writes there.
+
 Notifications are off unless you turn them on. When a search finds new listings you get one alert summarising them, rather than one per listing. Nothing is sent while the window has focus or during your quiet hours. Grants always qualify; jobs must be remote or relocation-friendly.
 
 Job list is sorted newest first and searchable (`/` or `Cmd/Ctrl+K` focuses the search box).
