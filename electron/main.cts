@@ -6,7 +6,7 @@ import { inTab } from "./opportunities.cjs";
 import { sourceFromUrl, units } from "./source-config.cjs";
 import { canNotify, newSince, notificationBody, type NotifyRules } from "./notify.cjs";
 import { REFRESH_MINUTE_DEFAULT, clampRefreshMinutes, refreshIntervalMs } from "../shared/types.js";
-import type { Job, JobStore, PublicSettings, Settings, Source } from "../shared/types";
+import type { Job, JobStore, PublicSettings, SeenPatch, Settings, Source } from "../shared/types";
 
 // Electron has no close-to-tray flag, so we keep our own.
 let quitting = false;
@@ -180,6 +180,25 @@ function buildTrayMenu(): Electron.MenuItemConstructorOptions[] {
 
 ipcMain.handle("nextPoll", () => ({ at: nextPollAt, minutes: settings().refreshMinutes }));
 ipcMain.handle("sources:add", (_e, url: string) => addSource(url));
+// Reader state, so it is written straight to the store rather than passed through the collectors.
+ipcMain.handle("markSeen", (_e, ids: string[], patch: SeenPatch) => {
+  const set = Array.isArray(ids) ? new Set(ids) : new Set<string>();
+  for (const id of set) {
+    const j = store.d.jobs[id];
+    if (!j) continue;
+    j.seen = !!patch?.seen;
+    j.seen_ts = j.seen ? patch?.seen_ts ?? Date.now() : undefined;
+  }
+  store.save();
+  win?.webContents.send("updated");
+  return true;
+});
+ipcMain.handle("clearSeen", () => {
+  for (const j of Object.values(store.d.jobs)) { j.seen = false; j.seen_ts = undefined; }
+  store.save();
+  win?.webContents.send("updated");
+  return true;
+});
 ipcMain.handle("health", () => Object.values(store.d.runs).sort((a, b) => Number(a.ok) - Number(b.ok)));
 ipcMain.handle("refresh", () => { refresh(); return true; });
 ipcMain.handle("notify:state", () => ({ supported: !notifyUnavailable(), reason: notifyUnavailable() }));

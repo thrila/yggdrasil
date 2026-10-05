@@ -28,3 +28,8 @@ export function inTab(item: { active: boolean; kind?: OpportunityKind; tags?: st
   if (tab === "nigeria") return tags.includes("nigeria") || (tags.includes("remote") && tags.includes("africa-ok") && !tags.includes("restricted"));
   return tags.includes("remote") || tags.includes("relocation");
 }
+
+/** Apply the "hide seen" filter. Seen is reader state, so it must not change tab membership. */
+export function hideSeen<T extends { seen?: boolean }>(items: T[], hide: boolean): T[] {
+  return hide ? items.filter((j) => !j.seen) : items;
+}

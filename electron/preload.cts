@@ -13,6 +13,8 @@ const api: YggdrasilApi = {
   notifyState: call("notify:state"),
   testNotification: call("notify:test"),
   nextPoll: call("nextPoll"),
+  markSeen: call("markSeen"),
+  clearSeen: call("clearSeen"),
   onUpdated: (cb) => {
     const h = () => cb();
     ipcRenderer.on("updated", h);

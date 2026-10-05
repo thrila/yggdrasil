@@ -31,13 +31,13 @@ export function canNotify(rules: NotifyRules, now: Date): boolean {
 }
 
 /**
- * The listings worth mentioning: first discovered since the last refresh and still open.
- * Jobs are limited to remote or relocation-friendly listings so a notification does not
- * point at a role the user cannot take. Grants and other funding are always included,
- * since eligibility is not location-bound.
+ * The listings worth mentioning: first discovered since the last refresh, still open, and
+ * not already marked seen. Jobs are limited to remote or relocation-friendly listings so a
+ * notification does not point at a role the user cannot take. Grants and other funding are
+ * always included, since eligibility is not location-bound.
  */
 export function newSince(jobs: Job[], since: number, limit = 5): Job[] {
-  return jobs.filter((j) => j.first_seen > since && (inTab(j, "grants") || inTab(j, "worldwide")))
+  return jobs.filter((j) => j.first_seen > since && !j.seen && (inTab(j, "grants") || inTab(j, "worldwide")))
     .sort((a, b) => b.first_seen - a.first_seen)
     .slice(0, limit);
 }

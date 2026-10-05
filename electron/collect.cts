@@ -252,6 +252,7 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
       if (previous && kind === "job" && u.type !== "ats"
         && (previous.source_type === "ats" || /^(greenhouse|lever|ashby):/.test(previous.source))) {
         store.d.jobs[id] = { ...previous, last_seen: start, seen_by: seenBy,
+          seen: previous.seen, seen_ts: previous.seen_ts,
           attribution: previous.attribution || attributionFor(u) };
         n++;
         continue;
@@ -263,6 +264,9 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
         seen_by: seenBy, deadline_label: j.deadlineLabel || "",
         attribution: attributionFor(u) || previous?.attribution || null,
         first_seen: previous?.first_seen || start, last_seen: start,
+        // Reader state, not collector state. The record is rebuilt from scratch here, so carry it
+        // over explicitly or every refresh would silently unmark what the user has read.
+        seen: previous?.seen, seen_ts: previous?.seen_ts,
         active: !deadline || Date.parse(deadline) > start };
       n++;
     }
