@@ -62,10 +62,13 @@ Job list is sorted newest first and searchable (`/` or `Cmd/Ctrl+K` focuses the 
 
 ## Where things live
 
-- `electron/collect.cjs` — source adapters and the XML/RSS parsing.
-- `electron/tags.cjs` — all tagging rules. Edit these to tune tags.
-- `electron/main.cjs` — windows, tray, IPC, and the collectors' entry point.
-- `src/App.jsx`, `src/styles.css` — UI.
+- `electron/collect.cts` — source adapters and the XML/RSS parsing.
+- `electron/tags.cts` — all tagging rules. Edit these to tune tags.
+- `electron/main.cts` — windows, tray, IPC, and the collectors' entry point.
+- `src/App.tsx`, `src/styles.css` — UI.
+- `shared/types.ts` — types shared by the renderer and the main process.
+
+Electron, scripts and tests are TypeScript. `npm run build:electron` compiles them to CommonJS in `dist-electron/` and copies the runtime assets; `npm test` runs that build first. `npm run typecheck` checks both the renderer and the main process.
 
 Data is stored as JSON in Electron's `userData` folder, outside the repo. The headless collector uses its own `.cache/opportunities.json` file; it does not replace the desktop database. The xAI key is
 encrypted with the OS keychain when available.
