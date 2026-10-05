@@ -7,7 +7,7 @@ Needs Node 18+.
 - `npm run sources:install`: install the verified job, grants and hackathon catalog into your local sources override.
 - `npm run collect`: index sources without requiring Electron or a display; writes `.cache/opportunities.json`.
 - `npm test`: verify feed parsing, classification, geography and listing closure behavior.
-- `npm run dev`: UI in the browser with demo data (no collectors).
+- `npm run dev`: browser UI reading the committed opportunity index.
 - `npm run electron:dev`: the real app (React UI + collectors in Electron's main process).
 - `npm run build`: production renderer into `dist/`.
 - `npm run dist`: builds installers into `release/` with electron-builder.
@@ -45,11 +45,15 @@ The builder rejects selected sources that fail validation. Review `research/sele
 
 Himalayas is polled at most daily and Jobicy at most hourly. Their required source credits are displayed on job cards, alongside original posting links. Employer content and feeds without a clear reuse licence are labelled in the report; a public endpoint alone does not establish permission for redistribution.
 
-## Cloudflare web preview
+## Cloudflare web app
+
+Live app: [yggdrasil-web.davidopuene8.workers.dev](https://yggdrasil-web.davidopuene8.workers.dev). [Workers deployment instructions](docs/cloudflare-workers.md) document the `cf` build, upload and recovery commands. `npm run deploy:web` deploys the app once Cloudflare authentication is configured.
 
 Run `npm run build:web` to produce the static React app in `dist/`, then `npm run preview:web` to view it locally. [Cloudflare Pages setup](docs/cloudflare-pages.md) documents the Git integration build settings. GitHub Actions runs the tests and web build on pushes and pull requests.
 
-The browser preview uses clearly labelled synthetic jobs, grants and hackathons. It supports searching and saving interests locally. Live source collection and X search require the desktop app; publishing this preview does not deploy the Electron collectors.
+The browser reads real posting metadata from `public/data/opportunities.json`, with original links, source credits and collection status for all 167 configured sources. Search, interests and pagination work across the whole index; interests are stored in that browser. Grants includes hackathons and fellowships. The collection timestamp is shown above the listings, and **View Sources** opens per-source health in Settings.
+
+To refresh the published data, run `npm run web:update`, then `npm run deploy:web`. The updater polls only the committed public catalog and respects publisher intervals. `npm run web:export` rebuilds the public index from an existing local collection without network requests. Export includes only posting metadata from approved sources, not raw descriptions, private feeds or settings. The published index is committed so a fresh clone builds with real listings. Browser **Reload Index** fetches a newly published snapshot; it does not poll external sources. Collection is manual until a scheduler is configured. X search and adding personal sources remain desktop features.
 
 ## Views
 
