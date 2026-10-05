@@ -47,6 +47,8 @@ Himalayas is polled at most daily and Jobicy at most hourly. Their required sour
 
 ## Cloudflare web preview
 
+Live preview: [yggdrasil-web.davidopuene8.workers.dev](https://yggdrasil-web.davidopuene8.workers.dev). [Workers deployment instructions](docs/cloudflare-workers.md) document the `cf` build, upload and recovery commands. `npm run deploy:web` deploys the static preview once Cloudflare authentication is configured.
+
 Run `npm run build:web` to produce the static React app in `dist/`, then `npm run preview:web` to view it locally. [Cloudflare Pages setup](docs/cloudflare-pages.md) documents the Git integration build settings. GitHub Actions runs the tests and web build on pushes and pull requests.
 
 The browser preview uses clearly labelled synthetic jobs, grants and hackathons. It supports searching and saving interests locally. Live source collection and X search require the desktop app; publishing this preview does not deploy the Electron collectors.

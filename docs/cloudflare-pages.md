@@ -1,5 +1,7 @@
 # Cloudflare Pages web preview
 
+The current live deployment uses [Workers Static Assets through `cf`](cloudflare-workers.md). This document describes the alternative Pages Git integration setup.
+
 The React UI builds as a static Vite app. In a browser it displays **synthetic sample opportunities**, including grants and hackathons. Search, tags, themes and interest preferences work; interests are saved in that browser. Live collection, source management and X search run in Electron and need a separate backend before they can work on the web.
 
 ## Build locally
