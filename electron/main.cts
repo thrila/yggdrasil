@@ -46,7 +46,9 @@ const settings = (): Settings => {
 const sources = (): Source[] => {
   const files = ["sources.json", "sources.private.json"].map((f) => readJ<Source[]>(path.join(__dirname, f), []));
   const user = readJ<Source[]>(dir("user_sources.json"), []);
-  return units([...files.flat(), ...user]);
+  // An installed build does not carry the private list, so a local copy in userData stands in.
+  const priv = readJ<Source[]>(dir("sources.private.json"), []);
+  return units([...files.flat(), ...user, ...priv]);
 };
 
 const xKey = (): string => {
