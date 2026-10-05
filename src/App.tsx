@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ComponentType, ReactNode, SVGProps } from "react";
-import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon } from "react-feather";
+import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Eye } from "react-feather";
 import { api, isDesktop } from "./api";
 import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
@@ -55,6 +55,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
   const [jobs, setJobs] = useState<Job[] | null>(null);
   const [active, setActive] = useState<Set<string>>(new Set());
   const [only, setOnly] = useState(true);
+  const [hideSeen, setHideSeen] = useState(false);
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -68,12 +69,16 @@ function Jobs({ tab, q, setQ, searchRef }: {
   if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
   if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
 
+  const mark = (ids: string[], seen: boolean) => api.markSeen(ids, { seen, seen_ts: seen ? Date.now() : undefined });
   const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const hay = (j: Job) => [j.title, j.org, j.location, j.source, ...j.tags].join(" ").toLowerCase();
   const shown = jobs.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
       && [...active].every((t) => j.tags.includes(t))
       && terms.every((w) => hay(j).includes(w)))
     .sort((a, b) => (Date.parse(b.posted) || 0) - (Date.parse(a.posted) || 0));
+
+  const seenCount = shown.filter((j) => j.seen).length;
+  const visible = hideSeen ? shown.filter((j) => !j.seen) : shown;
 
   const counts: Record<string, number> = {};
   jobs.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
@@ -90,12 +95,16 @@ function Jobs({ tab, q, setQ, searchRef }: {
     </div>
     <div className="bar">
       {!grants && <label className="check"><input type="checkbox" checked={only} onChange={(e) => setOnly(e.target.checked)} />Only roles matching my interests</label>}
-      <span className="push">{shown.length} of {jobs.length} {noun}s</span>
+      <label className="check"><input type="checkbox" checked={hideSeen} onChange={(e) => setHideSeen(e.target.checked)} />Hide seen</label>
+      <span className="push">{visible.length} of {jobs.length} {noun}s</span>
     </div>
-    {top.length > 0 && <div className="tags gap">{top.map((t) =>
+    {shown.length > 0 && <div className="tags gap">
+      {seenCount > 0 && <Chip t={`Mark ${seenCount} unseen`} cls="quiet" onClick={() => mark(shown.filter((j) => j.seen).map((j) => j.id), false)} />}
+      {shown.filter((j) => !j.seen).length > 0 && <Chip t={`Mark ${shown.filter((j) => !j.seen).length} seen`} cls="quiet" onClick={() => mark(shown.filter((j) => !j.seen).map((j) => j.id), true)} />}
+      {top.map((t) =>
       <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
-    {shown.length ? <div className="list">{shown.map((j) => (
-      <article key={j.id} className="job">
+    {visible.length ? <div className="list">{visible.map((j) => (
+      <article key={j.id} className={j.seen ? "job seen" : "job"}>
         <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
         <div className="meta">
@@ -104,12 +113,16 @@ function Jobs({ tab, q, setQ, searchRef }: {
           <span><Icon node={LinkIcon} size={14} />via {j.source}</span>
           <time dateTime={j.posted || undefined} title={when(j.posted) !== null ? dtf.format(when(j.posted)!) : undefined}>{ago(j.posted)}</time>
           {j.deadline_label && <span>Deadline: {j.deadline_label}</span>}
-          {j.first_seen > lastVisit && <span className="chip new">new</span>}
+          {j.first_seen > lastVisit && !j.seen && <span className="chip new">new</span>}
+          {j.seen && <span className="chip seenchip">seen {j.seen_ts ? ago(new Date(j.seen_ts).toISOString()) : ""}</span>}
         </div>
         <div className="tags">{j.tags.map((t) => <span key={t} className="chip"><Highlight text={t} q={q} /></span>)}</div>
         </JobLink>
-        {j.attribution && <div className="meta">
-          <a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a></div>}
+        <div className="meta actions">
+          <button type="button" className="chip quiet" aria-pressed={!!j.seen}
+            onClick={() => mark([j.id], !j.seen)}><Icon node={Eye} size={13} />{j.seen ? "Mark unseen" : "Mark seen"}</button>
+          {j.attribution && <a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a>}
+        </div>
       </article>
     ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length
       ? `No ${noun}s match your search and filters.`
@@ -157,6 +170,11 @@ function Settings() {
   const refresh = async () => {
     setBusy("refresh"); setMsg("");
     try { await api.refresh(); setTimeout(load, 4000); } catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
+  };
+  const resetSeen = async () => {
+    setBusy("reset"); setMsg("");
+    try { await api.clearSeen(); load(); setMsg("Seen marks cleared."); }
+    catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
   };
 
   const failed = health.filter((r) => !r.ok);
@@ -208,7 +226,9 @@ function Settings() {
         {!health.length && <p className="bar">{isDesktop ? "No refresh has finished yet."
           : "Live source collection is available in the desktop app. Preview interests are saved in this browser."}</p>}
         {isDesktop && <button type="button" className="btn quiet" onClick={refresh} disabled={busy === "refresh"}>
-          <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : "Refresh Now"}</button>}</section>
+          <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : "Refresh Now"}</button>}
+        {isDesktop && <div className="actions"><button type="button" className="btn quiet" onClick={resetSeen}>Reset Seen</button>
+          <span className="bar">Unmarks every listing, so the next refresh treats them all as new.</span></div>}</section>
     </div>
   </div>;
 }
