@@ -1,9 +1,11 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, shell, safeStorage } = require("electron");
 const path = require("path"), fs = require("fs");
 const { createStore, runAll } = require("./collect.cjs");
+const { inTab } = require('./opportunities.cjs');
+const { sourceFromUrl, units } = require('./source-config.cjs');
 
 const DEFAULTS = {
-  interests: ["rust", "zk", "compilers", "low-latency", "ml-infra", "systems", "cryptography", "python", "backend"],
+  interests: ["rust", "python", "typescript", "backend", "fullstack", "systems", "zk", "cryptography", "compilers", "low-latency", "ml-infra", "blockchain"],
   refreshHours: 3, xaiKey: "", xModel: "grok-4-1-fast-non-reasoning", xCallsPerDay: 20, xHandles: [],
   xQueries: ["hiring Rust engineer remote", "hiring zero-knowledge engineer", "tech jobs Nigeria hiring"],
 };
@@ -30,10 +32,7 @@ async function refresh() {
 
 function jobs(tab) {
   const interests = new Set(settings().interests);
-  const want = tab === "nigeria" ? ["nigeria", "africa-ok"]
-    : tab === "grants" ? ["grant"]
-    : ["remote", "relocation"];
-  return Object.values(store.d.jobs).filter((j) => j.active && j.tags.some((t) => want.includes(t)))
+  return Object.values(store.d.jobs).filter((j) => inTab(j, tab))
     .map((j) => {
       const words = new Set(j.title.toLowerCase().match(/[a-z+#]+/g) || []);
       return { ...j, score: j.tags.filter((t) => interests.has(t)).length + [...words].filter((w) => interests.has(w) && !j.tags.includes(w)).length };
@@ -41,9 +40,8 @@ function jobs(tab) {
 }
 
 function addSource(url) {
-  const m = url.match(/(job-boards\.greenhouse\.io|boards\.greenhouse\.io|jobs\.lever\.co|jobs\.ashbyhq\.com)\/([\w-]+)/);
-  const kind = { "job-boards.greenhouse.io": "greenhouse", "boards.greenhouse.io": "greenhouse", "jobs.lever.co": "lever", "jobs.ashbyhq.com": "ashby" };
-  const s = m ? { name: `${kind[m[1]]}:${m[2]}`, type: "ats", boards: [`${kind[m[1]]}:${m[2]}`] } : { name: new URL(url).host, type: "rss", url };
+  const s = sourceFromUrl(url);
+  if (units(sources().concat(s)).length === units(sources()).length) return s;
   fs.writeFileSync(dir("user_sources.json"), JSON.stringify(readJ(dir("user_sources.json"), []).concat(s), null, 1));
   refresh();
   return s;

@@ -93,6 +93,9 @@ mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em
 .job:active{transform:translateY(0)}
 .job h2{font-size:1.05rem;font-weight:600;margin:0 0 .2rem;text-wrap:balance;overflow-wrap:anywhere}
 .job:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.job-main{display:block;color:inherit;text-decoration:none}
+.job-main:focus-visible,.job .meta a:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:4px}
+.job .meta a{text-decoration:underline}
 .meta{color:var(--mut);font-size:.875rem;display:flex;flex-wrap:wrap;gap:.25rem .85rem;align-items:center}
 .meta span{display:inline-flex;gap:.3rem;align-items:center;min-width:0;overflow-wrap:anywhere}
 .meta svg{flex:none;opacity:.85}

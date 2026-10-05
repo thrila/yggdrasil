@@ -62,17 +62,21 @@ function Jobs({ tab, q, setQ, searchRef }) {
     </div>
     {top.length > 0 && <div className="tags gap">{top.map((t) => <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
     {shown.length ? <div className="list">{shown.map((j) => (
-      <a key={j.id} className="job" href={j.url} target="_blank" rel="noopener noreferrer">
+      <article key={j.id} className="job">
+        <a className="job-main" href={j.url} target="_blank" rel="noopener noreferrer">
         <h2><Highlight text={j.title} q={q} /></h2>
         <div className="meta">
           {j.org && <span><Icon node={Briefcase} size={14} /><Highlight text={j.org} q={q} /></span>}
           {j.location && <span><Icon node={MapPin} size={14} /><Highlight text={j.location} q={q} /></span>}
           <span><Icon node={LinkIcon} size={14} />via {j.source}</span>
           <time dateTime={j.posted || undefined} title={when(j.posted) !== null ? dtf.format(when(j.posted)) : undefined}>{ago(j.posted)}</time>
+          {j.deadline_label && <span>Deadline: {j.deadline_label}</span>}
           {j.first_seen > lastVisit && <span className="chip new">new</span>}
         </div>
         <div className="tags">{j.tags.map((t) => <span key={t} className="chip"><Highlight text={t} q={q} /></span>)}</div>
-      </a>
+        </a>
+        {j.attribution && <div className="meta"><a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a></div>}
+      </article>
     ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length ? `No ${noun}s match your search and filters.` : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p></div>}
   </>);
 }
