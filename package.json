@@ -11,6 +11,8 @@
     "sources:catalog": "node scripts/build-source-catalog.cjs",
     "sources:install": "node scripts/install-sources.cjs",
     "collect": "node scripts/index-opportunities.cjs",
+    "web:export": "node scripts/web-index.cjs",
+    "web:update": "node scripts/web-index.cjs --refresh",
     "dev": "vite",
     "build": "vite build",
     "build:web": "vite build",

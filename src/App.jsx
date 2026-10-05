@@ -19,9 +19,7 @@ const ago = (iso) => {
 };
 const Chip = ({ t, cls = "", ...p }) => <button type="button" className={`chip ${cls}`} {...p}>{t}</button>;
 const Icon = ({ node: Node, ...p }) => <Node aria-hidden="true" focusable="false" {...p} />;
-const JobLink = ({ job, children }) => job.sample
-  ? <div className="job-main">{children}</div>
-  : <a className="job-main" href={job.url} target="_blank" rel="noopener noreferrer">{children}</a>;
+const JobLink = ({ job, children }) => <a className="job-main" href={job.url} target="_blank" rel="noopener noreferrer">{children}</a>;
 const lastVisit = Number(localStorage.getItem("lastVisit")) || 0;
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -34,15 +32,18 @@ const Highlight = ({ text = "", q }) => {
 
 function Jobs({ tab, q, setQ, searchRef }) {
   const [jobs, setJobs] = useState(null), [active, setActive] = useState(new Set()), [only, setOnly] = useState(true), [err, setErr] = useState("");
+  const [visibleCount, setVisibleCount] = useState(50);
+  useEffect(() => { setVisibleCount(50); }, [tab, q, active, only]);
   useEffect(() => {
-    const load = () => api.jobs(tab).then((d) => { setJobs(d); setErr(""); }, (e) => setErr(String(e?.message || e)));
-    load(); setActive(new Set()); setErr("");
+    let alive = true;
+    const load = () => api.jobs(tab).then((d) => { if (alive) { setJobs(d); setErr(""); } }, (e) => { if (alive) setErr(String(e?.message || e)); });
+    setJobs(null); load(); setActive(new Set()); setErr("");
     const off = api.onUpdated(load);
-    return () => { off?.(); localStorage.setItem("lastVisit", Date.now()); };
+    return () => { alive = false; off?.(); localStorage.setItem("lastVisit", Date.now()); };
   }, [tab]);
-  const grants = tab === "grants", noun = grants ? "opportunity" : "role";
-  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
-  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
+  const grants = tab === "grants", plural = grants ? "opportunities" : "roles";
+  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {plural}: {err}</p></div>;
+  if (!jobs) return <p className="empty" aria-live="polite">Loading {plural}…</p>;
 
   const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const hay = (j) => [j.title, j.org, j.location, j.source, ...j.tags].join(" ").toLowerCase();
@@ -61,10 +62,10 @@ function Jobs({ tab, q, setQ, searchRef }) {
     </div>
     <div className="bar">
       {!grants && <label className="check"><input type="checkbox" checked={only} onChange={(e) => setOnly(e.target.checked)} />Only roles matching my interests</label>}
-      <span className="push">{shown.length} of {jobs.length} {noun}s</span>
+      <span className="push">{shown.length} of {jobs.length} {plural}</span>
     </div>
     {top.length > 0 && <div className="tags gap">{top.map((t) => <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
-    {shown.length ? <div className="list">{shown.map((j) => (
+    {shown.length ? <div className="list">{shown.slice(0, visibleCount).map((j) => (
       <article key={j.id} className="job">
         <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
@@ -80,7 +81,11 @@ function Jobs({ tab, q, setQ, searchRef }) {
         </JobLink>
         {j.attribution && <div className="meta"><a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a></div>}
       </article>
-    ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length ? `No ${noun}s match your search and filters.` : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p></div>}
+    ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length ? `No ${plural} match your search and filters.` : `No ${plural} in this view yet; check Settings for source status.`}</p></div>}
+    {shown.length > visibleCount && <div className="actions gap">
+      <button type="button" className="btn quiet" onClick={() => setVisibleCount(count => count + 50)}>Show {Math.min(50, shown.length - visibleCount)} more</button>
+      <span className="bar" role="status">Showing {Math.min(visibleCount, shown.length)} of {shown.length} matching {plural}</span>
+    </div>}
   </>);
 }
 
@@ -91,7 +96,7 @@ const Field = ({ label, hint, children }) => (
 function Settings() {
   const [s, setS] = useState(null), [health, setHealth] = useState([]), [url, setUrl] = useState("");
   const [key, setKey] = useState(""), [msg, setMsg] = useState(""), [busy, setBusy] = useState("");
-  const load = () => { api.getSettings().then(setS); api.health().then(setHealth); };
+  const load = () => { api.getSettings().then(setS, error => setMsg(error.message)); api.health().then(setHealth, error => setMsg(error.message)); };
   useEffect(load, []);
   if (!s) return <p className="empty" aria-live="polite">Loading settings…</p>;
 
@@ -112,7 +117,7 @@ function Settings() {
   };
   const refresh = async () => {
     setBusy("refresh"); setMsg("");
-    try { await api.refresh(); setTimeout(load, 4000); } catch (error) { setMsg(error.message); } finally { setBusy(""); }
+    try { await api.refresh(); isDesktop ? setTimeout(load, 4000) : load(); if (!isDesktop) setMsg("Published index reloaded"); } catch (error) { setMsg(error.message); } finally { setBusy(""); }
   };
   return (<div className="panels">
     <div className="col">
@@ -149,13 +154,32 @@ function Settings() {
         <Icon node={Plus} size={16} />{busy === "add" ? "Adding…" : "Add Source"}</button></section>}
 
     <section className="panel"><h2>Source Health</h2>
-      {health.map((r) => <div className="row" key={r.source}><span>{r.source}</span>
-        <span className={r.ok ? "num" : "bad"}>{r.ok ? `${r.count} roles` : r.error}</span></div>)}
-      {!health.length && <p className="bar">{isDesktop ? "No refresh has finished yet." : "Live source collection is available in the desktop app. Preview interests are saved in this browser."}</p>}
-      {isDesktop && <button type="button" className="btn quiet" onClick={refresh} disabled={busy === "refresh"}>
-        <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : "Refresh Now"}</button>}</section>
+      {!isDesktop && <p className="bar">{health.length} configured sources. Reload checks for a newly published index; source collection runs before publishing.</p>}
+      <button type="button" className="btn quiet" onClick={refresh} disabled={busy === "refresh"}>
+        <Icon node={RefreshCw} size={16} className={busy === "refresh" ? "spin" : ""} />{busy === "refresh" ? "Refreshing…" : isDesktop ? "Refresh Now" : "Reload Index"}</button>
+      {health.map((r) => <div className="row" key={r.source}>
+        <span>{r.url ? <a href={r.url} target="_blank" rel="noopener noreferrer">{r.source}</a> : r.source}
+          {r.ts > 0 && <small className="hint">Checked {new Date(r.ts).toLocaleString()}</small>}</span>
+        <span className={r.ok ? "num" : "bad"}>{r.ok ? `${r.count} items` : r.error}</span></div>)}
+      {!health.length && <p className="bar">No refresh has finished yet.</p>}</section>
     </div>
   </div>);
+}
+
+function CollectionStatus({ onSources }) {
+  const [info, setInfo] = useState(null), [error, setError] = useState("");
+  useEffect(() => {
+    let alive = true;
+    const load = () => api.indexInfo().then(value => { if (alive) { setInfo(value); setError(""); } }, reason => { if (alive) setError(reason.message); });
+    load(); const off = api.onUpdated(load);
+    return () => { alive = false; off?.(); };
+  }, []);
+  return <div className="bar" role="status">
+    {error ? <span>{error}</span> : info ? <>
+      <span>{info.sourceCount} sources · Collected {info.collectedAt ? new Date(info.collectedAt).toLocaleString() : "date unknown"}</span>
+      <button type="button" className="btn quiet" onClick={onSources}>View Sources</button>
+    </> : <span>Loading collected opportunities…</span>}
+  </div>;
 }
 
 export default function App() {
@@ -224,7 +248,7 @@ export default function App() {
           <Icon node={I} size={17} /><span>{label}</span></button>))}</nav>
     </div>
     <main id="main" tabIndex={-1}>
-      {!isDesktop && <p className="bar">Web preview · Sample opportunities. Live collection is available in the desktop app.</p>}
+      {!isDesktop && <CollectionStatus onSources={() => go("settings")} />}
       {tab === "settings" ? <Settings /> : <Jobs tab={tab} q={q} setQ={setQ} searchRef={searchRef} />}
     </main>
   </div>);
