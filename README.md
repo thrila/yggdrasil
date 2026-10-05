@@ -45,7 +45,13 @@ The builder rejects selected sources that fail validation. Review `research/sele
 
 Himalayas is polled at most daily and Jobicy at most hourly. Their required source credits are displayed on job cards, alongside original posting links. Employer content and feeds without a clear reuse licence are labelled in the report; a public endpoint alone does not establish permission for redistribution.
 
-## Tabs
+## Cloudflare web preview
+
+Run `npm run build:web` to produce the static React app in `dist/`, then `npm run preview:web` to view it locally. [Cloudflare Pages setup](docs/cloudflare-pages.md) documents the Git integration build settings. GitHub Actions runs the tests and web build on pushes and pull requests.
+
+The browser preview uses clearly labelled synthetic jobs, grants and hackathons. It supports searching and saving interests locally. Live source collection and X search require the desktop app; publishing this preview does not deploy the Electron collectors.
+
+## Views
 
 - **Worldwide** — remote or relocation roles.
 - **Nigeria** — Nigeria-based roles, plus remote roles explicitly worldwide or open to Africa. EMEA/timezone labels alone do not establish eligibility.

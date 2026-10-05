@@ -13,6 +13,8 @@
     "collect": "node scripts/index-opportunities.cjs",
     "dev": "vite",
     "build": "vite build",
+    "build:web": "vite build",
+    "preview:web": "vite preview",
     "electron:dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron . --dev\"",
     "dist": "vite build && electron-builder"
   },
