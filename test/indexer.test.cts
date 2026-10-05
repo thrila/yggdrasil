@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ADAPTERS, parseFeed, runAll } from "../electron/collect.cjs";
 import { sourceFromUrl, units } from "../electron/source-config.cjs";
-import { inTab, opportunityKind } from "../electron/opportunities.cjs";
+import { hideSeen, inTab, opportunityKind } from "../electron/opportunities.cjs";
 import { tag } from "../electron/tags.cjs";
 import type { Job, JobStore, Source, Unit } from "../shared/types.js";
 
@@ -125,6 +125,47 @@ test("duplicate postings survive closure of one of their sources", async () => {
     await runAll(store, {} as never, sources);
     assert.equal(only(store).active, true);
   } finally { ADAPTERS.ats = original; }
+});
+
+test("the seen flag survives a refresh that rebuilds the record", async () => {
+  const originalAts = ADAPTERS.ats, originalRss = ADAPTERS.rss;
+  const store = memStore();
+  const ats: Source = { name: "ATS", type: "ats", boards: ["ashby:employer"] };
+  const rss: Source = { name: "Lightweight feed", type: "rss", url: "https://feed.example/rss" };
+  try {
+    ADAPTERS.ats = async () => [{ title: "Backend Engineer", location: "Remote Worldwide", url: "https://employer.example/job", org: "Employer", posted: "", text: "Rust backend" }];
+    await runAll(store, {} as never, [ats]);
+    const marked = only(store);
+    marked.seen = true;
+    marked.seen_ts = 1750000000000;
+
+    // The ATS path replaces the record wholesale. The reader's mark must survive it.
+    ADAPTERS.ats = async () => [{ title: "Backend Engineer", location: "Remote Worldwide", url: "https://employer.example/job", org: "Employer", posted: "", text: "Rust backend" }];
+    await runAll(store, {} as never, [ats]);
+    assert.equal(only(store).seen, true);
+    assert.equal(only(store).seen_ts, 1750000000000);
+
+    // The minimal-RSS merge path copies the previous record. Same requirement.
+    marked.seen = true;
+    ADAPTERS.rss = async () => [{ title: "Backend Engineer", url: "https://employer.example/job", org: "", location: "", posted: "", text: "Backend Engineer" }];
+    await runAll(store, {} as never, [ats, rss]);
+    assert.equal(only(store).seen, true);
+
+    // Unseen means genuinely absent, not just an unset flag on a fresh record.
+    only(store).seen = false;
+    only(store).seen_ts = undefined;
+    ADAPTERS.ats = async () => [{ title: "Backend Engineer", location: "Remote Worldwide", url: "https://employer.example/job", org: "Employer", posted: "", text: "Rust backend" }];
+    await runAll(store, {} as never, [ats]);
+    assert.notEqual(only(store).seen, true);
+  } finally { ADAPTERS.ats = originalAts; ADAPTERS.rss = originalRss; }
+});
+
+test("hideSeen filters on reader state without changing tab membership", () => {
+  const jobs = [{ seen: true }, { seen: false }, {}];
+  assert.equal(hideSeen(jobs, false).length, 3);
+  assert.deepEqual(hideSeen(jobs, true), [{ seen: false }, {}]);
+  // A seen job is still in its tab; only the list filter hides it.
+  assert.equal(inTab({ active: true, kind: "job", tags: ["remote"], seen: true } as never, "worldwide"), true);
 });
 
 test("minimal RSS duplicates preserve ATS geography and cannot revive a closed employer posting", async () => {
