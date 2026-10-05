@@ -1,0 +1,173 @@
+[
+  {
+    "name": "MyJobMag Nigeria",
+    "url": "https://www.myjobmag.com/feeds/",
+    "region": "Nigeria",
+    "discoveredFeeds": [
+      "https://www.myjobmag.com/jobsxml.xml",
+      "https://www.myjobmag.com/jobsxml_by_categories.xml",
+      "https://www.myjobmag.com/aggregate_feed.xml",
+      "https://www.myjobmag.com/aggregate_feed2.xml",
+      "https://www.myjobmag.com/blogfeed.xml",
+      "https://www.myjobmag.com/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "MyJobMag Kenya",
+    "url": "https://www.myjobmag.co.ke/feeds/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.myjobmag.co.ke/jobsxml.xml",
+      "https://www.myjobmag.co.ke/jobsxml_by_categories.xml",
+      "https://www.myjobmag.co.ke/aggregate_feed.xml",
+      "https://www.myjobmag.co.ke/aggregate_feed2.xml",
+      "https://www.myjobmag.co.ke/blogfeed.xml",
+      "https://www.myjobmag.co.ke/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "MyJobMag South Africa",
+    "url": "https://www.myjobmag.co.za/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.myjobmag.co.za/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "MyJobMag Ghana",
+    "url": "https://www.myjobmagghana.com/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.myjobmagghana.com/widget/feed-widget"
+    ]
+  },
+  {
+    "name": "Hot Nigerian Jobs",
+    "url": "https://www.hotnigerianjobs.com/",
+    "region": "Nigeria",
+    "discoveredFeeds": [
+      "https://www.hotnigerianjobs.com/feed/rss.xml"
+    ]
+  },
+  {
+    "name": "Jobzilla",
+    "url": "https://www.jobzilla.ng/",
+    "region": "Nigeria",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "Recruitment Trust",
+    "url": "https://recruitmenttrust.com/",
+    "region": "Nigeria",
+    "error": "HTTP Error 410: Gone",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "Joblist Nigeria",
+    "url": "https://joblistnigeria.com/",
+    "region": "Nigeria",
+    "discoveredFeeds": [
+      "https://joblistnigeria.com/feed"
+    ]
+  },
+  {
+    "name": "Career Point Kenya",
+    "url": "https://www.careerpointkenya.co.ke/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://www.careerpointkenya.co.ke/feed/"
+    ]
+  },
+  {
+    "name": "Jobweb Kenya",
+    "url": "https://jobwebkenya.com/",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://jobwebkenya.com/feed/",
+      "https://jobwebkenya.com/wp-includes/wlwmanifest.xml",
+      "https://jobwebkenya.com/feed/?post_type=job_listing",
+      "https://jobwebkenya.com/job-tag/animal-feed/"
+    ]
+  },
+  {
+    "name": "NGO Jobs in Africa",
+    "url": "https://ngojobsinafrica.com/",
+    "region": "Africa",
+    "error": "HTTP Error 406: Not Acceptable",
+    "discoveredFeeds": []
+  },
+  {
+    "name": "RecruitHub Africa",
+    "url": "https://recruithub.recruitmentroom.net/partners",
+    "region": "Africa",
+    "discoveredFeeds": [
+      "https://recruithub.recruitmentroom.net/jobs.xml"
+    ]
+  },
+  {
+    "name": "Remote First Jobs",
+    "url": "https://remotefirstjobs.com/rss/",
+    "region": "worldwide",
+    "discoveredFeeds": [
+      "https://remotefirstjobs.com/jobsopensearch.xml",
+      "https://remotefirstjobs.com/rss",
+      "https://remotefirstjobs.com/rss/#heading2-feed-fields",
+      "https://remotefirstjobs.com/rss/#heading2-available-feeds",
+      "https://feedly.com/",
+      "https://remotefirstjobs.com/rss/jobs/python.rss",
+      "https://remotefirstjobs.com/rss/jobs/react.rss",
+      "https://remotefirstjobs.com/rss/jobs/golang.rss",
+      "https://remotefirstjobs.com/rss/jobs/ai.rss",
+      "https://remotefirstjobs.com/rss/jobs/writing.rss",
+      "https://remotefirstjobs.com/rss/jobs/data-science.rss",
+      "https://remotefirstjobs.com/rss/jobs/devops.rss",
+      "https://remotefirstjobs.com/rss/jobs/cybersecurity.rss",
+      "https://remotefirstjobs.com/rss/jobs/customer-service.rss",
+      "https://remotefirstjobs.com/rss/jobs/design.rss",
+      "https://remotefirstjobs.com/rss/jobs/marketing.rss",
+      "https://remotefirstjobs.com/rss/jobs/sales.rss",
+      "https://remotefirstjobs.com/rss/jobs/data.rss",
+      "https://remotefirstjobs.com/rss/jobs/qa.rss",
+      "https://remotefirstjobs.com/rss/jobs/contract.rss",
+      "https://remotefirstjobs.com/rss/jobs/full-time.rss",
+      "https://remotefirstjobs.com/rss/jobs/part-time.rss",
+      "https://remotefirstjobs.com/rss/jobs/software-development.rss",
+      "https://remotefirstjobs.com/rss/jobs/product.rss",
+      "https://remotefirstjobs.com/rss/jobs/entry-level.rss",
+      "https://remotefirstjobs.com/rss/jobs/senior.rss"
+    ]
+  },
+  {
+    "name": "Warp Jobs",
+    "url": "https://warpjobs.com/",
+    "region": "worldwide",
+    "discoveredFeeds": [
+      "https://warpjobs.com/feed.xml"
+    ]
+  },
+  {
+    "name": "Grants.gov",
+    "url": "https://grants.gov/connect/rss-feeds",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://www.grants.gov/custom/spoExit.jsp?p=rss/GG_OppModByAgency.xml",
+      "https://www.grants.gov/rss/GG_OppModByCategory.xml",
+      "https://www.grants.gov/rss/GG_NewOppByAgency.xml",
+      "https://www.grants.gov/rss/GG_NewOppByCategory.xml",
+      "https://www.grants.gov/rss/GG_OppModByAgency.xml"
+    ]
+  },
+  {
+    "name": "Brabble hackathons",
+    "url": "https://brabble.ai/developers",
+    "region": "worldwide",
+    "bucket": "bonus",
+    "discoveredFeeds": [
+      "https://brabble.ai/rss/all.xml",
+      "https://brabble.ai/developers#feeds",
+      "https://wa.me/?text=Free%20API%20for%20every%20student%20hackathon%20and%20competition%20open%20in%20India%3A%20967%20listings%20from%2022%20platforms%2C%20as%20JSON%2C%20RSS%20or%20iCal.%20Free%20key%2C%20one%20click.%20https%3A%2F%2Fbrabble.ai%2Fdevelopers",
+      "https://x.com/intent/post?text=Free%20API%20for%20every%20student%20hackathon%20and%20competition%20open%20in%20India%3A%20967%20listings%20from%2022%20platforms%2C%20as%20JSON%2C%20RSS%20or%20iCal.%20Free%20key%2C%20one%20click.&url=https%3A%2F%2Fbrabble.ai%2Fdevelopers"
+    ]
+  }
+]
