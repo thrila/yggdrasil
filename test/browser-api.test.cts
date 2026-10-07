@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createBrowserApi } from "../src/browser-api.js";
+import { browserNotifyState, createBrowserApi } from "../src/browser-api.js";
 import type { PreviewStorage } from "../src/browser-api.js";
 
 const storage = () => {
@@ -43,6 +43,17 @@ test("interest preferences persist and update scores without storing secrets", a
   assert.equal(updates, 1);
 });
 
+test("preview reports notification support without claiming the desktop app is required", async () => {
+  const state = browserNotifyState();
+  assert.equal(typeof state.supported, "boolean");
+  assert.ok(state.reason.length > 0, "always explains itself");
+  // node has no Notification global, so the unsupported branch is what a bare runtime gets.
+  if (typeof Notification === "undefined") assert.equal(state.supported, false);
+  // The preview must never claim to be able to raise a live alert on its own.
+  const api = createBrowserApi();
+  await assert.rejects(api.testNotification(), /.+/);
+});
+
 test("preview seen state round-trips through storage", async () => {
   const store: Record<string, string> = {};
   const api = createBrowserApi({
@@ -76,4 +87,8 @@ test("desktop operations fail explicitly and malformed storage preserves default
   await assert.rejects(api.addSource("https://example.com/feed"), /desktop app/);
   await assert.rejects(api.refresh(), /desktop app/);
   assert.ok((await createBrowserApi().jobs("worldwide")).length > 0);
+  // Notifications are opt-in and off by default, in the preview as in the app.
+  const settings = await createBrowserApi().getSettings();
+  assert.equal(settings.notifications, false);
+  assert.equal(typeof settings.refreshMinutes, "number");
 });

@@ -60,10 +60,9 @@ h1,h2,.logo{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system
 .search:focus-within{background:var(--card);border-color:var(--acc);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--acc) 22%,transparent)}
 .search>svg{color:var(--mut);flex:none}
 .search:focus-within>svg{color:var(--acc)}
-.search input[type=search]{flex:1;min-width:0;height:100%;margin:0;padding:0;border:0;border-radius:0;
+.search input[type=text]{flex:1;min-width:0;height:100%;margin:0;padding:0;border:0;border-radius:0;
   background:none;color:var(--ink);font:inherit;font-size:.95rem;-webkit-appearance:none;appearance:none}
-.search input[type=search]:focus{outline:none;background:none;border:0;box-shadow:none}
-.search input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.search input[type=text]:focus{outline:none;background:none;border:0;box-shadow:none}
 .search .clear{border:0;background:var(--fill);color:var(--mut);cursor:pointer;width:1.4rem;height:1.4rem;
   border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none;padding:0}
 .search .clear:hover{color:var(--ink);background:var(--line)}
@@ -97,8 +96,9 @@ mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em
 
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,23rem),1fr));gap:.75rem;align-items:start}
 .job{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-width:0}
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-width:0;scroll-margin-top:7rem}
 .job:hover{border-color:transparent;box-shadow:var(--shadow-lift);transform:translateY(-1px)}
+.job.cursor{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc),var(--shadow-lift);transform:translateY(-1px)}
 .job:active{transform:translateY(0)}
 .job h2{font-size:1.05rem;font-weight:600;margin:0 0 .2rem;text-wrap:balance;overflow-wrap:anywhere}
 .job:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
@@ -120,13 +120,15 @@ mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em
 .field{display:block;margin-top:.9rem}
 .field .lbl{display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:.1rem}
 .field .hint{display:block;font-size:.8rem;color:var(--mut)}
-input:not([type=checkbox]),textarea{width:100%;padding:.55rem .8rem;border:1px solid var(--line);border-radius:10px;
+input:not([type=checkbox]),textarea,select{width:100%;padding:.55rem .8rem;border:1px solid var(--line);border-radius:10px;
   background:var(--fill);color:var(--ink);font:inherit;font-size:.95rem}
 textarea{resize:vertical;min-height:4.5rem}
 input::placeholder,textarea::placeholder{color:var(--mut)}
-input:hover,textarea:hover{border-color:var(--mut)}
-input:focus,textarea:focus{outline:none;background:var(--card);border-color:var(--acc);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--acc) 22%,transparent)}
+input:hover,textarea:hover,select:hover{border-color:var(--mut)}
+input:focus,textarea:focus,select:focus{outline:none;background:var(--card);border-color:var(--acc);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--acc) 22%,transparent)}
 input[type=password]{letter-spacing:.08em}
+/* Quiet hours are a pair of hour pickers; a fixed narrow column keeps them side by side. */
+input[type=number]{max-width:6rem}
 
 .btn{display:inline-flex;gap:.4rem;align-items:center;border:0;border-radius:999px;background:var(--acc);color:var(--on-acc);
   padding:.55rem 1.1rem;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;margin-top:.9rem;min-height:2.2rem}
@@ -152,7 +154,7 @@ input[type=password]{letter-spacing:.08em}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:4px}
 @media (prefers-reduced-motion:reduce){
   *,::before,::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
-  .job:hover,.btn:active{transform:none}
+  .job:hover,.job.cursor,.btn:active{transform:none}
 }
 @media (max-width:520px){
   .tab span{display:none}.tab{font-size:.95rem}

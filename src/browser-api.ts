@@ -19,6 +19,21 @@ export interface PreviewStorage {
   setItem(key: string, value: string): void;
 }
 
+/**
+ * The browser can show notifications, so report honestly rather than claiming the desktop app
+ * is required. There is no collector behind the preview, so only a manual test fires one here.
+ */
+export function browserNotifyState(): { supported: boolean; reason: string } {
+  if (typeof Notification === "undefined") return { supported: false, reason: "This browser has no notification support." };
+  if (typeof window !== "undefined" && !window.isSecureContext)
+    return { supported: false, reason: "Notifications need HTTPS or localhost." };
+  if (Notification.permission === "denied")
+    return { supported: false, reason: "Notifications are blocked for this site in your browser settings." };
+  if (Notification.permission === "default")
+    return { supported: true, reason: "Permission not granted yet. Use Test notifications to ask." };
+  return { supported: true, reason: "Ready." };
+}
+
 export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
   let interests = [...defaults];
   try {
@@ -47,7 +62,8 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
         score: interests.filter((term) => [job.title, ...job.tags].join(" ").toLowerCase().includes(term)).length })),
 
     getSettings: async (): Promise<PublicSettings> => ({ interests: [...interests], xaiKeySet: false,
-      xQueries: [], xHandles: [], xCallsPerDay: 0, refreshHours: 3, xModel: "", xaiKey: undefined }),
+      xQueries: [], xHandles: [], xCallsPerDay: 0, refreshHours: 3, refreshMinutes: 180,
+      notifications: false, quietFrom: 22, quietTo: 8, xModel: "", xaiKey: undefined }),
 
     setSettings: async (settings: Partial<Settings> & { xaiKey?: string }): Promise<boolean> => {
       if (settings.xaiKey) throw new Error("API keys belong in the desktop app, not the web preview.");
@@ -65,6 +81,18 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
     addSource: unavailable,
     refresh: unavailable,
 
+    notifyState: async () => browserNotifyState(),
+    testNotification: async (): Promise<boolean> => {
+      const state = browserNotifyState();
+      if (!state.supported) throw new Error(state.reason);
+      // Permission must be requested from a user gesture, which is why this button exists.
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") throw new Error("Notification permission was not granted.");
+      new Notification("Yggdrasil", {
+        body: "Notifications are working. The preview runs no collector, so live alerts need the desktop app.",
+      });
+      return true;
+    },
     markSeen: async (ids: string[], patch: SeenPatch): Promise<boolean> => {
       for (const id of ids || []) {
         if (patch?.seen) seen[id] = patch.seen_ts ?? Date.now();

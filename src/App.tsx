@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { ComponentType, ReactNode, SVGProps } from "react";
-import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Eye } from "react-feather";
+import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Bell, Eye } from "react-feather";
 import { api, isDesktop } from "./api";
 import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
+import { REFRESH_MINUTE_CHOICES } from "../shared/types";
 import type { Job, PublicSettings, Run, Tab } from "../shared/types";
 
 type IconNode = ComponentType<SVGProps<SVGSVGElement>>;
@@ -26,6 +27,14 @@ const ago = (iso: string): string => {
   const hrs = Math.round(mins / 60);
   if (Math.abs(hrs) < 24) return rtf.format(hrs, "hour");
   return rtf.format(Math.round(hrs / 24), "day");
+};
+
+/** "2h 55m", for the countdown to the next automatic search. */
+const countdown = (at: number): string => {
+  let mins = Math.max(0, Math.round((at - Date.now()) / 60e3));
+  const h = Math.floor(mins / 60);
+  mins -= h * 60;
+  return h ? `${h}h ${mins}m` : `${mins}m`;
 };
 
 const lastVisit = Number(localStorage.getItem("lastVisit")) || 0;
@@ -57,22 +66,23 @@ function Jobs({ tab, q, setQ, searchRef }: {
   const [only, setOnly] = useState(true);
   const [hideSeen, setHideSeen] = useState(false);
   const [err, setErr] = useState("");
+  const [cursor, setCursor] = useState(0);
+  const listRef = useRef<HTMLDivElement>(null);
+  const movedRef = useRef(false);
 
   useEffect(() => {
     const load = () => api.jobs(tab).then((d) => { setJobs(d); setErr(""); }, (e) => setErr(String(e?.message || e)));
-    load(); setActive(new Set()); setErr("");
+    load(); setActive(new Set()); setErr(""); setCursor(0); movedRef.current = false;
     const off = api.onUpdated(load);
     return () => { off?.(); localStorage.setItem("lastVisit", String(Date.now())); };
   }, [tab]);
 
   const grants = tab === "grants", noun = grants ? "opportunity" : "role";
-  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
-  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
-
+  const all = jobs ?? [];
   const mark = (ids: string[], seen: boolean) => api.markSeen(ids, { seen, seen_ts: seen ? Date.now() : undefined });
   const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const hay = (j: Job) => [j.title, j.org, j.location, j.source, ...j.tags].join(" ").toLowerCase();
-  const shown = jobs.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
+  const shown = all.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
       && [...active].every((t) => j.tags.includes(t))
       && terms.every((w) => hay(j).includes(w)))
     .sort((a, b) => (Date.parse(b.posted) || 0) - (Date.parse(a.posted) || 0));
@@ -81,15 +91,89 @@ function Jobs({ tab, q, setQ, searchRef }: {
   const visible = hideSeen ? shown.filter((j) => !j.seen) : shown;
 
   const counts: Record<string, number> = {};
-  jobs.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
+  all.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12).map((e) => e[0]);
   const toggle = (t: string) => setActive((s) => { const n = new Set(s); if (n.has(t)) n.delete(t); else n.add(t); return n; });
+
+  // Vim cursor: an index into `visible`, kept inside the list as filters change.
+  const cur = Math.min(cursor, Math.max(0, visible.length - 1));
+
+  useEffect(() => {
+    if (cursor !== cur) setCursor(cur);
+  }, [cursor, cur]);
+
+  // Fresh search results start again from the top.
+  useEffect(() => {
+    setCursor(0);
+  }, [q]);
+
+  useEffect(() => {
+    if (!movedRef.current || !visible.length) return;
+    (listRef.current?.children[cur] as HTMLElement | undefined)?.scrollIntoView({ block: "nearest" });
+  }, [cur, visible.length]);
+
+  useEffect(() => {
+    let gAt = 0;
+    const rowEls = () => Array.from(listRef.current?.children ?? []) as HTMLElement[];
+    // Cards share an offsetTop within a grid row, so row/column math is exact.
+    const columns = () => {
+      const els = rowEls();
+      if (!els.length) return 1;
+      const top = els[0].offsetTop;
+      let n = 0;
+      while (n < els.length && els[n].offsetTop === top) n++;
+      return Math.max(1, n);
+    };
+    const go = (n: number) => {
+      movedRef.current = true;
+      setCursor(Math.max(0, Math.min(n, visible.length - 1)));
+    };
+    const side = (dir: 1 | -1) => {
+      const els = rowEls();
+      const el = els[cur], nx = els[cur + dir];
+      if (el && nx && nx.offsetTop === el.offsetTop) go(cur + dir);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      switch (e.key) {
+        case "j": case "ArrowDown": e.preventDefault(); go(cur + columns()); break;
+        case "k": case "ArrowUp": e.preventDefault(); go(cur - columns()); break;
+        case "l": case "ArrowRight": e.preventDefault(); side(1); break;
+        case "h": case "ArrowLeft": e.preventDefault(); side(-1); break;
+        case "G": e.preventDefault(); go(visible.length - 1); break;
+        case "g": {
+          const now = Date.now();
+          if (now - gAt < 700) { gAt = 0; e.preventDefault(); go(0); }
+          else gAt = now;
+          break;
+        }
+        case "Enter": {
+          if ((e.target as HTMLElement).closest("a,button")) break;
+          const a = rowEls()[cur]?.querySelector<HTMLAnchorElement>("a.job-main");
+          if (a) { e.preventDefault(); a.click(); }
+          break;
+        }
+      }
+    };
+    addEventListener("keydown", onKey);
+    return () => removeEventListener("keydown", onKey);
+  }, [cur, visible.length]);
+
+  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
+  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
 
   return <>
     <div className="search">
       <Icon node={Search} size={17} />
-      <input ref={searchRef} id="role-search" type="search" name="q" autoComplete="off" spellCheck={false}
-        value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Escape" && setQ("")}
+      <input ref={searchRef} id="role-search" type="text" role="searchbox" name="q" autoComplete="off" spellCheck={false}
+        value={q} onChange={(e) => setQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Escape" && e.key !== "Enter") return;
+          e.preventDefault(); // Escape must not let a native search field wipe the query.
+          e.currentTarget.blur();
+        }}
         placeholder="Search title, company, location, tag…" aria-label="Search roles" />
       {q && <button type="button" className="clear" onClick={() => setQ("")} aria-label="Clear search"><Icon node={X} size={16} /></button>}
     </div>
@@ -103,8 +187,8 @@ function Jobs({ tab, q, setQ, searchRef }: {
       {shown.filter((j) => !j.seen).length > 0 && <Chip t={`Mark ${shown.filter((j) => !j.seen).length} seen`} cls="quiet" onClick={() => mark(shown.filter((j) => !j.seen).map((j) => j.id), true)} />}
       {top.map((t) =>
       <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
-    {visible.length ? <div className="list">{visible.map((j) => (
-      <article key={j.id} className={j.seen ? "job seen" : "job"}>
+    {visible.length ? <div className="list" ref={listRef}>{visible.map((j, i) => (
+      <article key={j.id} className={(j.seen ? "job seen" : "job") + (i === cur ? " cursor" : "")}>
         <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
         <div className="meta">
@@ -143,8 +227,17 @@ function Settings() {
   const [key, setKey] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
+  const [notify, setNotify] = useState({ supported: false, reason: "" });
+  const [nextPoll, setNextPoll] = useState("");
+  const nounLower = "opportunities";
 
-  const load = () => { api.getSettings().then(setS); api.health().then(setHealth); };
+  const load = () => {
+    api.getSettings().then(setS);
+    api.health().then(setHealth);
+    api.notifyState().then(setNotify);
+    // Preview has no scheduler, so this only resolves in the desktop app.
+    api.nextPoll?.().then((n) => setNextPoll(`is in ${countdown(n.at)}`)).catch(() => setNextPoll(""));
+  };
   useEffect(load, []);
   if (!s) return <p className="empty" aria-live="polite">Loading settings…</p>;
 
@@ -155,12 +248,21 @@ function Settings() {
     try {
       await api.setSettings({
         interests: list(s.interestsText ?? s.interests.join(", ")).map((x) => x.toLowerCase()),
+        refreshMinutes: s.refreshMinutes,
+        notifications: s.notifications,
+        quietFrom: s.quietFrom,
+        quietTo: s.quietTo,
         xQueries: list(s.queriesText ?? s.xQueries.join("\n")),
         xHandles: list(s.handlesText ?? s.xHandles.join(", ")).map((h) => h.replace(/^@/, "")),
         ...(key ? { xaiKey: key } : {}),
       });
       setKey(""); setMsg("Saved"); load();
     } catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
+  };
+  const testNotify = async () => {
+    setBusy("test"); setMsg("");
+    try { await api.testNotification(); setMsg("Notification sent."); }
+    catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
   };
   const addSource = async () => {
     if (!url.trim()) return;
@@ -185,6 +287,31 @@ function Settings() {
 
   return <div className="panels">
     <div className="col">
+      <section className="panel"><h2>Search Schedule</h2>
+        <p className="bar">How often to check every source for new {nounLower}. Short intervals mean more requests to job boards, so 3 hours is a polite default.</p>
+        <Field label="Search every"><select name="refreshMinutes" value={s.refreshMinutes}
+          onChange={(e) => setS({ ...s, refreshMinutes: Number(e.target.value) })}>
+          {REFRESH_MINUTE_CHOICES.map((m) => <option key={m} value={m}>{m < 60 ? `${m} minutes` : m % 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m / 60} hour${m > 60 ? "s" : ""}`}</option>)}
+        </select></Field>
+        <p className="bar">{nextPoll ? `Next automatic search ${nextPoll}.` : "The next search starts when the app opens."}</p>
+      </section>
+
+      <section className="panel"><h2>Notifications</h2>
+        <p className="bar">Optional. Off unless you turn it on. A single alert summarises whatever a search found, rather than one per listing.</p>
+        <label className="check"><input type="checkbox" checked={s.notifications}
+          onChange={(e) => setS({ ...s, notifications: e.target.checked })} />Notify me when a search finds new {nounLower}</label>
+        {s.notifications && <>
+          <Field label="Quiet from" hint="Hour, 24-hour clock."><input type="number" min={0} max={23} name="quietFrom"
+            value={s.quietFrom} onChange={(e) => setS({ ...s, quietFrom: Number(e.target.value) })} /></Field>
+          <Field label="Quiet until" hint="Wraps past midnight when the earlier hour is larger."><input type="number" min={0} max={23} name="quietTo"
+            value={s.quietTo} onChange={(e) => setS({ ...s, quietTo: Number(e.target.value) })} /></Field>
+          <p className="bar">Nothing is sent between those hours, or while this window has focus.</p>
+        </>}
+        <p className="bar">{notify.reason}</p>
+        <button type="button" className="btn quiet" onClick={testNotify} disabled={busy === "test"}>
+          <Icon node={Bell} size={16} />{busy === "test" ? "Sending…" : "Test notification"}</button>
+      </section>
+
       <section className="panel"><h2>Interests</h2>
         <p className="bar">Tags or title words, comma-separated. Matching roles rank first.</p>
         <Field label="Interest Keywords"><input name="interests" autoComplete="off" spellCheck={false}

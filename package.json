@@ -2,6 +2,9 @@
   "name": "opportunity-dashboard",
   "productName": "Yggdrasil",
   "version": "0.1.0",
+  "description": "Desktop dashboard for remote jobs, Nigeria-based roles, and grants, with scheduled searches and optional notifications.",
+  "author": "thrila",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "main": "dist-electron/electron/main.cjs",
@@ -47,6 +50,7 @@
     "files": [
       "dist/**",
       "dist-electron/**",
+      "!dist-electron/electron/sources.private.json",
       "package.json"
     ]
   }
