@@ -66,22 +66,23 @@ function Jobs({ tab, q, setQ, searchRef }: {
   const [only, setOnly] = useState(true);
   const [hideSeen, setHideSeen] = useState(false);
   const [err, setErr] = useState("");
+  const [cursor, setCursor] = useState(0);
+  const listRef = useRef<HTMLDivElement>(null);
+  const movedRef = useRef(false);
 
   useEffect(() => {
     const load = () => api.jobs(tab).then((d) => { setJobs(d); setErr(""); }, (e) => setErr(String(e?.message || e)));
-    load(); setActive(new Set()); setErr("");
+    load(); setActive(new Set()); setErr(""); setCursor(0); movedRef.current = false;
     const off = api.onUpdated(load);
     return () => { off?.(); localStorage.setItem("lastVisit", String(Date.now())); };
   }, [tab]);
 
   const grants = tab === "grants", noun = grants ? "opportunity" : "role";
-  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
-  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
-
+  const all = jobs ?? [];
   const mark = (ids: string[], seen: boolean) => api.markSeen(ids, { seen, seen_ts: seen ? Date.now() : undefined });
   const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const hay = (j: Job) => [j.title, j.org, j.location, j.source, ...j.tags].join(" ").toLowerCase();
-  const shown = jobs.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
+  const shown = all.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
       && [...active].every((t) => j.tags.includes(t))
       && terms.every((w) => hay(j).includes(w)))
     .sort((a, b) => (Date.parse(b.posted) || 0) - (Date.parse(a.posted) || 0));
@@ -90,15 +91,80 @@ function Jobs({ tab, q, setQ, searchRef }: {
   const visible = hideSeen ? shown.filter((j) => !j.seen) : shown;
 
   const counts: Record<string, number> = {};
-  jobs.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
+  all.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12).map((e) => e[0]);
   const toggle = (t: string) => setActive((s) => { const n = new Set(s); if (n.has(t)) n.delete(t); else n.add(t); return n; });
+
+  // Vim cursor: an index into `visible`, kept inside the list as filters change.
+  const cur = Math.min(cursor, Math.max(0, visible.length - 1));
+
+  useEffect(() => {
+    if (cursor !== cur) setCursor(cur);
+  }, [cursor, cur]);
+
+  useEffect(() => {
+    if (!movedRef.current || !visible.length) return;
+    (listRef.current?.children[cur] as HTMLElement | undefined)?.scrollIntoView({ block: "nearest" });
+  }, [cur, visible.length]);
+
+  useEffect(() => {
+    let gAt = 0;
+    const rowEls = () => Array.from(listRef.current?.children ?? []) as HTMLElement[];
+    // Cards share an offsetTop within a grid row, so row/column math is exact.
+    const columns = () => {
+      const els = rowEls();
+      if (!els.length) return 1;
+      const top = els[0].offsetTop;
+      let n = 0;
+      while (n < els.length && els[n].offsetTop === top) n++;
+      return Math.max(1, n);
+    };
+    const go = (n: number) => {
+      movedRef.current = true;
+      setCursor(Math.max(0, Math.min(n, visible.length - 1)));
+    };
+    const side = (dir: 1 | -1) => {
+      const els = rowEls();
+      const el = els[cur], nx = els[cur + dir];
+      if (el && nx && nx.offsetTop === el.offsetTop) go(cur + dir);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      switch (e.key) {
+        case "j": case "ArrowDown": e.preventDefault(); go(cur + columns()); break;
+        case "k": case "ArrowUp": e.preventDefault(); go(cur - columns()); break;
+        case "l": case "ArrowRight": e.preventDefault(); side(1); break;
+        case "h": case "ArrowLeft": e.preventDefault(); side(-1); break;
+        case "G": e.preventDefault(); go(visible.length - 1); break;
+        case "g": {
+          const now = Date.now();
+          if (now - gAt < 700) { gAt = 0; e.preventDefault(); go(0); }
+          else gAt = now;
+          break;
+        }
+        case "Enter": {
+          if ((e.target as HTMLElement).closest("a,button")) break;
+          const a = rowEls()[cur]?.querySelector<HTMLAnchorElement>("a.job-main");
+          if (a) { e.preventDefault(); a.click(); }
+          break;
+        }
+      }
+    };
+    addEventListener("keydown", onKey);
+    return () => removeEventListener("keydown", onKey);
+  }, [cur, visible.length]);
+
+  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
+  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
 
   return <>
     <div className="search">
       <Icon node={Search} size={17} />
       <input ref={searchRef} id="role-search" type="search" name="q" autoComplete="off" spellCheck={false}
-        value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Escape" && setQ("")}
+        value={q} onChange={(e) => setQ(e.target.value)}
+        onKeyDown={(e) => { if (e.key !== "Escape") return; if (q) setQ(""); else e.currentTarget.blur(); }}
         placeholder="Search title, company, location, tag…" aria-label="Search roles" />
       {q && <button type="button" className="clear" onClick={() => setQ("")} aria-label="Clear search"><Icon node={X} size={16} /></button>}
     </div>
@@ -112,8 +178,8 @@ function Jobs({ tab, q, setQ, searchRef }: {
       {shown.filter((j) => !j.seen).length > 0 && <Chip t={`Mark ${shown.filter((j) => !j.seen).length} seen`} cls="quiet" onClick={() => mark(shown.filter((j) => !j.seen).map((j) => j.id), true)} />}
       {top.map((t) =>
       <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
-    {visible.length ? <div className="list">{visible.map((j) => (
-      <article key={j.id} className={j.seen ? "job seen" : "job"}>
+    {visible.length ? <div className="list" ref={listRef}>{visible.map((j, i) => (
+      <article key={j.id} className={(j.seen ? "job seen" : "job") + (i === cur ? " cursor" : "")}>
         <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
         <div className="meta">

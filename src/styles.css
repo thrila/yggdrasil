@@ -97,8 +97,9 @@ mark{background:var(--hl);color:var(--hlc);border-radius:4px;padding:.05em .15em
 
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,23rem),1fr));gap:.75rem;align-items:start}
 .job{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-width:0}
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-width:0;scroll-margin-top:7rem}
 .job:hover{border-color:transparent;box-shadow:var(--shadow-lift);transform:translateY(-1px)}
+.job.cursor{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc),var(--shadow-lift);transform:translateY(-1px)}
 .job:active{transform:translateY(0)}
 .job h2{font-size:1.05rem;font-weight:600;margin:0 0 .2rem;text-wrap:balance;overflow-wrap:anywhere}
 .job:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
@@ -154,7 +155,7 @@ input[type=number]{max-width:6rem}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:4px}
 @media (prefers-reduced-motion:reduce){
   *,::before,::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
-  .job:hover,.btn:active{transform:none}
+  .job:hover,.job.cursor,.btn:active{transform:none}
 }
 @media (max-width:520px){
   .tab span{display:none}.tab{font-size:.95rem}

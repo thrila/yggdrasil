@@ -64,7 +64,7 @@ Your private source list (`electron/sources.private.json`) is deliberately exclu
 
 Notifications are off unless you turn them on. When a search finds new listings you get one alert summarising them, rather than one per listing. Nothing is sent while the window has focus or during your quiet hours. Grants always qualify; jobs must be remote or relocation-friendly.
 
-Job list is sorted newest first and searchable (`/` or `Cmd/Ctrl+K` focuses the search box).
+Job list is sorted newest first and searchable (`/` or `Cmd/Ctrl+K` focuses the search box, `Esc` returns to the list). The list also takes vim motions: `j`/`k` (or arrow keys) move down and up one row, `h`/`l` move left and right within a row, `gg`/`G` jump to the first or last card, and `Enter` opens the highlighted card.
 
 ## Where things live
 
