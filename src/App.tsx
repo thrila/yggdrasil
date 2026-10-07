@@ -102,6 +102,11 @@ function Jobs({ tab, q, setQ, searchRef }: {
     if (cursor !== cur) setCursor(cur);
   }, [cursor, cur]);
 
+  // Fresh search results start again from the top.
+  useEffect(() => {
+    setCursor(0);
+  }, [q]);
+
   useEffect(() => {
     if (!movedRef.current || !visible.length) return;
     (listRef.current?.children[cur] as HTMLElement | undefined)?.scrollIntoView({ block: "nearest" });
@@ -162,9 +167,13 @@ function Jobs({ tab, q, setQ, searchRef }: {
   return <>
     <div className="search">
       <Icon node={Search} size={17} />
-      <input ref={searchRef} id="role-search" type="search" name="q" autoComplete="off" spellCheck={false}
+      <input ref={searchRef} id="role-search" type="text" role="searchbox" name="q" autoComplete="off" spellCheck={false}
         value={q} onChange={(e) => setQ(e.target.value)}
-        onKeyDown={(e) => { if (e.key !== "Escape") return; if (q) setQ(""); else e.currentTarget.blur(); }}
+        onKeyDown={(e) => {
+          if (e.key !== "Escape" && e.key !== "Enter") return;
+          e.preventDefault(); // Escape must not let a native search field wipe the query.
+          e.currentTarget.blur();
+        }}
         placeholder="Search title, company, location, tag…" aria-label="Search roles" />
       {q && <button type="button" className="clear" onClick={() => setQ("")} aria-label="Clear search"><Icon node={X} size={16} /></button>}
     </div>
