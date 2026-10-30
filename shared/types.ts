@@ -50,6 +50,8 @@ export interface Job {
   active: boolean;
   /** Ranking hint, added by the main process on read. */
   score?: number;
+  /** The interest keywords this listing matched, added on read. */
+  matched?: string[];
   /** True only for the synthetic rows the web preview renders. */
   sample?: boolean;
   /** Other records of the same role, folded into this one on read. Seen marks apply to them too. */

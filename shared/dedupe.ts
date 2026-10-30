@@ -36,6 +36,7 @@ export function dedupe(jobs: Job[]): Job[] {
       location: locations.slice(0, MAX_LOCATIONS).join("; ") + (locations.length > MAX_LOCATIONS ? ` +${locations.length - MAX_LOCATIONS} more` : ""),
       tags: [...tags].sort(),
       score: Math.max(...g.map((j) => j.score ?? 0)),
+      matched: [...new Set(g.flatMap((j) => j.matched ?? []))],
       first_seen: Math.min(...g.map((j) => j.first_seen)),
       seen: g.every((j) => j.seen),
       dupe_ids: rest.map((j) => j.id),

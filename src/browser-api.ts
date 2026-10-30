@@ -1,4 +1,5 @@
 // Synthetic opportunities for the static preview. Live collection uses Electron.
+import { interestMatchers, matchInterests } from "../shared/interests";
 import type { Job, PublicSettings, SeenPatch, Settings, Tab, YggdrasilApi } from "../shared/types";
 
 const storageKey = "yggdrasil.preview.interests";
@@ -52,6 +53,10 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
   let seen: Record<string, number> = {};
   try { seen = JSON.parse(storage?.getItem(seenKey) ?? "{}") as Record<string, number>; } catch { seen = {}; }
   const persistSeen = () => storage?.setItem(seenKey, JSON.stringify(seen));
+  const match = (job: Sample) => {
+    const matched = matchInterests({ ...job, org: "" }, interestMatchers(interests));
+    return { matched, score: matched.length };
+  };
 
   return {
     jobs: async (tab: Tab): Promise<Job[]> => samples.filter((job) => tab === "grants" ? job.kind !== "job"
@@ -59,7 +64,7 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
       .map((job) => ({ ...job, tags: [...job.tags], sample: true, org: "Sample organization", source: "Sample data", url: "",
         posted, first_seen: 0, last_seen: 0, active: true,
         seen: job.id in seen, seen_ts: seen[job.id],
-        score: interests.filter((term) => [job.title, ...job.tags].join(" ").toLowerCase().includes(term)).length })),
+        ...match(job) })),
 
     getSettings: async (): Promise<PublicSettings> => ({ interests: [...interests], xaiKeySet: false,
       xQueries: [], xHandles: [], xCallsPerDay: 0, refreshHours: 3, refreshMinutes: 180,
