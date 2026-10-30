@@ -52,6 +52,10 @@ export interface Job {
   score?: number;
   /** True only for the synthetic rows the web preview renders. */
   sample?: boolean;
+  /** Other records of the same role, folded into this one on read. Seen marks apply to them too. */
+  dupe_ids?: string[];
+  /** Other sources that listed the same role. */
+  also_via?: string[];
 }
 
 /** What to do with a seen flag. Bulk actions need a timestamp; a single toggle needs a boolean. */
