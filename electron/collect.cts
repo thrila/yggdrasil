@@ -10,12 +10,69 @@ import type {
 } from "../shared/types";
 
 const UA = { "User-Agent": "opportunity-dashboard/0.1 (personal use)" };
-const get = async (url: string, opt: RequestInit = {}): Promise<Response> => {
-  const r = await fetch(url, { headers: UA, signal: AbortSignal.timeout(30000), ...opt });
-  if (!r.ok) throw new Error("HTTP " + r.status);
-  return r;
+
+/** Request timing. Exported so tests can shorten it. */
+export const FETCH = {
+  /** Give up when no bytes arrive for this long. A big board on a slow link keeps going while data flows. */
+  stallMs: 30_000,
+  /** Absolute ceiling, so one endless response cannot hold a refresh open. */
+  totalMs: 300_000,
+  attempts: 3,
+  /** Doubles after each failed attempt. */
+  backoffMs: 2_000,
+  /** The longest a server's Retry-After is honoured. */
+  maxRetryAfterMs: 30_000,
 };
-const getJ = async <T,>(u: string, opt?: RequestInit): Promise<T> => (await get(u, opt)).json() as Promise<T>;
+
+class HttpError extends Error {
+  constructor(readonly status: number, readonly retryAfterMs: number) { super("HTTP " + status); }
+}
+
+/** Timeouts, resets and rate limits pass. A 403 or 404 will say the same thing next time. */
+const worthRetrying = (e: unknown) => !(e instanceof HttpError) || e.status === 429 || e.status >= 500;
+
+async function readBody(url: string, opt: RequestInit): Promise<string> {
+  const abort = new AbortController();
+  const fail = (why: string) => abort.abort(new Error(why));
+  const total = setTimeout(() => fail(`Timed out after ${FETCH.totalMs / 1000}s`), FETCH.totalMs);
+  let stall: ReturnType<typeof setTimeout> | undefined;
+  const arm = () => {
+    clearTimeout(stall);
+    stall = setTimeout(() => fail(`No data for ${FETCH.stallMs / 1000}s`), FETCH.stallMs);
+  };
+  try {
+    arm();
+    const r = await fetch(url, { headers: UA, ...opt, signal: abort.signal });
+    if (!r.ok) {
+      const after = Number(r.headers.get("retry-after")) * 1000;
+      throw new HttpError(r.status, Number.isFinite(after) ? after : 0);
+    }
+    if (!r.body) return "";
+    const reader = r.body.getReader(), decoder = new TextDecoder();
+    let text = "";
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      arm();
+      text += decoder.decode(value, { stream: true });
+    }
+    return (text + decoder.decode()).replace(/^﻿/, "");
+  } finally { clearTimeout(total); clearTimeout(stall); }
+}
+
+/** Fetches a body, retrying what may be temporary. Only GETs repeat: a POST here is a paid search. */
+const getText = async (url: string, opt: RequestInit = {}): Promise<string> => {
+  const attempts = !opt.method || opt.method === "GET" ? FETCH.attempts : 1;
+  for (let attempt = 1; ; attempt++) {
+    try { return await readBody(url, opt); }
+    catch (e) {
+      if (attempt >= attempts || !worthRetrying(e)) throw e;
+      const asked = e instanceof HttpError ? Math.min(e.retryAfterMs, FETCH.maxRetryAfterMs) : 0;
+      await new Promise((r) => setTimeout(r, Math.max(asked, FETCH.backoffMs * 2 ** (attempt - 1))));
+    }
+  }
+};
+const getJ = async <T,>(u: string, opt?: RequestInit): Promise<T> => JSON.parse(await getText(u, opt)) as T;
 
 const clean = (s: unknown): string =>
   String(s ?? "")
@@ -211,7 +268,7 @@ export const ADAPTERS: Record<Source["type"], Adapter> = {
   },
 
   async rss(u) {
-    return parseFeed(await (await get((u as { url: string }).url)).text(), u);
+    return parseFeed(await getText((u as { url: string }).url), u);
   },
 
   // Bounded discovery pages; not a complete snapshot of all listings.
@@ -257,7 +314,7 @@ export const ADAPTERS: Record<Source["type"], Adapter> = {
     const out: Item[] = [];
     for (const [i, p] of paths.entries()) {
       if (i) await new Promise((r) => setTimeout(r, 1500));
-      out.push(...jobbermanItems(await (await get(new URL(p, "https://www.jobberman.com").href)).text()));
+      out.push(...jobbermanItems(await getText(new URL(p, "https://www.jobberman.com").href)));
     }
     return out;
   },
