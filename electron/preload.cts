@@ -15,6 +15,7 @@ const api: YggdrasilApi = {
   nextPoll: call("nextPoll"),
   markSeen: call("markSeen"),
   clearSeen: call("clearSeen"),
+  markInterested: (ids, interested) => ipcRenderer.invoke("markInterested", ids, interested),
   onUpdated: (cb) => {
     const h = () => cb();
     ipcRenderer.on("updated", h);

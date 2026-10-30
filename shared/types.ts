@@ -1,7 +1,7 @@
 // Single source of truth for the shapes that cross the main/renderer boundary.
 // Kept dependency-free so both tsconfigs can include it.
 
-export type Tab = "worldwide" | "nigeria" | "grants" | "settings";
+export type Tab = "worldwide" | "nigeria" | "grants" | "interested" | "settings";
 
 /** What a listing is. Jobs and funding opportunities share one store and one list. */
 export type OpportunityKind = "job" | "grant" | "hackathon" | "fellowship";
@@ -46,6 +46,10 @@ export interface Job {
   seen?: boolean;
   /** When it was marked seen, for the "seen 3d ago" label. */
   seen_ts?: number;
+  /** Set by the reader: shortlisted to look at properly. Kept even after the listing closes. */
+  interested?: boolean;
+  /** When it was shortlisted, for ordering the Interested tab. */
+  interested_ts?: number;
   /** False once the owning source stops returning it, or its deadline passes. */
   active: boolean;
   /** Ranking hint, added by the main process on read. */
@@ -210,5 +214,7 @@ export interface YggdrasilApi {
   markSeen(ids: string[], patch: SeenPatch): Promise<boolean>;
   /** Clears the seen flag for every listing, so the next refresh is treated as new again. */
   clearSeen(): Promise<boolean>;
+  /** Adds listings to, or removes them from, the Interested tab. Ids that no longer exist are ignored. */
+  markInterested(ids: string[], interested: boolean): Promise<boolean>;
   onUpdated(cb: () => void): () => void;
 }

@@ -53,17 +53,21 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
   let seen: Record<string, number> = {};
   try { seen = JSON.parse(storage?.getItem(seenKey) ?? "{}") as Record<string, number>; } catch { seen = {}; }
   const persistSeen = () => storage?.setItem(seenKey, JSON.stringify(seen));
+  const interestedKey = "yggdrasil.preview.interested";
+  let interested: Record<string, number> = {};
+  try { interested = JSON.parse(storage?.getItem(interestedKey) ?? "{}") as Record<string, number>; } catch { interested = {}; }
   const match = (job: Sample) => {
     const matched = matchInterests({ ...job, org: "" }, interestMatchers(interests));
     return { matched, score: matched.length };
   };
 
   return {
-    jobs: async (tab: Tab): Promise<Job[]> => samples.filter((job) => tab === "grants" ? job.kind !== "job"
+    jobs: async (tab: Tab): Promise<Job[]> => samples.filter((job) => tab === "interested" ? job.id in interested : tab === "grants" ? job.kind !== "job"
       : job.kind === "job" && (tab === "nigeria" ? job.tags.includes("nigeria") || job.tags.includes("africa-ok") : job.tags.includes("remote")))
       .map((job) => ({ ...job, tags: [...job.tags], sample: true, org: "Sample organization", source: "Sample data", url: "",
         posted, first_seen: 0, last_seen: 0, active: true,
         seen: job.id in seen, seen_ts: seen[job.id],
+        interested: job.id in interested, interested_ts: interested[job.id],
         ...match(job) })),
 
     getSettings: async (): Promise<PublicSettings> => ({ interests: [...interests], xaiKeySet: false,
@@ -104,6 +108,15 @@ export function createBrowserApi(storage?: PreviewStorage): YggdrasilApi {
         else delete seen[id];
       }
       persistSeen();
+      listeners.forEach((listener) => listener());
+      return true;
+    },
+    markInterested: async (ids: string[], on: boolean): Promise<boolean> => {
+      for (const id of ids || []) {
+        if (on) interested[id] = Date.now();
+        else delete interested[id];
+      }
+      storage?.setItem(interestedKey, JSON.stringify(interested));
       listeners.forEach((listener) => listener());
       return true;
     },

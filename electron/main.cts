@@ -196,6 +196,17 @@ ipcMain.handle("markSeen", (_e, ids: string[], patch: SeenPatch) => {
   win?.webContents.send("updated");
   return true;
 });
+ipcMain.handle("markInterested", (_e, ids: string[], interested: boolean) => {
+  for (const id of Array.isArray(ids) ? new Set(ids) : []) {
+    const j = store.d.jobs[id];
+    if (!j) continue;
+    j.interested = !!interested;
+    j.interested_ts = j.interested ? Date.now() : undefined;
+  }
+  store.save();
+  win?.webContents.send("updated");
+  return true;
+});
 ipcMain.handle("clearSeen", () => {
   for (const j of Object.values(store.d.jobs)) { j.seen = false; j.seen_ts = undefined; }
   store.save();
