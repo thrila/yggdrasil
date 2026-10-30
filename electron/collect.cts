@@ -356,9 +356,51 @@ export const ADAPTERS: Record<Source["type"], Adapter> = {
   },
 };
 
-// Bounded concurrency. Sources are independent, but a sequential loop made a large board
-// list take many minutes per refresh. Keep the cap low enough to stay polite to the ATS APIs.
-const CONCURRENCY = 8;
+/** How a refresh paces itself. Exported so tests can shorten it. */
+export const RUN = {
+  /** Requests in flight at once, across all hosts. */
+  total: 12,
+  /** Requests in flight to one host, so thousands of boards on one ATS do not arrive as a burst. */
+  perHost: 3,
+  /** Saving rewrites the whole store on the main thread, so it cannot follow every source. */
+  saveEveryMs: 20_000,
+};
+
+/** The server a source talks to. Every board on one ATS shares a host. */
+const hostOf = (u: Unit): string => {
+  if (u.board) return u.board.split(":")[0]!;
+  const url = (u as { url?: string }).url;
+  return url ? new URL(url).hostname : u.type;
+};
+
+/** Runs every unit, one slow host never holding up the others. */
+async function runPaced(all: Unit[], work: (u: Unit) => Promise<void>): Promise<void> {
+  const queues = new Map<string, Unit[]>();
+  for (const u of all) {
+    const q = queues.get(hostOf(u));
+    if (q) q.push(u); else queues.set(hostOf(u), [u]);
+  }
+  const busy = new Map<string, number>();
+  let active = 0;
+  await new Promise<void>((done) => {
+    const next = () => {
+      for (const [host, q] of queues) {
+        while (q.length && active < RUN.total && (busy.get(host) ?? 0) < RUN.perHost) {
+          const u = q.shift()!;
+          active++;
+          busy.set(host, (busy.get(host) ?? 0) + 1);
+          work(u).finally(() => {
+            active--;
+            busy.set(host, busy.get(host)! - 1);
+            next();
+          });
+        }
+      }
+      if (!active && [...queues.values()].every((q) => !q.length)) done();
+    };
+    next();
+  });
+}
 
 /** Publishers whose terms cap how often they may be polled. */
 function minPollHours(u: Unit): number {
@@ -368,7 +410,34 @@ function minPollHours(u: Unit): number {
   return 0;
 }
 
-export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<void> {
+/** Lets queued network reads and the window run. A large board is thousands of synchronous regexes. */
+let lastBreath = 0;
+const breathe = async () => {
+  if (Date.now() - lastBreath < 12) return;
+  await new Promise((r) => setImmediate(r));
+  lastBreath = Date.now();
+};
+
+/** Listing ids by the sources that returned them, so closing a board's listings needs no full scan. */
+type Owners = Map<string, Set<string>>;
+const own = (owners: Owners, source: string, id: string) => {
+  const ids = owners.get(source);
+  if (ids) ids.add(id); else owners.set(source, new Set([id]));
+};
+const ownersOf = (store: JobStore): Owners => {
+  const owners: Owners = new Map();
+  for (const j of Object.values(store.d.jobs)) {
+    own(owners, j.source, j.id);
+    for (const source of Object.keys(j.seen_by ?? {})) own(owners, source, j.id);
+  }
+  return owners;
+};
+
+const closeExpired = (store: JobStore, now: number) => {
+  for (const j of Object.values(store.d.jobs)) if (j.deadline && Date.parse(j.deadline) <= now) j.active = false;
+};
+
+export async function runUnit(store: JobStore, u: Unit, cfg: Settings, owners?: Owners): Promise<void> {
   const start = Date.now();
   const minHours = minPollHours(u);
   // Keyed by host for capped publishers, so two entries for the same feed share one timer.
@@ -388,6 +457,7 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
     if (u.include?.length) items = items.filter((j) => u.include!.some((k) => j.title.toLowerCase().includes(k.toLowerCase())));
 
     for (const j of items) {
+      await breathe();
       if (!j.title || !/^https?:\/\//.test(j.url || "")) continue;
       const id = crypto.createHash("sha1").update(j.url).digest("hex");
       const kind: OpportunityKind = opportunityKind(j, u);
@@ -399,6 +469,7 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
       if (kind !== "job" && !tags.includes(kind)) tags.push(kind);
 
       const previous = store.d.jobs[id];
+      if (owners) own(owners, u.name, id);
       const seenBy = { ...(previous?.seen_by || (previous ? { [previous.source]: { active: previous.active, ts: previous.last_seen } } : {})),
         [u.name]: { active: true, ts: start, type: u.type } };
 
@@ -429,7 +500,8 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
 
     // Only ATS responses enumerate all currently open positions. RSS and paginated APIs are rolling
     // windows, so absence from their response says nothing about whether a listing is still open.
-    if (u.type === "ats") for (const j of Object.values(store.d.jobs)) {
+    const mine = owners ? [...owners.get(u.name) ?? []].flatMap((id) => store.d.jobs[id] ?? []) : Object.values(store.d.jobs);
+    if (u.type === "ats") for (const j of mine) {
       if (!j.seen_by && j.source === u.name) j.seen_by = { [u.name]: { active: j.active, ts: j.last_seen } };
       if (j.seen_by?.[u.name] && j.seen_by[u.name]!.ts < start) {
         j.seen_by[u.name]!.active = false;
@@ -439,9 +511,10 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
         j.active = (snapshots.length ? snapshots : observations).some(([, o]) => o.active);
       }
     }
-    for (const j of Object.values(store.d.jobs)) if (j.deadline && Date.parse(j.deadline) <= start) j.active = false;
+    if (!owners) closeExpired(store, start);
 
-    const run: Run = { source: u.name, ok: true, count: n, error: "", ts: Date.now() };
+    if (!minHours) store.d.meta.polls[pollKey] = start;
+    const run: Run = { source: u.name, ok: true, count: n, error: "", ts: Date.now(), last_ok: Date.now(), fails: 0 };
     store.d.runs[u.name] = run;
   } catch (e) { // one broken source never stops the rest
     const err = String((e as Error)?.message || e).slice(0, 200);
@@ -454,9 +527,15 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
 }
 
 export async function runAll(store: JobStore, cfg: Settings, sources: Source[]): Promise<void> {
-  const all = units(sources);
-  for (let i = 0; i < all.length; i += CONCURRENCY) {
-    await Promise.all(all.slice(i, i + CONCURRENCY).map((u) => runUnit(store, u, cfg)));
-    store.save();
-  }
+  const owners = ownersOf(store);
+  let saved = Date.now();
+  try {
+    await runPaced(units(sources), async (u) => {
+      await runUnit(store, u, cfg, owners);
+      if (Date.now() - saved < RUN.saveEveryMs) return;
+      store.save();
+      saved = Date.now();
+    });
+    closeExpired(store, Date.now());
+  } finally { store.save(); }
 }
