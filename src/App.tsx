@@ -431,9 +431,11 @@ function Settings() {
 
       <section className="panel"><h2>Source Health</h2>
         {/* A large board list means thousands of rows. Problems first, then cap the rest. */}
-        <p className="bar">{health.length.toLocaleString()} sources · {okRows.length.toLocaleString()} healthy · {failed.length} failing · {roleTotal.toLocaleString()} fresh roles</p>
+        <p className="bar">{okRows.length.toLocaleString()} of {health.length.toLocaleString()} sources working · {roleTotal.toLocaleString()} fresh roles</p>
+        {failed.length > 0 && <p className="bar">{failed.length} failed last time. Their listings are kept, and each one is tried again on the next search.</p>}
         {rows.map((r) => <div className="row" key={r.source}><span>{r.source}</span>
-          <span className={r.ok ? "num" : "bad"}>{r.ok ? `${r.count} roles` : r.error}</span></div>)}
+          <span className={r.ok ? "num" : "bad"}>{r.ok ? r.error || `${r.count} roles`
+            : `${r.error}${r.last_ok ? ` · worked ${ago(new Date(r.last_ok).toISOString())}` : ""}`}</span></div>)}
         {health.length > CAP && <p className="bar">+ {(health.length - CAP).toLocaleString()} more sources not shown.</p>}
         {!health.length && <p className="bar">{isDesktop ? "No refresh has finished yet."
           : "Live source collection is available in the desktop app. Preview interests are saved in this browser."}</p>}
