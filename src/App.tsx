@@ -250,7 +250,9 @@ function Jobs({ tab, q, setQ, searchRef }: {
           {j.first_seen > lastVisit && !j.seen && <span className="chip new">new</span>}
           {j.seen && <span className="chip seenchip">seen {j.seen_ts ? ago(new Date(j.seen_ts).toISOString()) : ""}</span>}
         </div>
-        <div className="tags">{j.tags.map((t) => <span key={t} className={"chip" + (interests.has(t) ? " interest" : "")}><Highlight text={t} q={q} /></span>)}</div>
+        <div className="tags">
+          {(j.matched ?? []).filter((t) => !j.tags.includes(t)).map((t) => <span key={"m:" + t} className="chip interest" title="Matches your interests">{t}</span>)}
+          {j.tags.map((t) => <span key={t} className={"chip" + (interests.has(t) ? " interest" : "")}><Highlight text={t} q={q} /></span>)}</div>
         </JobLink>
         <div className="meta actions">
           <button type="button" className="chip quiet" aria-pressed={!!j.seen}
@@ -368,7 +370,7 @@ function Settings() {
       </section>
 
       <section className="panel"><h2>Interests</h2>
-        <p className="bar">Tags or title words, comma-separated. Matching roles rank first.</p>
+        <p className="bar">Words or phrases, comma-separated, such as <em>rust, product manager, node.js, lagos</em>. Each one matches the title, company, location or tags. Matching roles rank first and pass the &ldquo;Matches my interests&rdquo; filter.</p>
         <Field label="Interest Keywords"><input name="interests" autoComplete="off" spellCheck={false}
           value={s.interestsText ?? s.interests.join(", ")} onChange={(e) => setS({ ...s, interestsText: e.target.value })}
           placeholder="e.g. react, remote, nigeria…" /></Field></section>
