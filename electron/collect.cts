@@ -225,8 +225,18 @@ export function parseFeed(raw: string, source: Unit): Item[] {
 
 export function createStore(file: string): JobStore {
   let d: JobStore["d"] = { jobs: {}, runs: {}, meta: {} };
-  try { d = { ...d, ...JSON.parse(fs.readFileSync(file, "utf8")) }; } catch { /* first run */ }
-  return { d, save: () => fs.writeFileSync(file, JSON.stringify(d)) };
+  try { d = { ...d, ...JSON.parse(fs.readFileSync(file, "utf8")) }; }
+  catch (e) {
+    // A file that exists but will not parse holds the user's marks. Keep it instead of overwriting it.
+    if ((e as NodeJS.ErrnoException).code !== "ENOENT") try { fs.copyFileSync(file, `${file}.corrupt`); } catch { /* best effort */ }
+  }
+  return { d, save: () => {
+    // Write beside it and swap, so a crash mid-save cannot leave a half-written store.
+    const tmp = `${file}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(d));
+    try { fs.renameSync(tmp, file); }
+    catch { fs.copyFileSync(tmp, file); fs.rmSync(tmp, { force: true }); } // Windows can refuse while a scanner holds the file.
+  } };
 }
 
 type Adapter = (u: Unit, cfg: Settings, store: JobStore) => Promise<Item[]>;
