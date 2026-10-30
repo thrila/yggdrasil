@@ -99,8 +99,8 @@ function jobs(tab: string): Job[] {
       return { ...j, score: j.tags.filter((t) => interests.has(t)).length
         + [...words].filter((w) => interests.has(w) && !j.tags.includes(w)).length };
     })
-    .sort((a, b) => b.score - a.score || b.first_seen - a.first_seen)
-    .slice(0, 600);
+    // No cap: the renderer pages the list, and a cap hid most of a tab from search and filters.
+    .sort((a, b) => b.score - a.score || b.first_seen - a.first_seen);
 }
 
 function addSource(url: string): Source {
