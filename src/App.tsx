@@ -316,6 +316,17 @@ function Settings() {
       setKey(""); setMsg("Saved"); load();
     } catch (error) { setMsg((error as Error).message); } finally { setBusy(""); }
   };
+  // Keywords used to save only with the button at the bottom, so edits were lost on a tab switch.
+  const saveInterests = async () => {
+    if (s.interestsText === undefined) return;
+    const interests = [...new Set(list(s.interestsText).map((x) => x.toLowerCase()))];
+    if (interests.join("\n") === s.interests.join("\n")) return;
+    try {
+      await api.setSettings({ interests });
+      setS((cur) => cur && { ...cur, interests, interestsText: undefined });
+      setMsg(`Interests saved: ${interests.length} keyword${interests.length === 1 ? "" : "s"}.`);
+    } catch (error) { setMsg((error as Error).message); }
+  };
   const testNotify = async () => {
     setBusy("test"); setMsg("");
     try { await api.testNotification(); setMsg("Notification sent."); }
@@ -371,8 +382,9 @@ function Settings() {
 
       <section className="panel"><h2>Interests</h2>
         <p className="bar">Words or phrases, comma-separated, such as <em>rust, product manager, node.js, lagos</em>. Each one matches the title, company, location or tags. Matching roles rank first and pass the &ldquo;Matches my interests&rdquo; filter.</p>
-        <Field label="Interest Keywords"><input name="interests" autoComplete="off" spellCheck={false}
+        <Field label="Interest Keywords" hint="Saved when you press Enter or leave the field."><input name="interests" autoComplete="off" spellCheck={false}
           value={s.interestsText ?? s.interests.join(", ")} onChange={(e) => setS({ ...s, interestsText: e.target.value })}
+          onBlur={saveInterests} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); saveInterests(); } }}
           placeholder="e.g. react, remote, nigeria…" /></Field></section>
 
       {isDesktop && <section className="panel"><h2>X Search</h2>
