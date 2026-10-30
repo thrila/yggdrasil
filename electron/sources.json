@@ -6,5 +6,8 @@
   { "name": "Hacker News Jobs", "type": "rss", "url": "https://hnrss.org/jobs" },
   { "name": "Working Nomads", "type": "workingnomads", "min_interval_hours": 6 },
   { "name": "Devpost hackathons", "type": "devpost", "force_tags": ["hackathon"], "min_interval_hours": 12 },
-  { "name": "fundsforNGOs", "type": "rss", "url": "https://www2.fundsforngos.org/feed/", "force_tags": ["grant"] }
+  { "name": "fundsforNGOs", "type": "rss", "url": "https://www2.fundsforngos.org/feed/", "force_tags": ["grant"] },
+  { "name": "Nigerian government recruitment", "type": "rss", "url": "https://news.google.com/rss/search?q=%28%22recruitment%20portal%22%20OR%20%22recruitment%20exercise%22%20OR%20%22recruitment%20form%22%20OR%20%22shortlisted%20candidates%22%29%20Nigeria%20-fake%20-scam%20-fraudulent%20-suspend%20-suspension%20-scandal%20-protest%20-smuggled%20when%3A14d&hl=en-NG&gl=NG&ceid=NG:en", "force_tags": ["nigeria", "government"] },
+  { "name": "Nigerian agency vacancies", "type": "rss", "url": "https://news.google.com/rss/search?q=%28NNPC%20OR%20CBN%20OR%20FIRS%20OR%20NRS%20OR%20NCC%20OR%20NITDA%20OR%20NIMC%20OR%20NPA%20OR%20NDIC%20OR%20EFCC%20OR%20NSCDC%20OR%20Customs%20OR%20Immigration%29%20%28recruitment%20OR%20vacancies%20OR%20%22now%20recruiting%22%29%20-fake%20-scam%20-fraudulent%20-warns%20when%3A30d&hl=en-NG&gl=NG&ceid=NG:en", "force_tags": ["nigeria", "government"] },
+  { "name": "Nigeria calls for applications", "type": "rss", "url": "https://news.google.com/rss/search?q=%28%22call%20for%20applications%22%20OR%20%22applications%20open%22%20OR%20%22apply%20now%22%29%20%28grant%20OR%20fellowship%20OR%20scholarship%29%20Nigeria%20when%3A14d&hl=en-NG&gl=NG&ceid=NG:en", "force_tags": ["grant", "nigeria"] }
 ]
