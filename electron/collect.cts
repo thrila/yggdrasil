@@ -25,11 +25,12 @@ export const FETCH = {
 };
 
 class HttpError extends Error {
-  constructor(readonly status: number, readonly retryAfterMs: number) { super("HTTP " + status); }
+  constructor(readonly status: number, readonly retryAfterMs: number, message = "HTTP " + status) { super(message); }
 }
 
 /** Timeouts, resets and rate limits pass. A 403 or 404 will say the same thing next time. */
-const worthRetrying = (e: unknown) => !(e instanceof HttpError) || e.status === 429 || e.status >= 500;
+const worthRetrying = (e: unknown) => !(e instanceof HttpError)
+  || !e.message.startsWith("Blocked") && (e.status === 429 || e.status >= 500);
 
 async function readBody(url: string, opt: RequestInit): Promise<string> {
   const abort = new AbortController();
@@ -45,7 +46,10 @@ async function readBody(url: string, opt: RequestInit): Promise<string> {
     const r = await fetch(url, { headers: UA, ...opt, signal: abort.signal });
     if (!r.ok) {
       const after = Number(r.headers.get("retry-after")) * 1000;
-      throw new HttpError(r.status, Number.isFinite(after) ? after : 0);
+      // A bot challenge is the site's decision, not a fault to work around. Name it plainly.
+      const challenged = r.headers.get("cf-mitigated") === "challenge";
+      throw new HttpError(r.status, Number.isFinite(after) ? after : 0,
+        challenged ? "Blocked by the site's bot check" : undefined);
     }
     if (!r.body) return "";
     const reader = r.body.getReader(), decoder = new TextDecoder();

@@ -30,7 +30,8 @@ const server = http.createServer((req, res) => {
   } else if (path === "/reset-once") {
     if (n === 1) { req.socket.destroy(); return; }
     res.end(rss);
-  } else if (path === "/gone") { res.writeHead(404); res.end(); }
+  } else if (path === "/challenge") { res.writeHead(403, { "Cf-Mitigated": "challenge" }); res.end(); }
+  else if (path === "/gone") { res.writeHead(404); res.end(); }
   else if (path === "/always-down") { res.writeHead(500); res.end(); }
   else res.end(rss);
 });
@@ -61,6 +62,11 @@ test("a missing page fails at once and a dead server stops after the attempt lim
   assert.equal(hits["/gone"], 1);
   await assert.rejects(rss("/always-down"), /HTTP 500/);
   assert.equal(hits["/always-down"], 3);
+});
+
+test("a bot challenge is reported plainly and never retried", async () => {
+  await assert.rejects(rss("/challenge"), /Blocked by the site's bot check/);
+  assert.equal(hits["/challenge"], 1);
 });
 
 test("a paid POST is never repeated", async () => {
