@@ -36,3 +36,9 @@ test("a folded card is seen only when every copy is", () => {
   assert.equal(dedupe([job("a", { seen: true }), job("b")])[0]!.seen, false);
   assert.equal(dedupe([job("a", { seen: true }), job("b", { seen: true })])[0]!.seen, true);
 });
+
+test("a folded card is interested when any copy is", () => {
+  const [j] = dedupe([job("a"), job("b", { interested: true, interested_ts: 7 })]);
+  assert.equal(j!.interested, true);
+  assert.equal(j!.interested_ts, 7);
+});

@@ -39,6 +39,8 @@ export function dedupe(jobs: Job[]): Job[] {
       matched: [...new Set(g.flatMap((j) => j.matched ?? []))],
       first_seen: Math.min(...g.map((j) => j.first_seen)),
       seen: g.every((j) => j.seen),
+      interested: g.some((j) => j.interested),
+      interested_ts: Math.max(0, ...g.map((j) => j.interested_ts ?? 0)) || undefined,
       dupe_ids: rest.map((j) => j.id),
       also_via: [...new Set(rest.map((j) => j.source).filter((s) => s !== lead!.source))],
     };
