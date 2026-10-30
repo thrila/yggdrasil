@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, shell, safeStorage, Notification } from "electron";
 import path from "node:path";
 import fs from "node:fs";
-import { createStore, runAll } from "./collect.cjs";
+import { createStore, healthRows, runAll } from "./collect.cjs";
 import { inTab } from "./opportunities.cjs";
 import { sourceFromUrl, units } from "./source-config.cjs";
 import { canNotify, newSince, notificationBody, type NotifyRules } from "./notify.cjs";
@@ -213,7 +213,7 @@ ipcMain.handle("clearSeen", () => {
   win?.webContents.send("updated");
   return true;
 });
-ipcMain.handle("health", () => Object.values(store.d.runs).sort((a, b) => Number(a.ok) - Number(b.ok)));
+ipcMain.handle("health", () => healthRows(store.d.runs, sources()));
 ipcMain.handle("refresh", () => { refresh(); return true; });
 ipcMain.handle("notify:state", () => ({ supported: !notifyUnavailable(), reason: notifyUnavailable() }));
 ipcMain.handle("notify:test", () => {
@@ -251,5 +251,9 @@ app.whenReady().then(() => {
   refresh();
   scheduleRefresh();
 });
-app.on("before-quit", () => { quitting = true; });
+app.on("before-quit", () => {
+  quitting = true;
+  // Saves are throttled during a refresh, so write out whatever came in since the last one.
+  if (running && store) store.save();
+});
 app.on("window-all-closed", () => app.quit());
