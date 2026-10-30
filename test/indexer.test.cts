@@ -187,3 +187,11 @@ test("minimal RSS duplicates preserve ATS geography and cannot revive a closed e
     assert.equal(only(store).active, false);
   } finally { ADAPTERS.ats = originalAts; ADAPTERS.rss = originalRss; }
 });
+test("a bare ampersand in feed text does not reject the whole feed", () => {
+  const [item] = parseFeed(
+    "<rss><channel><description>Jobs: QA & More</description><item><title>QA &amp; Test Engineer &#38; Lead</title>" +
+    "<link>https://jobs.example/1?a=1&b=2</link></item></channel></rss>",
+    { name: "Jobs", url: "https://jobs.example/feed" } as Unit);
+  assert.equal(item!.title, "QA & Test Engineer & Lead");
+  assert.equal(item!.url, "https://jobs.example/1?a=1&b=2");
+});

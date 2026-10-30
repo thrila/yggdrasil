@@ -93,7 +93,9 @@ function attributionFor(source: Unit): Attribution | null {
  * XML at all, so an HTML login page or captive portal is a source error rather
  * than a silent empty result.
  */
-export function parseFeed(xml: string, source: Unit): Item[] {
+export function parseFeed(raw: string, source: Unit): Item[] {
+  // Hand-built feeds often leave a bare "&" in text ("QA & More"), which strict XML rejects outright.
+  const xml = raw.replace(/&(?!(?:[a-zA-Z][\w.-]*|#\d+|#x[\da-fA-F]+);)/g, "&amp;");
   if (XMLValidator.validate(xml) !== true) throw new Error("Invalid RSS/Atom XML");
   const x = new XMLParser(XML_OPTS).parse(xml) as any;
   const channel = x.rss?.channel || x["rdf:RDF"];
