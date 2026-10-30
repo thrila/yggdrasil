@@ -6,7 +6,7 @@ import type { Tab } from "./types";
 export interface ElsewhereLink { label: string; url: string }
 
 export function elsewhereLinks(tab: Tab, keywords: string): ElsewhereLink[] {
-  if (tab === "grants" || tab === "settings") return [];
+  if (tab !== "worldwide" && tab !== "nigeria") return [];
   const kw = keywords.trim();
   const nigeria = tab === "nigeria";
   const li = new URL("https://www.linkedin.com/jobs/search/");

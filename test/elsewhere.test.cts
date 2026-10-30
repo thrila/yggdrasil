@@ -13,3 +13,7 @@ test("search links carry the query and the tab's location", () => {
 test("grants have no job-board search links", () => {
   assert.deepEqual(elsewhereLinks("grants", "zk"), []);
 });
+
+test("the Interested tab has no job-board search links", () => {
+  assert.deepEqual(elsewhereLinks("interested", "rust"), []);
+});
