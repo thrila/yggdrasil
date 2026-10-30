@@ -74,3 +74,73 @@ test("a paid POST is never repeated", async () => {
     assert.equal(calls, 1);
   } finally { globalThis.fetch = original; }
 });
+
+test("a refresh never exceeds its limits, and one hung host does not hold up the others", async () => {
+  const { runAll, RUN } = await import("../electron/collect.cjs");
+  const original = ADAPTERS.ats, originalRss = ADAPTERS.rss;
+  const active: Record<string, number> = {}, peak: Record<string, number> = {};
+  let total = 0, maxTotal = 0, fastDone = 0, slowDoneAt = 0, fastDoneAt = 0;
+  const hold = async (host: string, ms: number) => {
+    active[host] = (active[host] ?? 0) + 1; total++;
+    peak[host] = Math.max(peak[host] ?? 0, active[host]!); maxTotal = Math.max(maxTotal, total);
+    await new Promise((r) => setTimeout(r, ms));
+    active[host]!--; total--;
+  };
+  ADAPTERS.ats = async (u) => {
+    const kind = (u as { board: string }).board.split(":")[0]!;
+    await hold(kind, kind === "greenhouse" ? 60 : 1);
+    if (kind === "greenhouse") slowDoneAt = Date.now();
+    else { fastDone++; fastDoneAt = Date.now(); }
+    return [];
+  };
+  ADAPTERS.rss = async () => { await hold("rss", 1); return []; };
+  const boards = Array.from({ length: 8 }, (_, i) => `greenhouse:g${i}`).concat(Array.from({ length: 8 }, (_, i) => `ashby:a${i}`));
+  const store = { d: { jobs: {}, runs: {}, meta: {} }, save() {} };
+  try {
+    await runAll(store as never, {} as never, [{ name: "boards", type: "ats", boards }] as never);
+    assert.equal(Object.keys(store.d.runs).length, 16);
+    assert.ok(peak.greenhouse! <= RUN.perHost && peak.ashby! <= RUN.perHost);
+    assert.ok(maxTotal <= RUN.total);
+    assert.equal(fastDone, 8);
+    assert.ok(fastDoneAt < slowDoneAt, "the quick host finishes first instead of waiting for the slow one");
+  } finally { ADAPTERS.ats = original; ADAPTERS.rss = originalRss; }
+});
+
+test("a failed source keeps its listings, retries next refresh, and remembers its last success", async () => {
+  const { runAll } = await import("../electron/collect.cjs");
+  const original = ADAPTERS.rss;
+  const store = { d: { jobs: {} as Record<string, { active: boolean }>, runs: {} as Record<string, { ok: boolean; fails?: number; last_ok?: number }>, meta: {} }, save() {} };
+  const source = [{ name: "Feed", type: "rss", url: "https://feed.example/rss", min_interval_hours: 6 }];
+  let calls = 0;
+  try {
+    ADAPTERS.rss = async () => { calls++; return [{ title: "Engineer", url: "https://x.example/1", org: "Acme", location: "Remote", posted: "", text: "" }]; };
+    await runAll(store as never, {} as never, source as never);
+    const lastOk = store.d.runs.Feed!.last_ok;
+    ADAPTERS.rss = async () => { calls++; throw new Error("No data for 30s"); };
+    delete (store.d.meta as { polls?: unknown }).polls;
+    await runAll(store as never, {} as never, source as never);
+    await runAll(store as never, {} as never, source as never);
+    assert.equal(calls, 3, "a failure leaves no polling cooldown");
+    assert.equal(store.d.runs.Feed!.ok, false);
+    assert.equal(store.d.runs.Feed!.fails, 2);
+    assert.equal(store.d.runs.Feed!.last_ok, lastOk);
+    assert.equal(Object.values(store.d.jobs)[0]!.active, true);
+  } finally { ADAPTERS.rss = original; }
+});
+
+test("saving is atomic and a corrupt store is set aside, not overwritten", async () => {
+  const { createStore } = await import("../electron/collect.cjs");
+  const fs = await import("node:fs"), os = await import("node:os"), path = await import("node:path");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ygg-store-"));
+  const file = path.join(dir, "jobs.json");
+  try {
+    const store = createStore(file);
+    store.d.meta.mark = 1;
+    store.save();
+    assert.deepEqual(fs.readdirSync(dir), ["jobs.json"]);
+    assert.equal(createStore(file).d.meta.mark, 1);
+    fs.writeFileSync(file, '{"jobs":{"half');
+    createStore(file);
+    assert.equal(fs.readFileSync(`${file}.corrupt`, "utf8"), '{"jobs":{"half');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
