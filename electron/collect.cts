@@ -6,7 +6,7 @@ import { tag } from "./tags.cjs";
 import { opportunityKind } from "./opportunities.cjs";
 import { units } from "./source-config.cjs";
 import type {
-  AtsSource, Attribution, DevpostSource, JobStore, OpportunityKind, RemotiveSource, Run, Settings, Source, Unit,
+  AtsSource, Attribution, DevpostSource, JobbermanSource, JobStore, OpportunityKind, RemotiveSource, Run, Settings, Source, Unit,
 } from "../shared/types";
 
 const UA = { "User-Agent": "opportunity-dashboard/0.1 (personal use)" };
@@ -73,6 +73,41 @@ export function devpostItems(r: any): Item[] {
     return { title: h.title, org: h.organization_name || "", location: /online/i.test(where) ? "Online, worldwide" : where,
       url: h.url, posted: "", text: `Hackathon. ${arr<any>(h.themes).map((t) => t.name).join(", ")}. Prize ${clean(h.prize_amount)}`,
       deadline: Number.isNaN(endAt) ? "" : new Date(endAt + 2 * 864e5).toISOString(), deadlineLabel: dates };
+  });
+}
+
+/** "Today", "Yesterday", "3 days ago", "2 weeks ago" as Jobberman prints them. */
+export function relativeDate(label: string, now = Date.now()): string {
+  const s = label.trim().toLowerCase();
+  if (/^(today|just now|new)$/.test(s)) return new Date(now).toISOString();
+  if (s === "yesterday") return new Date(now - 864e5).toISOString();
+  const m = s.match(/^(\d+)\s+(minute|hour|day|week|month)s?\s+ago$/);
+  if (!m) return "";
+  const unit = { minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5, month: 30 * 864e5 }[m[2] as "day"];
+  return new Date(now - Number(m[1]) * unit).toISOString();
+}
+
+const between = (html: string, re: RegExp): string => clean(html.match(re)?.[1] ?? "");
+
+/**
+ * Jobberman's listing cards. It has no feed or API, so this reads the public listing pages that
+ * its robots.txt allows. Every employer is Nigerian, so the location always names the country.
+ */
+export function jobbermanItems(html: string, now = Date.now()): Item[] {
+  const cards = html.split('data-cy="listing-cards-components"').slice(1);
+  if (!cards.length && !/jobberman/i.test(html)) throw new Error("Expected a Jobberman listings page");
+  return cards.flatMap((c): Item[] => {
+    const url = c.match(/<a\s+href="(https:\/\/www\.jobberman\.com\/listings\/[^"]+)"[^>]*data-cy="listing-title-link"/)?.[1];
+    const title = between(c, /data-cy="listing-title-link"[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/);
+    if (!url || !title) return [];
+    const chips = [...c.matchAll(/<span\s+class="mb-3 px-3 py-1 rounded[^"]*">([\s\S]*?)<\/span>/g)].map((m) => clean(m[1]));
+    const [place = "", type = "", pay = ""] = chips;
+    const category = between(c, /<\/div>\s*<p\s+class="text-sm text-gray-500 text-loading-animate[^"]*">([\s\S]*?)<\/p>/);
+    const summary = between(c, /<p\s+class="text-sm font-normal text-gray-700 md:text-gray-500[^"]*">([\s\S]*?)<\/p>/);
+    const when = between(c, /<p\s+class="text-sm font-normal text-gray-700 text-loading-animate">([\s\S]*?)<\/p>/);
+    return [{ title, url, org: between(c, /<p\s+class="text-sm text-blue-700 text-loading-animate[^"]*">([\s\S]*?)<\/p>/),
+      location: /nigeria/i.test(place) ? place : `${place}${place ? ", " : ""}Nigeria`, posted: relativeDate(when, now),
+      text: [category, type, pay !== "Confidential" ? pay : "", summary].filter(Boolean).join(". ") }];
   });
 }
 
@@ -212,6 +247,17 @@ export const ADAPTERS: Record<Source["type"], Adapter> = {
       const items = devpostItems(await getJ<any>(`https://devpost.com/api/hackathons?status[]=upcoming&status[]=open&page=${page}`));
       out.push(...items);
       if (items.length < 9) break;
+    }
+    return out;
+  },
+
+  // One page at a time with a pause between, to stay a light visitor.
+  async jobberman(u) {
+    const paths = (u as JobbermanSource).paths || ["/jobs", "/jobs?page=2"];
+    const out: Item[] = [];
+    for (const [i, p] of paths.entries()) {
+      if (i) await new Promise((r) => setTimeout(r, 1500));
+      out.push(...jobbermanItems(await (await get(new URL(p, "https://www.jobberman.com").href)).text()));
     }
     return out;
   },
