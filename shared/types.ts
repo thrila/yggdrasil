@@ -75,7 +75,7 @@ export interface Run {
 /** `greenhouse:<slug>` / `lever:<slug>` / `ashby:<slug>`. */
 export type Board = `greenhouse:${string}` | `lever:${string}` | `ashby:${string}`;
 
-export type SourceType = "ats" | "rss" | "remotive" | "remoteok" | "arbeitnow" | "himalayas" | "jobicy" | "xsearch";
+export type SourceType = "ats" | "rss" | "remotive" | "remoteok" | "arbeitnow" | "himalayas" | "jobicy" | "workingnomads" | "devpost" | "xsearch";
 
 interface SourceBase {
   /** Must be unique within its type: it is the health key and the job's `source`. */
@@ -115,6 +115,14 @@ export interface JobicySource extends SourceBase {
   type: "jobicy";
   url: string;
 }
+export interface WorkingNomadsSource extends SourceBase {
+  type: "workingnomads";
+}
+export interface DevpostSource extends SourceBase {
+  type: "devpost";
+  /** Listing pages to read, nine hackathons each. */
+  pages?: number;
+}
 export interface XSearchSource extends SourceBase {
   type: "xsearch";
 }
@@ -126,7 +134,7 @@ export interface XSearchSource extends SourceBase {
  */
 export type Source =
   | AtsSource | RssSource | RemotiveSource | RemoteOkSource
-  | ArbeitnowSource | HimalayasSource | JobicySource | XSearchSource;
+  | ArbeitnowSource | HimalayasSource | JobicySource | WorkingNomadsSource | DevpostSource | XSearchSource;
 
 /** One ATS board, expanded from its source entry. `name` is the board id. */
 export type Unit = Source & { board?: string };
