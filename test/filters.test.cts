@@ -61,3 +61,8 @@ test("restored filters ignore malformed fields", () => {
   const r = restoreFilters({ tags: ["rust", 3], days: 5, sort: "match", hideSeen: true, source: "Board" }, fallback);
   assert.deepEqual(r, { ...fallback, sort: "match", hideSeen: true, source: "Board" });
 });
+
+test("the added sort lists the most recently shortlisted first", () => {
+  const jobs = [job("old", { interested_ts: 1 }), job("new", { interested_ts: 3 }), job("mid", { interested_ts: 2 })];
+  assert.deepEqual(ids(applyFilters(jobs, { ...defaultFilters(true), sort: "added" }, "", true, now).visible), ["new", "mid", "old"]);
+});

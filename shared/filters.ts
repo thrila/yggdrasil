@@ -2,7 +2,7 @@
 // without React, and dependency-free so both tsconfigs can include it.
 import type { Job } from "./types";
 
-export type SortKey = "newest" | "match" | "deadline";
+export type SortKey = "newest" | "match" | "deadline" | "added";
 
 /** Posted-within windows the filter bar offers, in days. 0 means any time. */
 export const POSTED_WITHIN_DAYS = [0, 1, 3, 7, 14, 30] as const;
@@ -69,6 +69,7 @@ export function sortJobs(jobs: Job[], sort: SortKey): Job[] {
   const byNew = (a: Job, b: Job) => postedAt(b) - postedAt(a);
   const cmp = sort === "match" ? (a: Job, b: Job) => (b.score ?? 0) - (a.score ?? 0) || byNew(a, b)
     : sort === "deadline" ? (a: Job, b: Job) => deadlineAt(a) - deadlineAt(b) || byNew(a, b)
+    : sort === "added" ? (a: Job, b: Job) => (b.interested_ts ?? 0) - (a.interested_ts ?? 0) || byNew(a, b)
     : byNew;
   return [...jobs].sort(cmp);
 }
@@ -108,6 +109,6 @@ export function restoreFilters(raw: unknown, fallback: Filters): Filters {
     matching: bool(r.matching, fallback.matching),
     hideRestricted: bool(r.hideRestricted, fallback.hideRestricted),
     hideSeen: bool(r.hideSeen, fallback.hideSeen),
-    sort: r.sort === "newest" || r.sort === "match" || r.sort === "deadline" ? r.sort : fallback.sort,
+    sort: r.sort === "newest" || r.sort === "match" || r.sort === "deadline" || r.sort === "added" ? r.sort : fallback.sort,
   };
 }
