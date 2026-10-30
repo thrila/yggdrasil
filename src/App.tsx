@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ComponentType, ReactNode, SVGProps } from "react";
-import { Globe, MapPin, Sliders, Award, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Bell, Eye } from "react-feather";
+import { Globe, MapPin, Sliders, Award, Star, Briefcase, Link as LinkIcon, Inbox, RefreshCw, Plus, Check, Search, X, Sun, Moon, Bell, Eye } from "react-feather";
 import { api, isDesktop } from "./api";
 import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
@@ -15,7 +15,7 @@ type TabDef = readonly [Tab, string, IconNode];
 
 const TABS: readonly TabDef[] = [
   ["worldwide", "Worldwide", Globe], ["nigeria", "Nigeria", MapPin],
-  ["grants", "Grants", Award], ["settings", "Settings", Sliders],
+  ["grants", "Grants", Award], ["interested", "Interested", Star], ["settings", "Settings", Sliders],
 ];
 const TAB_IDS = TABS.map(([id]) => id);
 
@@ -62,8 +62,11 @@ function Highlight({ text = "", q }: { text?: string; q: string }): ReactNode {
 }
 
 const filterKey = (tab: Tab) => `yggdrasil.filters.${tab}`;
+/** Grants and the shortlist skip interest and location filtering; the shortlist sorts by when it was added. */
+const tabDefaults = (tab: Tab): Filters =>
+  tab === "interested" ? { ...defaultFilters(true), sort: "added" } : defaultFilters(tab === "grants");
 const loadFilters = (tab: Tab): Filters => {
-  const fallback = defaultFilters(tab === "grants");
+  const fallback = tabDefaults(tab);
   try { return restoreFilters(JSON.parse(localStorage.getItem(filterKey(tab)) ?? "null"), fallback); }
   catch { return fallback; }
 };
@@ -95,19 +98,21 @@ function Jobs({ tab, q, setQ, searchRef }: {
     try { localStorage.setItem(filterKey(tab), JSON.stringify(f)); } catch { /* storage may be unavailable */ }
   }, [tab, f]);
 
-  const grants = tab === "grants", noun = grants ? "opportunity" : "role";
+  const grants = tab === "grants", shortlist = tab === "interested", loose = grants || shortlist;
+  const noun = loose ? "opportunity" : "role";
   const all = jobs ?? [];
   // A folded duplicate is one card, so marking it marks every copy.
   const mark = (list: Job[], seen: boolean) =>
     api.markSeen(list.flatMap((j) => [j.id, ...(j.dupe_ids ?? [])]), { seen, seen_ts: seen ? Date.now() : undefined });
+  const star = (j: Job) => api.markInterested([j.id, ...(j.dupe_ids ?? [])], !j.interested);
   const set = (patch: Partial<Filters>) => setF((cur) => ({ ...cur, ...patch }));
-  const { base, shown, visible } = applyFilters(all, f, q, grants);
+  const { base, shown, visible } = applyFilters(all, f, q, loose);
   const seenShown = shown.filter((j) => j.seen), unseenShown = shown.filter((j) => !j.seen);
   const tagChips = tagCounts(base, f.tags);
   const sources = sourceCounts(all);
   if (f.source && !sources.some(([s]) => s === f.source)) sources.unshift([f.source, 0]);
   const toggle = (t: string) => set({ tags: f.tags.includes(t) ? f.tags.filter((x) => x !== t) : [...f.tags, t] });
-  const fallback = defaultFilters(grants);
+  const fallback = tabDefaults(tab);
   const narrowed = f.tags.length > 0 || f.source !== fallback.source || f.days !== fallback.days
     || f.matching !== fallback.matching || f.hideRestricted !== fallback.hideRestricted || f.hideSeen !== fallback.hideSeen;
   const page = visible.slice(0, limit);
@@ -172,6 +177,11 @@ function Jobs({ tab, q, setQ, searchRef }: {
           else gAt = now;
           break;
         }
+        case "i": {
+          const j = visible[cur];
+          if (j) { e.preventDefault(); star(j); }
+          break;
+        }
         case "Enter": {
           if ((e.target as HTMLElement).closest("a,button")) break;
           const a = rowEls()[cur]?.querySelector<HTMLAnchorElement>("a.job-main");
@@ -182,7 +192,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
     };
     addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);
-  }, [cur, visible.length]);
+  }, [cur, visible]);
 
   if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
   if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
@@ -202,8 +212,9 @@ function Jobs({ tab, q, setQ, searchRef }: {
     </div>
     <div className="filters">
       <label className="pick"><span>Sort</span><select value={f.sort} onChange={(e) => set({ sort: e.target.value as SortKey })}>
+        {shortlist && <option value="added">Recently added</option>}
         <option value="newest">Newest</option>
-        {!grants && <option value="match">Best match</option>}
+        {!loose && <option value="match">Best match</option>}
         <option value="deadline">Deadline soonest</option>
       </select></label>
       <label className="pick"><span>Posted</span><select value={f.days} onChange={(e) => set({ days: Number(e.target.value) })}>
@@ -215,7 +226,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
       </select></label>
     </div>
     <div className="bar">
-      {!grants && <label className="check"><input type="checkbox" checked={f.matching} onChange={(e) => set({ matching: e.target.checked })} />Matches my interests</label>}
+      {!loose && <label className="check"><input type="checkbox" checked={f.matching} onChange={(e) => set({ matching: e.target.checked })} />Matches my interests</label>}
       <label className="check" title="US-only, EU-only and similar listings you likely cannot apply to">
         <input type="checkbox" checked={f.hideRestricted} onChange={(e) => set({ hideRestricted: e.target.checked })} />Hide location-restricted</label>
       <label className="check"><input type="checkbox" checked={f.hideSeen} onChange={(e) => set({ hideSeen: e.target.checked })} />Hide seen</label>
@@ -247,6 +258,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
           <span title={j.also_via?.length ? `Also listed on ${j.also_via.join(", ")}` : undefined}><Icon node={LinkIcon} size={14} />via {j.source}{j.also_via?.length ? ` +${j.also_via.length}` : ""}</span>
           <time dateTime={j.posted || undefined} title={when(j.posted) !== null ? dtf.format(when(j.posted)!) : undefined}>{ago(j.posted)}</time>
           {j.deadline_label && <span>Deadline: {j.deadline_label}</span>}
+          {!j.active && <span className="chip closed" title="No source lists it any more, or its deadline passed">closed</span>}
           {j.first_seen > lastVisit && !j.seen && <span className="chip new">new</span>}
           {j.seen && <span className="chip seenchip">seen {j.seen_ts ? ago(new Date(j.seen_ts).toISOString()) : ""}</span>}
         </div>
@@ -255,6 +267,9 @@ function Jobs({ tab, q, setQ, searchRef }: {
           {j.tags.map((t) => <span key={t} className={"chip" + (interests.has(t) ? " interest" : "")}><Highlight text={t} q={q} /></span>)}</div>
         </JobLink>
         <div className="meta actions">
+          <button type="button" className={"chip quiet" + (j.interested ? " starred" : "")} aria-pressed={!!j.interested}
+            title="Keep it in the Interested tab (i)" onClick={() => star(j)}>
+            <Icon node={Star} size={13} />{j.interested ? "Interested" : "Mark interested"}</button>
           <button type="button" className="chip quiet" aria-pressed={!!j.seen}
             onClick={() => mark([j], !j.seen)}><Icon node={Eye} size={13} />{j.seen ? "Mark unseen" : "Mark seen"}</button>
           {j.attribution && <a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a>}
@@ -263,8 +278,9 @@ function Jobs({ tab, q, setQ, searchRef }: {
     ))}</div>
     {visible.length > limit && <div className="more"><button type="button" className="btn quiet" onClick={() => setLimit(limit + PAGE)}>
       Show {Math.min(PAGE, visible.length - limit)} more · {(visible.length - limit).toLocaleString()} left</button></div>}
-    </> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length
-      ? `No ${noun}s match your search and filters.`
+    </> : <div className="empty"><Icon node={shortlist && !jobs.length ? Star : Inbox} size={28} /><p>{shortlist && !jobs.length
+      ? "Nothing here yet. Press “Mark interested” on any listing, or i on the highlighted one, to keep it here."
+      : jobs.length ? `No ${noun}s match your search and filters.`
       : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p>
       {jobs.length > 0 && (narrowed || q) && <button type="button" className="btn quiet"
         onClick={() => { setF({ ...fallback, sort: f.sort }); setQ(""); }}>Clear search and filters</button>}</div>}
