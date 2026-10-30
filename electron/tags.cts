@@ -35,7 +35,9 @@ const hit = (rules: Record<string, RegExp>, text: string): string[] =>
   Object.keys(rules).filter((k) => rules[k]!.test(text));
 
 /** Returns sorted tags for a listing. `force` is pinned on by the source config. */
-export function tag(title: string, location: string, description = "", force: string[] = []): string[] {
+export function tag(title: string, location: string, fullText = "", force: string[] = []): string[] {
+  // Long postings cost seconds across a large board. Policy lines sit near the top or the very end.
+  const description = fullText.length > 12000 ? `${fullText.slice(0, 8000)} ${fullText.slice(-4000)}` : fullText;
   const head = `${title} ${location}`;
   const policy = `${head} ${description}`;
   const tags = new Set<string>([

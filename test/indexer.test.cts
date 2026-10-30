@@ -195,3 +195,11 @@ test("a bare ampersand in feed text does not reject the whole feed", () => {
   assert.equal(item!.title, "QA & Test Engineer & Lead");
   assert.equal(item!.url, "https://jobs.example/1?a=1&b=2");
 });
+
+test("tagging a very long posting is fast and still reads its opening and closing policy lines", () => {
+  const filler = "We build reliable things together with kind people. ".repeat(4000);
+  const started = Date.now();
+  for (let i = 0; i < 50; i++) tag("Engineer", "Remote", `Fully remote role. ${filler} We offer visa sponsorship and relocation support.`);
+  assert.ok(Date.now() - started < 1500, "regex cost must not scale with the full posting");
+  assert.deepEqual(tag("Engineer", "Remote", `Fully remote role. ${filler} We offer visa sponsorship and relocation support.`), ["relocation", "remote"]);
+});
