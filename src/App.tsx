@@ -96,7 +96,9 @@ function Jobs({ tab, q, setQ, searchRef }: {
 
   const grants = tab === "grants", noun = grants ? "opportunity" : "role";
   const all = jobs ?? [];
-  const mark = (ids: string[], seen: boolean) => api.markSeen(ids, { seen, seen_ts: seen ? Date.now() : undefined });
+  // A folded duplicate is one card, so marking it marks every copy.
+  const mark = (list: Job[], seen: boolean) =>
+    api.markSeen(list.flatMap((j) => [j.id, ...(j.dupe_ids ?? [])]), { seen, seen_ts: seen ? Date.now() : undefined });
   const set = (patch: Partial<Filters>) => setF((cur) => ({ ...cur, ...patch }));
   const { base, shown, visible } = applyFilters(all, f, q, grants);
   const seenShown = shown.filter((j) => j.seen), unseenShown = shown.filter((j) => !j.seen);
@@ -226,8 +228,8 @@ function Jobs({ tab, q, setQ, searchRef }: {
           disabled={!on && n === 0} onClick={() => toggle(t)}>{t}<span className="n">{n}</span></Chip>;
       })}</div>}
     {shown.length > 0 && <div className="bar bulk">
-      {unseenShown.length > 0 && <Chip t={`Mark ${unseenShown.length} seen`} cls="quiet" onClick={() => mark(unseenShown.map((j) => j.id), true)} />}
-      {seenShown.length > 0 && <Chip t={`Mark ${seenShown.length} unseen`} cls="quiet" onClick={() => mark(seenShown.map((j) => j.id), false)} />}
+      {unseenShown.length > 0 && <Chip t={`Mark ${unseenShown.length} seen`} cls="quiet" onClick={() => mark(unseenShown, true)} />}
+      {seenShown.length > 0 && <Chip t={`Mark ${seenShown.length} unseen`} cls="quiet" onClick={() => mark(seenShown, false)} />}
     </div>}
     {visible.length ? <><div className="list" ref={listRef}>{page.map((j, i) => (
       <article key={j.id} className={(j.seen ? "job seen" : "job") + (i === cur ? " cursor" : "")}>
@@ -236,7 +238,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
         <div className="meta">
           {j.org && <span><Icon node={Briefcase} size={14} /><Highlight text={j.org} q={q} /></span>}
           {j.location && <span><Icon node={MapPin} size={14} /><Highlight text={j.location} q={q} /></span>}
-          <span><Icon node={LinkIcon} size={14} />via {j.source}</span>
+          <span title={j.also_via?.length ? `Also listed on ${j.also_via.join(", ")}` : undefined}><Icon node={LinkIcon} size={14} />via {j.source}{j.also_via?.length ? ` +${j.also_via.length}` : ""}</span>
           <time dateTime={j.posted || undefined} title={when(j.posted) !== null ? dtf.format(when(j.posted)!) : undefined}>{ago(j.posted)}</time>
           {j.deadline_label && <span>Deadline: {j.deadline_label}</span>}
           {j.first_seen > lastVisit && !j.seen && <span className="chip new">new</span>}
@@ -246,7 +248,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
         </JobLink>
         <div className="meta actions">
           <button type="button" className="chip quiet" aria-pressed={!!j.seen}
-            onClick={() => mark([j.id], !j.seen)}><Icon node={Eye} size={13} />{j.seen ? "Mark unseen" : "Mark seen"}</button>
+            onClick={() => mark([j], !j.seen)}><Icon node={Eye} size={13} />{j.seen ? "Mark unseen" : "Mark seen"}</button>
           {j.attribution && <a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a>}
         </div>
       </article>
