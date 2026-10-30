@@ -87,6 +87,11 @@ button.chip:hover{background:var(--line);color:var(--ink)}
   color:var(--mut);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .chip.quiet{background:transparent;border:1px solid var(--line);color:var(--mut)}
 .chip.quiet:hover{background:var(--fill)}
+.chip.quiet.starred{color:var(--acc);border-color:color-mix(in srgb,var(--acc) 45%,transparent)}
+.chip.quiet.starred svg{fill:currentColor}
+.chip.quiet svg{margin-right:.3rem}
+.chip.closed{height:1.2rem;padding:0 .45rem;background:transparent;border:1px solid var(--bad);color:var(--bad);
+  font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .chip .n{margin-left:.35rem;font-variant-numeric:tabular-nums;opacity:.65}
 .chip.interest{color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent)}
 .chip.active,.chip.active.interest{background:var(--ink);color:var(--card)}
