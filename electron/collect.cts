@@ -380,7 +380,8 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
   try {
     if (!ADAPTERS[u.type]) throw new Error("Unknown source type " + u.type);
     store.d.meta.polls ||= {};
-    store.d.meta.polls[pollKey] = start;
+    // Publisher caps count attempts. Everything else may try again next refresh after a failure.
+    if (minHours) store.d.meta.polls[pollKey] = start;
 
     let items = await ADAPTERS[u.type](u, cfg, store);
     if (!Array.isArray(items)) throw new Error("Expected a list of opportunities");
@@ -444,7 +445,10 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings): Promise<
     store.d.runs[u.name] = run;
   } catch (e) { // one broken source never stops the rest
     const err = String((e as Error)?.message || e).slice(0, 200);
-    const run: Run = { source: u.name, ok: false, count: n, error: err, ts: Date.now() };
+    const before = store.d.runs[u.name];
+    // Waiting on the user's key is not a fault in the source.
+    const run: Run = /^skipped:/.test(err) ? { source: u.name, ok: true, count: 0, error: err, ts: Date.now() }
+      : { source: u.name, ok: false, count: n, error: err, ts: Date.now(), last_ok: before?.last_ok, fails: (before?.fails ?? 0) + 1 };
     store.d.runs[u.name] = run;
   }
 }

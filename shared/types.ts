@@ -76,6 +76,10 @@ export interface Run {
   count: number;
   error: string;
   ts: number;
+  /** When this source last succeeded. Its listings stay put until then. */
+  last_ok?: number;
+  /** Refreshes in a row that have failed. */
+  fails?: number;
 }
 
 /** `greenhouse:<slug>` / `lever:<slug>` / `ashby:<slug>`. */
