@@ -6,7 +6,7 @@ import { tag } from "./tags.cjs";
 import { opportunityKind } from "./opportunities.cjs";
 import { units } from "./source-config.cjs";
 import type {
-  AtsSource, Attribution, JobStore, OpportunityKind, RemotiveSource, Run, Settings, Source, Unit,
+  AtsSource, Attribution, DevpostSource, JobStore, OpportunityKind, RemotiveSource, Run, Settings, Source, Unit,
 } from "../shared/types";
 
 const UA = { "User-Agent": "opportunity-dashboard/0.1 (personal use)" };
@@ -50,6 +50,29 @@ interface Item {
   text: string;
   deadline?: string;
   deadlineLabel?: string;
+}
+
+/** Working Nomads' public feed. Every listing is remote; the location names who may apply. */
+export function workingNomadsItems(r: unknown): Item[] {
+  if (!Array.isArray(r)) throw new Error("Expected a Working Nomads jobs array");
+  return r.map((j: any): Item => ({ title: j.title, org: j.company_name || "", location: `${j.location || "Worldwide"} Remote`,
+    url: j.url, posted: isoDate(j.pub_date), text: `${clean(j.description)} ${j.tags || ""}` }));
+}
+
+/** Devpost's open and upcoming hackathons. Online events are open worldwide. */
+export function devpostItems(r: any): Item[] {
+  if (!Array.isArray(r?.hackathons)) throw new Error("Expected Devpost hackathons array");
+  return r.hackathons.map((h: any): Item => {
+    const dates = String(h.submission_period_dates || "");
+    // "Aug 26 - Oct 30, 2026": the end date, closed a day late so no timezone ends it early.
+    const end = dates.split(/\s+-\s+/).pop() || "";
+    const year = dates.match(/\d{4}/)?.[0];
+    const endAt = Date.parse(/\d{4}/.test(end) ? end : `${end}, ${year}`);
+    const where = h.displayed_location?.location || "";
+    return { title: h.title, org: h.organization_name || "", location: /online/i.test(where) ? "Online, worldwide" : where,
+      url: h.url, posted: "", text: `Hackathon. ${arr<any>(h.themes).map((t) => t.name).join(", ")}. Prize ${clean(h.prize_amount)}`,
+      deadline: Number.isNaN(endAt) ? "" : new Date(endAt + 2 * 864e5).toISOString(), deadlineLabel: dates };
+  });
 }
 
 /** Some publishers require visible credit when their listings are shown. */
@@ -174,6 +197,20 @@ export const ADAPTERS: Record<Source["type"], Adapter> = {
     if (!Array.isArray(r.jobs)) throw new Error("Expected Jobicy jobs array");
     return r.jobs.map((j: any): Item => ({ title: j.jobTitle, org: j.companyName, location: `${j.jobGeo || ""} Remote`,
       url: j.url, posted: isoDate(j.pubDate), text: clean(j.jobDescription) }));
+  },
+
+  async workingnomads() {
+    return workingNomadsItems(await getJ<unknown>("https://www.workingnomads.com/api/exposed_jobs/"));
+  },
+
+  async devpost(u) {
+    const out: Item[] = [];
+    for (let page = 1; page <= ((u as DevpostSource).pages || 6); page++) {
+      const items = devpostItems(await getJ<any>(`https://devpost.com/api/hackathons?status[]=upcoming&status[]=open&page=${page}`));
+      out.push(...items);
+      if (items.length < 9) break;
+    }
+    return out;
   },
 
   // Asks Grok's X Search tool for leads. Needs an xAI key. Results are pointers, verify each link.
