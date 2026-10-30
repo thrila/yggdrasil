@@ -19,7 +19,9 @@ export function opportunityKind(item: { title?: string; kind?: string }, source:
 }
 
 /** True when the listing belongs in the given tab. */
-export function inTab(item: { active: boolean; kind?: OpportunityKind; tags?: string[] }, tab: string): boolean {
+export function inTab(item: { active: boolean; kind?: OpportunityKind; tags?: string[]; interested?: boolean }, tab: string): boolean {
+  // A shortlist is the user's own: it keeps jobs and funding alike, even after they close.
+  if (tab === "interested") return !!item.interested;
   if (!item.active) return false;
   const kind = item.kind || opportunityKind(item, { force_tags: item.tags });
   if (tab === "grants") return FUNDING_KINDS.has(kind);
