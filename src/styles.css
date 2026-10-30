@@ -87,6 +87,20 @@ button.chip:hover{background:var(--line);color:var(--ink)}
   color:var(--mut);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .chip.quiet{background:transparent;border:1px solid var(--line);color:var(--mut)}
 .chip.quiet:hover{background:var(--fill)}
+.chip .n{margin-left:.35rem;font-variant-numeric:tabular-nums;opacity:.65}
+.chip.interest{color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent)}
+.chip.active,.chip.active.interest{background:var(--ink);color:var(--card)}
+button.chip[disabled]{opacity:.4;cursor:default;background:var(--fill);color:var(--mut)}
+
+/* Sort, date and source pickers sit in one row above the toggles. */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem .75rem;margin:0 0 .75rem}
+.pick{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--mut);min-width:0}
+.pick select{width:auto;max-width:16rem;padding:.3rem .6rem;font-size:.85rem;border-radius:8px}
+.link{border:0;background:none;padding:0;font:inherit;color:var(--acc);cursor:pointer}
+.link:hover{text-decoration:underline}
+.bar.bulk{margin-top:-.6rem;gap:.4rem}
+.more{display:flex;justify-content:center;margin-top:.5rem}
+.empty .btn{margin-top:1rem}
 
 /* Read listings stay legible but recede, so unread ones draw the eye. */
 .job.seen{opacity:.55}
