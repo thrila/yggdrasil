@@ -144,3 +144,10 @@ test("saving is atomic and a corrupt store is set aside, not overwritten", async
     assert.equal(fs.readFileSync(`${file}.corrupt`, "utf8"), '{"jobs":{"half');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test("source health lists configured sources only, failures first", async () => {
+  const { healthRows } = await import("../electron/collect.cjs");
+  const run = (source: string, ok: boolean) => ({ source, ok, count: 0, error: "", ts: 1 });
+  const runs = { A: run("A", true), B: run("B", false), Removed: run("Removed", false) };
+  assert.deepEqual(healthRows(runs, [{ name: "A" }, { name: "B" }]).map((r) => r.source), ["B", "A"]);
+});

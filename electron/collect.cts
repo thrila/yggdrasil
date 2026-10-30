@@ -526,6 +526,12 @@ export async function runUnit(store: JobStore, u: Unit, cfg: Settings, owners?: 
   }
 }
 
+/** Last results for the sources still configured, failures first. Removed sources do not fail forever. */
+export function healthRows(runs: Record<string, Run>, active: Pick<Unit, "name">[]): Run[] {
+  const names = new Set(active.map((u) => u.name));
+  return Object.values(runs).filter((r) => names.has(r.source)).sort((a, b) => Number(a.ok) - Number(b.ok));
+}
+
 export async function runAll(store: JobStore, cfg: Settings, sources: Source[]): Promise<void> {
   const owners = ownersOf(store);
   let saved = Date.now();
