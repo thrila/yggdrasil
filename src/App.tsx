@@ -99,7 +99,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
   }, [tab, f]);
 
   const grants = tab === "grants", shortlist = tab === "interested", loose = grants || shortlist;
-  const noun = loose ? "opportunity" : "role";
+  const nouns = loose ? "opportunities" : "roles";
   const all = jobs ?? [];
   // A folded duplicate is one card, so marking it marks every copy.
   const mark = (list: Job[], seen: boolean) =>
@@ -194,8 +194,8 @@ function Jobs({ tab, q, setQ, searchRef }: {
     return () => removeEventListener("keydown", onKey);
   }, [cur, visible]);
 
-  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {noun}s: {err}</p></div>;
-  if (!jobs) return <p className="empty" aria-live="polite">Loading {noun}s…</p>;
+  if (err) return <div className="empty"><Icon node={X} size={28} /><p>Could not load {nouns}: {err}</p></div>;
+  if (!jobs) return <p className="empty" aria-live="polite">Loading {nouns}…</p>;
 
   return <>
     <div className="search">
@@ -231,7 +231,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
         <input type="checkbox" checked={f.hideRestricted} onChange={(e) => set({ hideRestricted: e.target.checked })} />Hide location-restricted</label>
       <label className="check"><input type="checkbox" checked={f.hideSeen} onChange={(e) => set({ hideSeen: e.target.checked })} />Hide seen</label>
       {narrowed && <button type="button" className="link" onClick={() => setF({ ...fallback, sort: f.sort })}>Clear filters</button>}
-      <span className="push">{visible.length.toLocaleString()} of {jobs.length.toLocaleString()} {noun}s</span>
+      <span className="push">{visible.length.toLocaleString()} of {jobs.length.toLocaleString()} {nouns}</span>
     </div>
     {tagChips.length > 0 && <div className="tags gap" aria-label="Filter by tag">
       {tagChips.map(([t, n]) => {
@@ -280,8 +280,8 @@ function Jobs({ tab, q, setQ, searchRef }: {
       Show {Math.min(PAGE, visible.length - limit)} more · {(visible.length - limit).toLocaleString()} left</button></div>}
     </> : <div className="empty"><Icon node={shortlist && !jobs.length ? Star : Inbox} size={28} /><p>{shortlist && !jobs.length
       ? "Nothing here yet. Press “Mark interested” on any listing, or i on the highlighted one, to keep it here."
-      : jobs.length ? `No ${noun}s match your search and filters.`
-      : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p>
+      : jobs.length ? `No ${nouns} match your search and filters.`
+      : `No ${nouns} yet. The first refresh can take a minute; check Settings for source status.`}</p>
       {jobs.length > 0 && (narrowed || q) && <button type="button" className="btn quiet"
         onClick={() => { setF({ ...fallback, sort: f.sort }); setQ(""); }}>Clear search and filters</button>}</div>}
   </>;
