@@ -6,6 +6,8 @@ import logoLight from "./assets/mark-light.png";
 import logoDark from "./assets/mark-dark.png";
 import { REFRESH_MINUTE_CHOICES } from "../shared/types";
 import type { Job, PublicSettings, Run, Tab } from "../shared/types";
+import { POSTED_WITHIN_DAYS, applyFilters, defaultFilters, restoreFilters, sourceCounts, tagCounts } from "../shared/filters";
+import type { Filters, SortKey } from "../shared/filters";
 
 type IconNode = ComponentType<SVGProps<SVGSVGElement>>;
 type TabDef = readonly [Tab, string, IconNode];
@@ -40,7 +42,7 @@ const countdown = (at: number): string => {
 const lastVisit = Number(localStorage.getItem("lastVisit")) || 0;
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-const Chip = ({ t, cls = "", children, ...p }: { t: string; cls?: string; children?: ReactNode } & Omit<React.HTMLAttributes<HTMLButtonElement>, "children">) =>
+const Chip = ({ t, cls = "", children, ...p }: { t: string; cls?: string; children?: ReactNode } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">) =>
   <button type="button" className={`chip ${cls}`} {...p}>{children ?? t}</button>;
 
 const Icon = ({ node: Node, size, ...p }: { node: IconNode; size?: number } & Omit<SVGProps<SVGSVGElement>, "children">) =>
@@ -58,42 +60,54 @@ function Highlight({ text = "", q }: { text?: string; q: string }): ReactNode {
   return text.split(re).map((part, i) => (i % 2 ? <mark key={i}>{part}</mark> : part));
 }
 
+const filterKey = (tab: Tab) => `yggdrasil.filters.${tab}`;
+const loadFilters = (tab: Tab): Filters => {
+  const fallback = defaultFilters(tab === "grants");
+  try { return restoreFilters(JSON.parse(localStorage.getItem(filterKey(tab)) ?? "null"), fallback); }
+  catch { return fallback; }
+};
+const daysLabel = (d: number) => d === 0 ? "Any time" : d === 1 ? "Last 24 hours" : `Last ${d} days`;
+/** Cards rendered at once. A full tab is over a thousand, which makes every keystroke slow. */
+const PAGE = 90;
+
 function Jobs({ tab, q, setQ, searchRef }: {
   tab: Tab; q: string; setQ: (v: string) => void; searchRef: React.RefObject<HTMLInputElement>;
 }) {
   const [jobs, setJobs] = useState<Job[] | null>(null);
-  const [active, setActive] = useState<Set<string>>(new Set());
-  const [only, setOnly] = useState(true);
-  const [hideSeen, setHideSeen] = useState(false);
+  const [f, setF] = useState<Filters>(() => loadFilters(tab));
+  const [interests, setInterests] = useState<Set<string>>(new Set());
   const [err, setErr] = useState("");
   const [cursor, setCursor] = useState(0);
+  const [limit, setLimit] = useState(PAGE);
   const listRef = useRef<HTMLDivElement>(null);
   const movedRef = useRef(false);
 
   useEffect(() => {
     const load = () => api.jobs(tab).then((d) => { setJobs(d); setErr(""); }, (e) => setErr(String(e?.message || e)));
-    load(); setActive(new Set()); setErr(""); setCursor(0); movedRef.current = false;
+    load(); setErr(""); setCursor(0); movedRef.current = false;
+    api.getSettings().then((s) => setInterests(new Set(s.interests)), () => {});
     const off = api.onUpdated(load);
     return () => { off?.(); localStorage.setItem("lastVisit", String(Date.now())); };
   }, [tab]);
 
+  useEffect(() => {
+    try { localStorage.setItem(filterKey(tab), JSON.stringify(f)); } catch { /* storage may be unavailable */ }
+  }, [tab, f]);
+
   const grants = tab === "grants", noun = grants ? "opportunity" : "role";
   const all = jobs ?? [];
   const mark = (ids: string[], seen: boolean) => api.markSeen(ids, { seen, seen_ts: seen ? Date.now() : undefined });
-  const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const hay = (j: Job) => [j.title, j.org, j.location, j.source, ...j.tags].join(" ").toLowerCase();
-  const shown = all.filter((j) => (grants || !only || (j.score ?? 0) > 0 || j.tags.includes("relocation"))
-      && [...active].every((t) => j.tags.includes(t))
-      && terms.every((w) => hay(j).includes(w)))
-    .sort((a, b) => (Date.parse(b.posted) || 0) - (Date.parse(a.posted) || 0));
-
-  const seenCount = shown.filter((j) => j.seen).length;
-  const visible = hideSeen ? shown.filter((j) => !j.seen) : shown;
-
-  const counts: Record<string, number> = {};
-  all.forEach((j) => j.tags.forEach((t) => { counts[t] = (counts[t] ?? 0) + 1; }));
-  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12).map((e) => e[0]);
-  const toggle = (t: string) => setActive((s) => { const n = new Set(s); if (n.has(t)) n.delete(t); else n.add(t); return n; });
+  const set = (patch: Partial<Filters>) => setF((cur) => ({ ...cur, ...patch }));
+  const { base, shown, visible } = applyFilters(all, f, q, grants);
+  const seenShown = shown.filter((j) => j.seen), unseenShown = shown.filter((j) => !j.seen);
+  const tagChips = tagCounts(base, f.tags);
+  const sources = sourceCounts(all);
+  if (f.source && !sources.some(([s]) => s === f.source)) sources.unshift([f.source, 0]);
+  const toggle = (t: string) => set({ tags: f.tags.includes(t) ? f.tags.filter((x) => x !== t) : [...f.tags, t] });
+  const fallback = defaultFilters(grants);
+  const narrowed = f.tags.length > 0 || f.source !== fallback.source || f.days !== fallback.days
+    || f.matching !== fallback.matching || f.hideRestricted !== fallback.hideRestricted || f.hideSeen !== fallback.hideSeen;
+  const page = visible.slice(0, limit);
 
   // Vim cursor: an index into `visible`, kept inside the list as filters change.
   const cur = Math.min(cursor, Math.max(0, visible.length - 1));
@@ -102,15 +116,21 @@ function Jobs({ tab, q, setQ, searchRef }: {
     if (cursor !== cur) setCursor(cur);
   }, [cursor, cur]);
 
-  // Fresh search results start again from the top.
+  // Fresh search results or filters start again from the top, one page in.
+  const fKey = JSON.stringify(f);
   useEffect(() => {
-    setCursor(0);
-  }, [q]);
+    setCursor(0); setLimit(PAGE);
+  }, [q, fKey]);
+
+  // Moving the cursor past the rendered page reveals the next one.
+  useEffect(() => {
+    if (cur >= limit) setLimit(Math.ceil((cur + 1) / PAGE) * PAGE);
+  }, [cur, limit]);
 
   useEffect(() => {
     if (!movedRef.current || !visible.length) return;
     (listRef.current?.children[cur] as HTMLElement | undefined)?.scrollIntoView({ block: "nearest" });
-  }, [cur, visible.length]);
+  }, [cur, limit, visible.length]);
 
   useEffect(() => {
     let gAt = 0;
@@ -177,17 +197,39 @@ function Jobs({ tab, q, setQ, searchRef }: {
         placeholder="Search title, company, location, tag…" aria-label="Search roles" />
       {q && <button type="button" className="clear" onClick={() => setQ("")} aria-label="Clear search"><Icon node={X} size={16} /></button>}
     </div>
-    <div className="bar">
-      {!grants && <label className="check"><input type="checkbox" checked={only} onChange={(e) => setOnly(e.target.checked)} />Only roles matching my interests</label>}
-      <label className="check"><input type="checkbox" checked={hideSeen} onChange={(e) => setHideSeen(e.target.checked)} />Hide seen</label>
-      <span className="push">{visible.length} of {jobs.length} {noun}s</span>
+    <div className="filters">
+      <label className="pick"><span>Sort</span><select value={f.sort} onChange={(e) => set({ sort: e.target.value as SortKey })}>
+        <option value="newest">Newest</option>
+        {!grants && <option value="match">Best match</option>}
+        <option value="deadline">Deadline soonest</option>
+      </select></label>
+      <label className="pick"><span>Posted</span><select value={f.days} onChange={(e) => set({ days: Number(e.target.value) })}>
+        {POSTED_WITHIN_DAYS.map((d) => <option key={d} value={d}>{daysLabel(d)}</option>)}
+      </select></label>
+      <label className="pick"><span>Source</span><select value={f.source} onChange={(e) => set({ source: e.target.value })}>
+        <option value="">All sources ({sources.length})</option>
+        {sources.map(([s, n]) => <option key={s} value={s}>{s} ({n})</option>)}
+      </select></label>
     </div>
-    {shown.length > 0 && <div className="tags gap">
-      {seenCount > 0 && <Chip t={`Mark ${seenCount} unseen`} cls="quiet" onClick={() => mark(shown.filter((j) => j.seen).map((j) => j.id), false)} />}
-      {shown.filter((j) => !j.seen).length > 0 && <Chip t={`Mark ${shown.filter((j) => !j.seen).length} seen`} cls="quiet" onClick={() => mark(shown.filter((j) => !j.seen).map((j) => j.id), true)} />}
-      {top.map((t) =>
-      <Chip key={t} t={t} cls={active.has(t) ? "active" : ""} aria-pressed={active.has(t)} onClick={() => toggle(t)}>{t}</Chip>)}</div>}
-    {visible.length ? <div className="list" ref={listRef}>{visible.map((j, i) => (
+    <div className="bar">
+      {!grants && <label className="check"><input type="checkbox" checked={f.matching} onChange={(e) => set({ matching: e.target.checked })} />Matches my interests</label>}
+      <label className="check" title="US-only, EU-only and similar listings you likely cannot apply to">
+        <input type="checkbox" checked={f.hideRestricted} onChange={(e) => set({ hideRestricted: e.target.checked })} />Hide location-restricted</label>
+      <label className="check"><input type="checkbox" checked={f.hideSeen} onChange={(e) => set({ hideSeen: e.target.checked })} />Hide seen</label>
+      {narrowed && <button type="button" className="link" onClick={() => setF({ ...fallback, sort: f.sort })}>Clear filters</button>}
+      <span className="push">{visible.length.toLocaleString()} of {jobs.length.toLocaleString()} {noun}s</span>
+    </div>
+    {tagChips.length > 0 && <div className="tags gap" aria-label="Filter by tag">
+      {tagChips.map(([t, n]) => {
+        const on = f.tags.includes(t);
+        return <Chip key={t} t={t} cls={(on ? "active" : "") + (interests.has(t) ? " interest" : "")} aria-pressed={on}
+          disabled={!on && n === 0} onClick={() => toggle(t)}>{t}<span className="n">{n}</span></Chip>;
+      })}</div>}
+    {shown.length > 0 && <div className="bar bulk">
+      {unseenShown.length > 0 && <Chip t={`Mark ${unseenShown.length} seen`} cls="quiet" onClick={() => mark(unseenShown.map((j) => j.id), true)} />}
+      {seenShown.length > 0 && <Chip t={`Mark ${seenShown.length} unseen`} cls="quiet" onClick={() => mark(seenShown.map((j) => j.id), false)} />}
+    </div>}
+    {visible.length ? <><div className="list" ref={listRef}>{page.map((j, i) => (
       <article key={j.id} className={(j.seen ? "job seen" : "job") + (i === cur ? " cursor" : "")}>
         <JobLink job={j}>
         <h2><Highlight text={j.title} q={q} /></h2>
@@ -200,7 +242,7 @@ function Jobs({ tab, q, setQ, searchRef }: {
           {j.first_seen > lastVisit && !j.seen && <span className="chip new">new</span>}
           {j.seen && <span className="chip seenchip">seen {j.seen_ts ? ago(new Date(j.seen_ts).toISOString()) : ""}</span>}
         </div>
-        <div className="tags">{j.tags.map((t) => <span key={t} className="chip"><Highlight text={t} q={q} /></span>)}</div>
+        <div className="tags">{j.tags.map((t) => <span key={t} className={"chip" + (interests.has(t) ? " interest" : "")}><Highlight text={t} q={q} /></span>)}</div>
         </JobLink>
         <div className="meta actions">
           <button type="button" className="chip quiet" aria-pressed={!!j.seen}
@@ -208,9 +250,14 @@ function Jobs({ tab, q, setQ, searchRef }: {
           {j.attribution && <a href={j.attribution.url} target="_blank" rel="noopener noreferrer">{j.attribution.label}</a>}
         </div>
       </article>
-    ))}</div> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length
+    ))}</div>
+    {visible.length > limit && <div className="more"><button type="button" className="btn quiet" onClick={() => setLimit(limit + PAGE)}>
+      Show {Math.min(PAGE, visible.length - limit)} more · {(visible.length - limit).toLocaleString()} left</button></div>}
+    </> : <div className="empty"><Icon node={Inbox} size={28} /><p>{jobs.length
       ? `No ${noun}s match your search and filters.`
-      : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p></div>}
+      : `No ${noun}s yet. The first refresh can take a minute; check Settings for source status.`}</p>
+      {jobs.length > 0 && (narrowed || q) && <button type="button" className="btn quiet"
+        onClick={() => { setF({ ...fallback, sort: f.sort }); setQ(""); }}>Clear search and filters</button>}</div>}
   </>;
 }
 
@@ -437,7 +484,7 @@ export default function App() {
     </div>
     <main id="main" tabIndex={-1}>
       {!isDesktop && <p className="bar">Web preview · Sample opportunities. Live collection is available in the desktop app.</p>}
-      {tab === "settings" ? <Settings /> : <Jobs tab={tab} q={q} setQ={setQ} searchRef={searchRef} />}
+      {tab === "settings" ? <Settings /> : <Jobs key={tab} tab={tab} q={q} setQ={setQ} searchRef={searchRef} />}
     </main>
   </div>;
 }
