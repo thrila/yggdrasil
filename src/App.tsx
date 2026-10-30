@@ -8,6 +8,7 @@ import { REFRESH_MINUTE_CHOICES } from "../shared/types";
 import type { Job, PublicSettings, Run, Tab } from "../shared/types";
 import { POSTED_WITHIN_DAYS, applyFilters, defaultFilters, restoreFilters, sourceCounts, tagCounts } from "../shared/filters";
 import type { Filters, SortKey } from "../shared/filters";
+import { elsewhereLinks } from "../shared/elsewhere";
 
 type IconNode = ComponentType<SVGProps<SVGSVGElement>>;
 type TabDef = readonly [Tab, string, IconNode];
@@ -227,6 +228,11 @@ function Jobs({ tab, q, setQ, searchRef }: {
         return <Chip key={t} t={t} cls={(on ? "active" : "") + (interests.has(t) ? " interest" : "")} aria-pressed={on}
           disabled={!on && n === 0} onClick={() => toggle(t)}>{t}<span className="n">{n}</span></Chip>;
       })}</div>}
+    {elsewhereLinks(tab, q || f.tags.join(" ")).length > 0 && <div className="bar elsewhere">
+      <span>Search this on</span>
+      {elsewhereLinks(tab, q || f.tags.join(" ")).map((l) =>
+        <a key={l.label} className="chip quiet" href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+    </div>}
     {shown.length > 0 && <div className="bar bulk">
       {unseenShown.length > 0 && <Chip t={`Mark ${unseenShown.length} seen`} cls="quiet" onClick={() => mark(unseenShown, true)} />}
       {seenShown.length > 0 && <Chip t={`Mark ${seenShown.length} unseen`} cls="quiet" onClick={() => mark(seenShown, false)} />}

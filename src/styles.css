@@ -99,6 +99,8 @@ button.chip[disabled]{opacity:.4;cursor:default;background:var(--fill);color:var
 .link{border:0;background:none;padding:0;font:inherit;color:var(--acc);cursor:pointer}
 .link:hover{text-decoration:underline}
 .bar.bulk{margin-top:-.6rem;gap:.4rem}
+.bar.elsewhere{margin-top:-.6rem;gap:.4rem;font-size:.85rem}
+.bar.elsewhere a.chip{text-decoration:none}
 .more{display:flex;justify-content:center;margin-top:.5rem}
 .empty .btn{margin-top:1rem}
 
