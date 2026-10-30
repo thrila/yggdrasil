@@ -13,6 +13,7 @@
     "sources:verify": "node dist-electron/scripts/verify-sources.cjs",
     "sources:catalog": "node dist-electron/scripts/build-source-catalog.cjs",
     "sources:install": "npm run build:electron && node dist-electron/scripts/install-sources.cjs",
+    "sources:sync": "node scripts/sync-sources.mjs",
     "collect": "npm run build:electron && node dist-electron/scripts/index-opportunities.cjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
