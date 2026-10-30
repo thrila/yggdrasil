@@ -5,6 +5,7 @@ import { createStore, runAll } from "./collect.cjs";
 import { inTab } from "./opportunities.cjs";
 import { sourceFromUrl, units } from "./source-config.cjs";
 import { canNotify, newSince, notificationBody, type NotifyRules } from "./notify.cjs";
+import { dedupe } from "../shared/dedupe.js";
 import { REFRESH_MINUTE_DEFAULT, clampRefreshMinutes, refreshIntervalMs } from "../shared/types.js";
 import type { Job, JobStore, PublicSettings, SeenPatch, Settings, Source } from "../shared/types";
 
@@ -93,14 +94,14 @@ async function refresh(): Promise<void> {
 
 function jobs(tab: string): Job[] {
   const interests = new Set(settings().interests);
-  return Object.values(store.d.jobs).filter((j) => inTab(j, tab))
+  return dedupe(Object.values(store.d.jobs).filter((j) => inTab(j, tab))
     .map((j) => {
       const words = new Set(j.title.toLowerCase().match(/[a-z+#]+/g) || []);
       return { ...j, score: j.tags.filter((t) => interests.has(t)).length
         + [...words].filter((w) => interests.has(w) && !j.tags.includes(w)).length };
-    })
+    }))
     // No cap: the renderer pages the list, and a cap hid most of a tab from search and filters.
-    .sort((a, b) => b.score - a.score || b.first_seen - a.first_seen);
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || b.first_seen - a.first_seen);
 }
 
 function addSource(url: string): Source {
